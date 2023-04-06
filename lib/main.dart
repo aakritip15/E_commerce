@@ -14,6 +14,7 @@ import '/Screens/splashscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '/widgets/customTextFormField.dart';
+import 'Screens/sell_item.dart';
 import 'screens/login.dart';
 import 'models/appbar.dart';
 import 'screens/body.dart';
@@ -39,7 +40,7 @@ class _MyAppState extends State<MyApp> {
       ),
       //home: ChatPage(),
       //home: BODY(),
-      home: EditInfo(),
+      home: SellItem(),
       //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
       debugShowCheckedModeBanner: false,
     );
