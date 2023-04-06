@@ -37,16 +37,18 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:ChatPage(),
+      //home: ChatPage(),
+      //home: BODY(),
+      home: EditInfo(),
       //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
       debugShowCheckedModeBanner: false,
     );
   }
 
-  Scaffold App() {
-    return Scaffold(
-      appBar: APPBAR(),
-      body: Item_view(),
-    );
-  }
+  // Scaffold App() {
+  //   return Scaffold(
+  //     appBar: APPBAR(),
+  //     body: Item_view(),
+  //   );
+  // }
 }
