@@ -2,12 +2,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-
+import '../models/chatRoomModel.dart';
+import '../models/userModel.dart';
+import '../screens/chatRoom.dart';
 
 class ChatCard extends StatefulWidget {
+  final UserModel userModel;
+  final ChatRoomModel chatRoomModel;
+  final User firebaseUser;
+  final UserModel targetUser;
 
-
-  const ChatCard({super.key});
+  const ChatCard({super.key, required this.userModel, required this.chatRoomModel, required this.firebaseUser, required this.targetUser});
 
   
 
@@ -23,15 +28,24 @@ class _ChatCardState extends State<ChatCard> {
       margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: InkWell(
         onTap: () {
-         
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return ChatPage(
+                chatRoom: widget.chatRoomModel,
+                firebaseUser: widget.firebaseUser,
+                userModel: widget.userModel,
+                targetUser: widget.targetUser,
+              );
+            }),
+          );
         },
         child: ListTile(
           leading: CircleAvatar(
             child: Icon(Icons.person),
           ),
-          title: Text("UserName"),
-          subtitle: Text("Last Message"),
-          trailing: Text('12 pm'),
+          title: Text(widget.targetUser.fullName!),
+          subtitle: Text(widget.chatRoomModel.lastMessage!),
           
         ),
       ),

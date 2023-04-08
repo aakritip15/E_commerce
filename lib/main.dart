@@ -18,7 +18,9 @@ import 'Screens/sell_item.dart';
 import 'screens/login.dart';
 import 'models/appbar.dart';
 import 'screens/body.dart';
+import 'package:uuid/uuid.dart';
 
+var uuid = Uuid();
 void main(List<String> args) {
   runApp(MyApp());
 }
