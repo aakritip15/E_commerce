@@ -1,29 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:app_1/Screens/account_setting.dart';
-import 'package:app_1/Screens/availiable_items.dart';
-import 'package:app_1/Screens/body.dart';
-import 'package:app_1/Screens/edit_information.dart';
-import 'package:app_1/Screens/splashscreen.dart';
-
-import 'package:app_1/Screens/chatHome.dart';
-// import '/models/availiable_items.dart';
-import 'package:app_1/models/list_of_things.dart';
-import 'package:app_1/screens/chatRoom.dart';
-import 'package:app_1/screens/itemview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '/Screens/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import '/widgets/customTextFormField.dart';
-import 'Screens/sell_item.dart';
-import 'screens/login.dart';
-import 'models/appbar.dart';
 import 'models/firebaseHelper.dart';
 import 'models/userModel.dart';
 
 void main() async {
-  
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
