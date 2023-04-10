@@ -31,7 +31,7 @@ class RegisterPage extends StatelessWidget {
 
     void SignUp(String email, String password) async {
       UserCredential? credentials;
-       UIHelper.showLoadingDialog(context, 'Creating Account...');
+      UIHelper.showLoadingDialog(context, 'Creating Account...');
       try {
         credentials = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
@@ -45,8 +45,8 @@ class RegisterPage extends StatelessWidget {
           password: passwordController.text,
         );
         FirebaseFirestore.instance.collection('users').doc(uid).set(
-          userModel.toMap(),
-        );
+              userModel.toMap(),
+            );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const Login()),
@@ -80,6 +80,8 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: kYellow,
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -94,16 +96,12 @@ class RegisterPage extends StatelessWidget {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(
-                height: 20.0,
-              ),
               MyHeader(),
               const Text(
                 'Create Account',
                 style: TextStyle(
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.italic,
                 ),
               ),
               const SizedBox(

@@ -48,7 +48,6 @@ class _LoginState extends State<Login> {
 
       UIHelper.showLoadingDialog(context, "Logging In..");
 
-
       DocumentSnapshot userData =
           await FirebaseFirestore.instance.collection('users').doc(uid).get();
       UserModel userModel =
@@ -77,8 +76,13 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
           onPressed: () {
             Navigator.push(
               context,
