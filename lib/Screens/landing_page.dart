@@ -1,3 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:app_1/Screens/login.dart';
+import 'package:app_1/Screens/registration_page.dart';
 import 'package:flutter/material.dart';
 import '/consts/consts.dart';
 import '/consts/strings.dart';
@@ -8,6 +12,7 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +79,10 @@ class LandingPage extends StatelessWidget {
                   Icons.arrow_back_ios,
                   size: 15.0,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()));
+                },
                 label: const Text(
                   "Get Started",
                 ),
@@ -90,7 +98,10 @@ class LandingPage extends StatelessWidget {
             children: [
               const Text('Already have an account? '),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Login()));
+                },
                 child: const Text(
                   'Sign in',
                   style: TextStyle(

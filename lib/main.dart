@@ -1,33 +1,42 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'package:app_1/models/availiable_items.dart';
+import 'package:app_1/Screens/account_setting.dart';
+import 'package:app_1/Screens/availiable_items.dart';
+import 'package:app_1/Screens/body.dart';
+import 'package:app_1/Screens/edit_information.dart';
+import 'package:app_1/Screens/splashscreen.dart';
 import 'package:app_1/models/list_of_things.dart';
 import 'package:app_1/screens/itemview.dart';
-import 'package:flutter/material.dart';
-import '/Screens/edit_information.dart';
-import '/Screens/homepage.dart';
-import '/Screens/landing_page.dart';
-import '/Screens/registration_page.dart';
-import '/Screens/splashscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import '/Screens/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import '/widgets/customTextFormField.dart';
-import 'screens/login.dart';
+import 'firebase_options.dart';
 import 'models/appbar.dart';
-import 'screens/body.dart';
+import 'models/firebaseHelper.dart';
+import 'models/userModel.dart';
 
-void main(List<String> args) {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser != null) {
+    UserModel? thisUser =
+        await FirebaseHelper.getUserModelById(currentUser.uid);
+    runApp(MyAppafterLogin(
+      userModel: thisUser!,
+    ));
+  } else {
+    runApp(MyApp());
+  }
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyAppafterLogin extends StatelessWidget {
+  final UserModel userModel;
+  const MyAppafterLogin(
+      {super.key, required this.userModel});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,16 +44,29 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LIST_OF_THINGS(),
-      //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
-      debugShowCheckedModeBanner: false,
+      //home: LandingPage(),
+      home: AccountSetting(
+        user: userModel,
+      ),
     );
   }
+}
 
-  Scaffold App() {
-    return Scaffold(
-      appBar: APPBAR(),
-      body: Item_view(),
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      //home: LandingPage(),
+      home: LandingPage(),
+
+      //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

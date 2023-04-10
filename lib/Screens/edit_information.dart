@@ -1,3 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '/consts/colors.dart';
 import '/widgets/customTextFormField.dart';
@@ -11,6 +16,42 @@ class EditInfo extends StatefulWidget {
 }
 
 class _EditInfoState extends State<EditInfo> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+
+  void updateInformationinDatabase() {
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    String name = nameController.text.trim();
+    String email = emailController.text.trim();
+    String phone = phoneController.text.trim();
+    String address = addressController.text.trim();
+    //If any of the fields are empty, then return
+    if (name.isNotEmpty &&
+        email.isNotEmpty &&
+        phone.isNotEmpty &&
+        address.isNotEmpty) {
+      FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'address': address,
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Information Updated!"),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please fill all the fields!"),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,7 +66,15 @@ class _EditInfoState extends State<EditInfo> {
           ),
           centerTitle: true,
           elevation: 0.0,
-          leading: Icon(Icons.arrow_back_rounded),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: kBrown,
+            ),
+          ),
           backgroundColor: kAlmond,
           foregroundColor: kBrown,
         ),
@@ -69,28 +118,37 @@ class _EditInfoState extends State<EditInfo> {
                 height: 25.0,
               ),
               Text('Name'),
-              textFieldEditInfo(text: 'username'),
+              textFieldEditInfo(
+                  text: 'username', fieldController: nameController),
               SizedBox(height: 8.0),
               Text('Email:'),
-              textFieldEditInfo(text: 'username@gmail.com'),
+              textFieldEditInfo(
+                  text: 'username@gmail.com', fieldController: emailController),
               SizedBox(height: 8.0),
               Text('Phone'),
-              textFieldEditInfo(text: '+977-'),
+              textFieldEditInfo(
+                  text: '+977-', fieldController: phoneController),
               SizedBox(height: 8.0),
               Text('Address:'),
-              textFieldEditInfo(text: 'address'),
+              textFieldEditInfo(
+                text: 'address',
+                fieldController: addressController,
+              ),
               SizedBox(height: 15.0),
+              Text('Note:Login Email will not be changed'),
               Center(
                 child: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: Colors.black),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    updateInformationinDatabase();
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 50.0, vertical: 15.0),
                     child: Text(
-                      'Change Now',
+                      'Update',
                       style: TextStyle(color: Colors.black),
                     ),
                   ),

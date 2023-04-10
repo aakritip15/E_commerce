@@ -1,7 +1,15 @@
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors, non_constant_identifier_names, unnecessary_null_comparison
+
+import 'package:app_1/Screens/landing_page.dart';
+import 'package:app_1/models/uiHelper.dart';
+import 'package:app_1/models/userModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import '../firebase_options.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '/Screens/login.dart';
-import '/authentication/authentication.dart';
 import '/consts/consts.dart';
 import '/consts/strings.dart';
 import '/widgets/registrationHeader.dart';
@@ -20,12 +28,75 @@ class RegisterPage extends StatelessWidget {
     TextEditingController numberController = TextEditingController();
     TextEditingController addressController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+
+    void SignUp(String email, String password) async {
+      UserCredential? credentials;
+       UIHelper.showLoadingDialog(context, 'Creating Account...');
+      try {
+        credentials = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        String uid = credentials.user!.uid;
+        UserModel userModel = UserModel(
+          uid: uid,
+          fullname: nameController.text,
+          email: emailController.text,
+          number: numberController.text,
+          address: addressController.text,
+          password: passwordController.text,
+        );
+        FirebaseFirestore.instance.collection('users').doc(uid).set(
+          userModel.toMap(),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const Login()),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account Created Successfully'),
+          ),
+        );
+      } on Exception catch (e) {
+        throw (e.toString());
+      }
+    }
+
+    void CheckValues() {
+      if (nameController.text.isEmpty ||
+          emailController.text.isEmpty ||
+          numberController.text.isEmpty ||
+          addressController.text.isEmpty ||
+          passwordController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please fill all the fields'),
+          ),
+        );
+      } else {
+        SignUp(emailController.text.trim(), passwordController.text.trim());
+      }
+    }
+
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LandingPage()),
+            );
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              const SizedBox(
+                height: 20.0,
+              ),
               MyHeader(),
               const Text(
                 'Create Account',
@@ -51,19 +122,24 @@ class RegisterPage extends StatelessWidget {
                           text: 'Name',
                           label: 'Name',
                           fieldController: nameController,
+                          obscure: false,
                         ),
                         myTextField(
-                            text: 'Email',
-                            label: 'Email',
-                            fieldController: emailController),
+                          text: 'Email',
+                          label: 'Email',
+                          fieldController: emailController,
+                          obscure: false,
+                        ),
                         myTextField(
                             text: 'Phone Number',
                             label: 'Phone Number',
-                            fieldController: numberController),
+                            fieldController: numberController,
+                            obscure: false),
                         myTextField(
                             text: 'Address',
                             label: 'Address',
-                            fieldController: addressController),
+                            fieldController: addressController,
+                            obscure: false),
                         myTextField(
                             text: 'Password',
                             obscure: true,
@@ -82,52 +158,10 @@ class RegisterPage extends StatelessWidget {
                           const BoxConstraints.tightFor(height: 40, width: 180),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: kBlue,
-                        ),
-                        onPressed: () {
-                          //TODO : Add Functionalities
-                        },
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  const SizedBox(
-                    height: 30.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 45.0),
-                    child: ConstrainedBox(
-                      constraints:
-                          const BoxConstraints.tightFor(height: 40, width: 180),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
                           backgroundColor: kGreen,
                         ),
                         onPressed: () async {
-                          //TODO : Add Functionalities
-                          final result = await AuthService().CreateAccount(
-                              name: nameController.text,
-                              emailText: emailController.text,
-                              numberText: numberController.text,
-                              addressText: addressController.text,
-                              passwordText: passwordController.text);
-                          if (result!.contains('success')) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: ((context) => Login()),
-                              ),
-                            );
-                          }
+                          CheckValues();
                         },
                         child: const Text(
                           'Sign Up',
@@ -139,8 +173,7 @@ class RegisterPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
+                  Center(
                     child: RichText(
                       text: TextSpan(
                         text: termsAndConditions,

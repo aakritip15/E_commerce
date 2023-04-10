@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 import '../screens/itemview.dart';
-import 'list_of_things.dart';
+import '../models/list_of_things.dart';
 
 AVAILIABLE_ITEMS(ITEM_DETAILS info) {
   return Padding(
@@ -29,7 +29,7 @@ AVAILIABLE_ITEMS(ITEM_DETAILS info) {
             child: Row(
               children: [
                 ClipRRect(
-                  child: Image.network(info.url),
+                  child: Image.network(info.url1),
                   borderRadius: BorderRadius.circular(15),
                 ),
                 Padding(
