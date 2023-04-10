@@ -2,6 +2,7 @@
 
 import 'package:app_1/Screens/edit_information.dart';
 import 'package:app_1/Screens/homepage.dart';
+import 'package:app_1/models/nav.dart';
 import 'package:app_1/models/uiHelper.dart';
 import 'package:app_1/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -157,6 +158,9 @@ class _AccountSettingState extends State<AccountSetting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: BottomAppBar(
+          child: NavBar(),
+        ),
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('Account Setting',
@@ -177,203 +181,205 @@ class _AccountSettingState extends State<AccountSetting> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Colors.grey,
-                    child:
-                        Icon(Icons.camera_alt, size: 30, color: Colors.white),
-                  ),
-                  SizedBox(width: 25),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      //Name
-                      Text(
-                        widget.user.fullname!,
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      Text(
-                        "Email:${widget.user.email!}",
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        'Address:${widget.user.address!}',
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
-                      ),
-                      //Address
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                padding: EdgeInsets.all(14),
-                width: double.infinity,
-                height: 120,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.grey[300],
-                ),
-                child: Row(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Expanded(
-                        child: Text(
-                            'Help sustainable development of environment by selling your item to your community')),
-                    SizedBox(width: 15),
+                    CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.grey,
+                      child:
+                          Icon(Icons.camera_alt, size: 30, color: Colors.white),
+                    ),
+                    SizedBox(width: 25),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // ignore: prefer_const_literals_to_create_immutables
                       children: [
-                        // Image need to be added
-                        // Image(
-                        //   image: AssetImage(
-                        //     'images/images/sell_item.png',
-                        //   ),
-                        //   height: 27,
-                        //   width: 56,
-                        // ),
-                        Container(
-                          height: 35,
-                          width: 120,
-                          decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(9)),
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Sell your item',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                              ),
-                            ),
+                        //Name
+                        Text(
+                          widget.user.fullname!,
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          "Email:${widget.user.email!}",
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Address:${widget.user.address!}',
+                          style: TextStyle(
+                            fontSize: 15,
+                          ),
+                        ),
+                        //Address
                       ],
                     )
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              ListTile(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditInfo()));
-                },
-                leading: Icon(Icons.edit),
-                title: Text(
-                  'Edit Information',
-                  style: TextStyle(
-                    fontSize: 17,
-                  ),
+                SizedBox(
+                  height: 20,
                 ),
-                trailing: Icon(Icons.keyboard_arrow_right_sharp),
-              ),
-              Divider(
-                color: Colors.grey,
-              ),
-              ListTile(
-                onTap: () {
-                  _displayPasswordChangeDialog();
-                },
-                leading: Icon(Icons.password_outlined),
-                title: Text(
-                  'Change password',
-                  style: TextStyle(
-                    fontSize: 17,
-                  ),
-                ),
-                trailing: Icon(Icons.keyboard_arrow_right_sharp),
-              ),
-              Divider(
-                color: Colors.grey,
-              ),
-              ListTile(
-                leading: Icon(Icons.local_mall),
-                title: Text(
-                  'My items',
-                  style: TextStyle(
-                    fontSize: 17,
-                  ),
-                ),
-                trailing: Icon(Icons.keyboard_arrow_right_sharp),
-              ),
-              Divider(
-                color: Colors.grey,
-              ),
-              ListTile(
-                onTap: () {
-                  _deleteAccount();
-                },
-                leading: Icon(Icons.delete),
-                title: Text(
-                  'Delete Account',
-                  style: TextStyle(
-                    fontSize: 17,
-                  ),
-                ),
-                trailing: Icon(Icons.keyboard_arrow_right_sharp),
-              ),
-              Divider(
-                color: Colors.grey,
-              ),
-              SizedBox(height: 20),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  height: 40,
-                  width: 115,
+                Container(
+                  padding: EdgeInsets.all(14),
+                  width: double.infinity,
+                  height: 120,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.grey[300],
                   ),
-                  child: TextButton.icon(
-                    onPressed: () async {
-                      final result = await AuthService().SignOut();
-                      if (result!.contains('success')) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: ((context) => Login()),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Text(
+                              'Help sustainable development of environment by selling your item to your community')),
+                      SizedBox(width: 15),
+                      Column(
+                        children: [
+                          // Image need to be added
+                          // Image(
+                          //   image: AssetImage(
+                          //     'images/images/sell_item.png',
+                          //   ),
+                          //   height: 27,
+                          //   width: 56,
+                          // ),
+                          Container(
+                            height: 35,
+                            width: 120,
+                            decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(9)),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Sell your item',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ),
                           ),
-                        );
-                      }
-                    },
-                    label: Text(
-                      'Log Out',
-                      style: TextStyle(
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => EditInfo()));
+                  },
+                  leading: Icon(Icons.edit),
+                  title: Text(
+                    'Edit Information',
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                ),
+                Divider(
+                  color: Colors.grey,
+                ),
+                ListTile(
+                  onTap: () {
+                    _displayPasswordChangeDialog();
+                  },
+                  leading: Icon(Icons.password_outlined),
+                  title: Text(
+                    'Change password',
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                ),
+                Divider(
+                  color: Colors.grey,
+                ),
+                ListTile(
+                  leading: Icon(Icons.local_mall),
+                  title: Text(
+                    'My items',
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                ),
+                Divider(
+                  color: Colors.grey,
+                ),
+                ListTile(
+                  onTap: () {
+                    _deleteAccount();
+                  },
+                  leading: Icon(Icons.delete),
+                  title: Text(
+                    'Delete Account',
+                    style: TextStyle(
+                      fontSize: 17,
+                    ),
+                  ),
+                  trailing: Icon(Icons.keyboard_arrow_right_sharp),
+                ),
+                Divider(
+                  color: Colors.grey,
+                ),
+                SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    height: 40,
+                    width: 115,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.red,
+                    ),
+                    child: TextButton.icon(
+                      onPressed: () async {
+                        final result = await AuthService().SignOut();
+                        if (result!.contains('success')) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) => Login()),
+                            ),
+                          );
+                        }
+                      },
+                      label: Text(
+                        'Log Out',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      icon: Icon(
+                        Icons.logout,
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    icon: Icon(
-                      Icons.logout,
-                      color: Colors.white,
-                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ));
   }
