@@ -60,48 +60,49 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           FutureBuilder(
-              future: productsFuture,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Products>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error fetching data.'),
-                  );
-                } else {
-                  List<Products> products = snapshot.data!;
+            future: productsFuture,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Products>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error fetching data.'),
+                );
+              } else {
+                List<Products> products = snapshot.data!;
 
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: products.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ListTile(
-                          onTap: () {
-                            print(products[index].ProductName);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProductDetails(
-                                          product: products[index],
-                                        )));
-                          },
-                          title: Text(products[index].ProductName!),
-                          subtitle: Text(
-                              '\$${products[index].ProductPrice!.toString()}'),
-                        ),
-                      );
-                    },
-                  );
-                }
-              }),
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: products.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          print(products[index].ProductName);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProductDetails(
+                                        product: products[index],
+                                      )));
+                        },
+                        title: Text(products[index].ProductName!),
+                        subtitle: Text(
+                            '\$${products[index].ProductPrice!.toString()}'),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
+          ),
         ],
       ),
     );
