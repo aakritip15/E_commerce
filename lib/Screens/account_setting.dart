@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, use_build_context_synchronously, prefer_const_constructors_in_immutables, unused_element, prefer_const_literals_to_create_immutables, prefer_final_fields, non_constant_identifier_names
 
-import 'package:app_1/Screens/Orders.dart';
+import 'package:app_1/Screens/MySellings.dart';
+
+import 'MyOrders.dart';
 import 'package:app_1/Screens/edit_information.dart';
 import 'package:app_1/Screens/homepage.dart';
 import 'package:app_1/models/nav.dart';
@@ -332,6 +334,10 @@ class _AccountSettingState extends State<AccountSetting> {
                   color: Colors.grey,
                 ),
                 ListTile(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Selling()));
+                  },
                   leading: Icon(Icons.store),
                   title: Text(
                     'My items',
