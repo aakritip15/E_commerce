@@ -16,6 +16,7 @@ import '/authentication/authentication.dart';
 import '/models/profile.dart';
 import '/services/database_service.dart';
 import '/Screens/login.dart';
+import 'sell_item.dart';
 
 class AccountSetting extends StatefulWidget {
   final UserModel user;
@@ -265,7 +266,12 @@ class _AccountSettingState extends State<AccountSetting> {
                                 color: Colors.grey,
                                 borderRadius: BorderRadius.circular(9)),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SellItem()));
+                              },
                               child: Text(
                                 'Sell your item',
                                 style: TextStyle(

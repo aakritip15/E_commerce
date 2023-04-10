@@ -15,6 +15,7 @@ class _SellItemState extends State<SellItem> {
   String _choosedLocation = 'Kathmandu';
 
   bool _isNew = false;
+  bool _isOld = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,6 +77,24 @@ class _SellItemState extends State<SellItem> {
                   ),
                 ),
                 const SizedBox(height: 16),
+                const Text('Item Name*',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    )),
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10)),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: TextField(
+                      decoration: InputDecoration.collapsed(hintText: 'Name'),
+                    ),
+                  ),
+                ),
                 const Text('Category*',
                     style: TextStyle(
                       color: Colors.black,
@@ -146,6 +165,7 @@ class _SellItemState extends State<SellItem> {
                         onPressed: () {
                           setState(() {
                             _isNew = true;
+                            _isOld = false;
                           });
                         },
                         child: Padding(
@@ -164,10 +184,13 @@ class _SellItemState extends State<SellItem> {
                     TextButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                              _isNew ? Colors.grey[200] : Colors.green[300]),
+                              _isOld ? Colors.green[300] : Colors.grey[200]),
                         ),
                         onPressed: () {
-                          _isNew = false;
+                          setState(() {
+                            _isOld = true;
+                            _isNew = false;
+                          });
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
