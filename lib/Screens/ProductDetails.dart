@@ -4,10 +4,8 @@ import 'package:app_1/models/ProductDetails.dart';
 import 'package:app_1/models/appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import '../models/Orders.dart';
 
 class ProductDetails extends StatefulWidget {
   final Products product;
@@ -22,16 +20,19 @@ class _ProductDetailsState extends State<ProductDetails> {
   String Status = 'Pending';
   void PlaceOrder() {
     try {
+      final order = Items(
+        ProductID: widget.product.ProductID,
+        ProductSellerID: widget.product.ProductSellerID,
+        ProductBuyerID: user,
+        ProductPrice: widget.product.ProductPrice,
+        ProductStatus: Status,
+      );
+
       FirebaseFirestore.instance
           .collection('Orders')
           .doc(widget.product.ProductSellerID)
-          .set({
-        'ProductID': widget.product.ProductID,
-        'ProductSellerID': widget.product.ProductSellerID,
-        'ProductBuyerID': user,
-        'ProductPrice': widget.product.ProductPrice,
-        'ProductStatus': Status,
-      });
+          .set(order.toMap());
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Order Placed"),

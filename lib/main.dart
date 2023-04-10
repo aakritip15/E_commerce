@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:app_1/Screens/Orders.dart';
 import 'package:app_1/Screens/account_setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class MyAppafterLogin extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      //home: LandingPage(),
+      // home: Orders(),
       home: AccountSetting(
         user: userModel,
       ),
@@ -55,8 +56,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      //home: LandingPage(),
       home: LandingPage(),
+      // home: Orders(),
       //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
       debugShowCheckedModeBanner: false,
     );
