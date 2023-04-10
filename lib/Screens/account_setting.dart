@@ -163,7 +163,6 @@ class _AccountSettingState extends State<AccountSetting> {
               style: TextStyle(
                 color: Colors.brown,
                 fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
               )),
           backgroundColor: Colors.white,
           elevation: 0,
@@ -205,20 +204,18 @@ class _AccountSettingState extends State<AccountSetting> {
                         height: 12,
                       ),
                       Text(
-                        widget.user.email!,
+                        "Email:${widget.user.email!}",
                         style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
                         ),
                       ),
                       SizedBox(
-                        height: 12,
+                        height: 5,
                       ),
                       Text(
-                        widget.user.address!,
+                        'Address:${widget.user.address!}',
                         style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
                         ),
                       ),
                       //Address
