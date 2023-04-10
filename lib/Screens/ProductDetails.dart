@@ -21,6 +21,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   void PlaceOrder() {
     try {
       final order = Items(
+        ProductName: widget.product.ProductName,
         ProductID: widget.product.ProductID,
         ProductSellerID: widget.product.ProductSellerID,
         ProductBuyerID: user,
@@ -30,8 +31,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
       FirebaseFirestore.instance
           .collection('Orders')
-          .doc(widget.product.ProductSellerID)
-          .set(order.toMap());
+          .add(order.toMap());
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
