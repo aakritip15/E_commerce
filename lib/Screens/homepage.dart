@@ -41,7 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     TextEditingController search = TextEditingController();
     return Scaffold(
-      appBar: APPBAR(),
+      appBar: APPBAR(
+        context,
+      ),
       body: Column(
         children: [
           SEARCH(search),

@@ -41,7 +41,9 @@ class _OrdersState extends State<Orders> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.amber[50],
-      appBar: APPBAR(),
+      appBar: APPBAR(
+        context,
+      ),
       body: Column(children: [
         FutureBuilder(
           future: OrderFuture,

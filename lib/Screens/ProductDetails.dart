@@ -29,9 +29,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         ProductStatus: Status,
       );
 
-      FirebaseFirestore.instance
-          .collection('Orders')
-          .add(order.toMap());
+      FirebaseFirestore.instance.collection('Orders').add(order.toMap());
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -50,7 +48,9 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: APPBAR(),
+      appBar: APPBAR(
+        context,
+      ),
       body: Column(
         children: [
           Center(
