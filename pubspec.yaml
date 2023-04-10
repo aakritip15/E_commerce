@@ -40,6 +40,7 @@ dependencies:
   feather_icons: ^1.2.0
   flutter:
     sdk: flutter
+  flutter_feather_icons: ^2.0.0+1
     
 dev_dependencies:
 
