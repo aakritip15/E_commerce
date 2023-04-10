@@ -8,25 +8,26 @@ class SellItem extends StatefulWidget {
 }
 
 class _SellItemState extends State<SellItem> {
-  List<String> _categoryList = <String>["Mobile", "Stationary", "Grocery","Vehicle"];
+  final _categoryList = <String>["Mobile", "Stationary", "Grocery", "Vehicle"];
   String _category = 'Mobile';
 
-  List<String> _location = <String>["Kathmandu", "Lalitpur", "Bhaktapur"];
+  final _location = <String>["Kathmandu", "Lalitpur", "Bhaktapur"];
   String _choosedLocation = 'Kathmandu';
 
+  bool _isNew = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('Item Details',
+          title: const Text('Item Details',
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               )),
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: Icon(
+          leading: const Icon(
             Icons.arrow_back,
             color: Colors.black,
           ),
@@ -58,7 +59,7 @@ class _SellItemState extends State<SellItem> {
                                   color: Colors.grey[400],
                                   borderRadius: BorderRadius.circular(10)),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Container(
                               height: 95,
                               width: 95,
@@ -68,19 +69,19 @@ class _SellItemState extends State<SellItem> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 9),
-                        Text('Tap on images to add or delete them'),
+                        const SizedBox(height: 9),
+                        const Text('Tap on images to add or delete them'),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
-                Text('Category*',
+                const SizedBox(height: 16),
+                const Text('Category*',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     )),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   height: 50,
                   width: double.infinity,
@@ -95,8 +96,8 @@ class _SellItemState extends State<SellItem> {
                           value: _category,
                           items: _categoryList
                               .map((e) => DropdownMenuItem(
-                                    child: Text(e),
                                     value: e,
+                                    child: Text(e),
                                   ))
                               .toList(),
                           onChanged: (val) {
@@ -107,77 +108,86 @@ class _SellItemState extends State<SellItem> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
-                Text('Description',
+                const SizedBox(height: 16),
+                const Text('Description',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     )),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   height: 95,
                   width: double.infinity,
                   decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
                     child: TextField(
                       decoration:
                           InputDecoration.collapsed(hintText: 'Description'),
                     ),
                   ),
                 ),
-                 SizedBox(height: 16),
-                Text('Condition*',
+                const SizedBox(height: 16),
+                const Text('Condition*',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     )),
-                    SizedBox(height: 10),
-                    Row(
-                      children: [
-                        TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.grey[300]),
-                          ),
-                          onPressed: (){}, 
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('New',
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              _isNew ? Colors.green[200] : Colors.grey[300]),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isNew = true;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'New',
                             style: TextStyle(
-                              color: Colors.grey,
+                              color: _isNew ? Colors.black : Colors.grey[600],
                               fontSize: 17,
                             ),
-                            ),
-                          )),
-                        SizedBox(width: 10,),
-                        TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.green[200]),
                           ),
-                          onPressed: (){}, 
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Used',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 17,
-                            ),
-                            ),
-                          )),
-
-                      ],
+                        )),
+                    const SizedBox(
+                      width: 10,
                     ),
-            
-                SizedBox(height: 16),
-                Text('Price*',
+                    TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              _isNew ? Colors.grey[200] : Colors.green[300]),
+                        ),
+                        onPressed: () {
+                          _isNew = false;
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Used',
+                            style: TextStyle(
+                              color: _isNew ? Colors.grey : Colors.black,
+                              fontSize: 17,
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                const Text('Price*',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     )),
-                    
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Container(
                   height: 50,
                   width: double.infinity,
@@ -232,16 +242,13 @@ class _SellItemState extends State<SellItem> {
                       color: Colors.amber,
                       borderRadius: BorderRadius.circular(10)),
                   child: TextButton(
-                    
-                    onPressed: (){}, 
-                    child: Center(child: Text('Post Now',
-                          style:TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-
-                          )                    
-                    ))
-                    ),
+                      onPressed: () {},
+                      child: Center(
+                          child: Text('Post Now',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                              )))),
                 )
               ],
             ),
