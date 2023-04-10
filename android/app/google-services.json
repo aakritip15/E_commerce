@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "149352193730",
-    "project_id": "resellit-41753",
-    "storage_bucket": "resellit-41753.appspot.com"
+    "project_number": "489954207593",
+    "project_id": "resell-itv2",
+    "storage_bucket": "resell-itv2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:149352193730:android:2f5f7c66326c7c3b33a55b",
+        "mobilesdk_app_id": "1:489954207593:android:9005abc070c30264963ff8",
         "android_client_info": {
           "package_name": "com.example.resell_it"
         }
       },
       "oauth_client": [
         {
-          "client_id": "149352193730-57khp11r86ik269pnr8k56idrnvdscq3.apps.googleusercontent.com",
+          "client_id": "489954207593-9k1qqisg5targqpbjq6iogab9kbfqhhe.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCLbzN-N44gBup1ISc_5S8HFOfSqYZ9LsM"
+          "current_key": "AIzaSyCEJa8YcpRuLNJY_6YRMoQOYOxMwvM6d-I"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "149352193730-57khp11r86ik269pnr8k56idrnvdscq3.apps.googleusercontent.com",
+              "client_id": "489954207593-9k1qqisg5targqpbjq6iogab9kbfqhhe.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

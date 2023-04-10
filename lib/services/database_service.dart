@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
+
+
+  
+
+
   Future<String?> addUser({
     required String name,
     required String email,
@@ -25,10 +30,8 @@ class DatabaseService {
 
   Future<Map<String, dynamic>?> getUser({required String email}) async {
     try {
-      CollectionReference users =
-          FirebaseFirestore.instance.collection('users');
-      final snapshot = await users.doc(email).get();
-      final data = snapshot.data() as Map<String, dynamic>;
+      DocumentSnapshot users = await FirebaseFirestore.instance.collection('users').doc(email).get();
+      final data = users.data() as Map<String, dynamic>;
       final name = data['name'];
       final address = data['address'];
       final number = data['number'];
