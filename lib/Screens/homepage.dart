@@ -10,6 +10,8 @@ import 'package:app_1/models/search.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../models/nav.dart';
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
 
@@ -41,6 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     TextEditingController search = TextEditingController();
     return Scaffold(
+      bottomNavigationBar: BottomAppBar(
+        child: NavBar(),
+      ),
       appBar: APPBAR(
         context,
       ),
