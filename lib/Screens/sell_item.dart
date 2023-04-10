@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class SellItem extends StatefulWidget {
@@ -28,9 +30,10 @@ class _SellItemState extends State<SellItem> {
               )),
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
+          leading: IconButton(
+            color: Colors.black, icon:Icon(Icons.arrow_back), onPressed: () {
+              Navigator.pop(context);
+            },
           ),
           centerTitle: true,
         ),
