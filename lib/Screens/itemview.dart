@@ -1,10 +1,9 @@
-// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, must_be_immutable
 
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../models/categoryName.dart';
 
 class Item_view extends StatelessWidget {
   Item_view({super.key});

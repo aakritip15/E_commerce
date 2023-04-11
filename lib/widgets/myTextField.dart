@@ -1,16 +1,21 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import '../consts/colors.dart';
 
-
 myTextField(
-    {required String? text, bool obscure = false, required String label, required TextEditingController fieldController}) {
+    {required String? text,
+    required bool obscure,
+    required String label,
+    required TextEditingController fieldController}) {
   return TextFormField(
     obscureText: obscure,
-     controller: fieldController,
+    controller: fieldController,
     decoration: InputDecoration(
       hintText: text,
       labelText: label,
-      contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
+      contentPadding:
+          const EdgeInsets.symmetric(vertical: 16.0, horizontal: 10.0),
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
     ),
     style: const TextStyle(fontSize: 12.0),
@@ -51,11 +56,13 @@ textFieldSell({
 }
 
 textFieldEditInfo({
+  required TextEditingController fieldController,
   String text = '',
 }) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10.0),
     child: TextFormField(
+      controller: fieldController,
       decoration: InputDecoration(
         suffixIcon: Icon(
           Icons.edit_square,

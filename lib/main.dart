@@ -1,18 +1,11 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'package:app_1/Screens/chatHome.dart';
-import 'package:app_1/models/availiable_items.dart';
-import 'package:app_1/models/list_of_things.dart';
-import 'package:app_1/screens/chatRoom.dart';
-import 'package:app_1/screens/itemview.dart';
-import 'package:flutter/material.dart';
-import '/Screens/edit_information.dart';
-import '/Screens/homepage.dart';
-import '/Screens/landing_page.dart';
-import '/Screens/registration_page.dart';
-import '/Screens/splashscreen.dart';
+import 'package:app_1/Screens/MyOrders.dart';
+import 'package:app_1/Screens/account_setting.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import '/Screens/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+<<<<<<< HEAD
 import '/widgets/customTextFormField.dart';
 import 'Screens/sell_item.dart';
 import 'screens/login.dart';
@@ -23,16 +16,34 @@ import 'package:uuid/uuid.dart';
 var uuid = Uuid();
 void main(List<String> args) {
   runApp(MyApp());
+=======
+import 'firebase_options.dart';
+import 'models/firebaseHelper.dart';
+import 'models/userModel.dart';
+
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  User? currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser != null) {
+    UserModel? thisUser =
+        await FirebaseHelper.getUserModelById(currentUser.uid);
+    runApp(MyAppafterLogin(
+      userModel: thisUser!,
+    ));
+  } else {
+    runApp(MyApp());
+  }
+>>>>>>> f1b81ee59923c1cb8b61b9e5437e391fb7bf4a2c
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyAppafterLogin extends StatelessWidget {
+  final UserModel userModel;
+  const MyAppafterLogin({super.key, required this.userModel});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,18 +51,30 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      //home: ChatPage(),
-      //home: BODY(),
-      home: SellItem(),
+      // home: Orders(),
+      home: AccountSetting(
+        user: userModel,
+      ),
+    );
+  }
+}
+
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+
+
+      home: LandingPage(),
+
       //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
       debugShowCheckedModeBanner: false,
     );
   }
-
-  // Scaffold App() {
-  //   return Scaffold(
-  //     appBar: APPBAR(),
-  //     body: Item_view(),
-  //   );
-  // }
 }
