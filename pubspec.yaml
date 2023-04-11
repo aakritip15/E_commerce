@@ -41,6 +41,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_feather_icons: ^2.0.0+1
+  uuid: ^3.0.7
     
 dev_dependencies:
 

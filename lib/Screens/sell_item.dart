@@ -1,39 +1,54 @@
-// ignore_for_file: prefer_const_constructors
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
+
+import '../models/productModel.dart';
+
 class SellItem extends StatefulWidget {
-  const SellItem({super.key});
+  final User? firebaseUser;
+
+  const SellItem({Key? key, required this.firebaseUser});
 
   @override
   State<SellItem> createState() => _SellItemState();
 }
 
 class _SellItemState extends State<SellItem> {
-  final _categoryList = <String>["Mobile", "Stationary", "Grocery", "Vehicle"];
+  TextEditingController description = TextEditingController();
+  TextEditingController price = TextEditingController();
+  TextEditingController itemName = TextEditingController();
+  String? condition = 'used';
+  bool clickNew = false;
+  bool clickUsed = true;
+
+  List<String> _categoryList = <String>[
+    "Mobile",
+    "Stationary",
+    "Grocery",
+    "Vehicle"
+  ];
   String _category = 'Mobile';
 
-  final _location = <String>["Kathmandu", "Lalitpur", "Bhaktapur"];
+  List<String> _location = <String>["Kathmandu", "Lalitpur", "Bhaktapur"];
   String _choosedLocation = 'Kathmandu';
 
-  bool _isNew = false;
-  bool _isOld = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text('Item Details',
+          title: Text('Item Details',
               style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               )),
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: IconButton(
-            color: Colors.black, icon:Icon(Icons.arrow_back), onPressed: () {
-              Navigator.pop(context);
-            },
+          leading: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
           ),
           centerTitle: true,
         ),
@@ -63,8 +78,10 @@ class _SellItemState extends State<SellItem> {
                                   color: Colors.grey[400],
                                   borderRadius: BorderRadius.circular(10)),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: 10),
                             Container(
+                              child: IconButton(
+                                  onPressed: () {}, icon: Icon(Icons.add)),
                               height: 95,
                               width: 95,
                               decoration: BoxDecoration(
@@ -73,37 +90,41 @@ class _SellItemState extends State<SellItem> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 9),
-                        const Text('Tap on images to add or delete them'),
+                        SizedBox(height: 9),
+                        Text('Tap on images to add or delete them'),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                const Text('Item Name*',
+                SizedBox(height: 16),
+                Text('Item name*',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     )),
+                SizedBox(height: 10),
                 Container(
                   height: 50,
                   width: double.infinity,
                   decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10)),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
                     child: TextField(
-                      decoration: InputDecoration.collapsed(hintText: 'Name'),
+                      controller: itemName,
+                      decoration:
+                          InputDecoration.collapsed(hintText: 'Item name'),
                     ),
                   ),
                 ),
-                const Text('Category*',
+                SizedBox(height: 16),
+                Text('Category*',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     )),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Container(
                   height: 50,
                   width: double.infinity,
@@ -118,8 +139,8 @@ class _SellItemState extends State<SellItem> {
                           value: _category,
                           items: _categoryList
                               .map((e) => DropdownMenuItem(
-                                    value: e,
                                     child: Text(e),
+                                    value: e,
                                   ))
                               .toList(),
                           onChanged: (val) {
@@ -130,45 +151,48 @@ class _SellItemState extends State<SellItem> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                const Text('Description',
+                SizedBox(height: 16),
+                Text('Description',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     )),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Container(
                   height: 95,
                   width: double.infinity,
                   decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10)),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
                     child: TextField(
+                      controller: description,
                       decoration:
                           InputDecoration.collapsed(hintText: 'Description'),
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                const Text('Condition*',
+                SizedBox(height: 16),
+                Text('Condition*',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     )),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Row(
                   children: [
                     TextButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              _isNew ? Colors.green[200] : Colors.grey[300]),
+                          backgroundColor: (clickNew == false)
+                              ? MaterialStateProperty.all(Colors.grey[300])
+                              : MaterialStateProperty.all(Colors.green[200]),
                         ),
                         onPressed: () {
                           setState(() {
-                            _isNew = true;
-                            _isOld = false;
+                            condition = 'New';
+                            clickNew = !clickNew;
+                            clickUsed = !clickUsed;
                           });
                         },
                         child: Padding(
@@ -176,23 +200,27 @@ class _SellItemState extends State<SellItem> {
                           child: Text(
                             'New',
                             style: TextStyle(
-                              color: _isNew ? Colors.black : Colors.grey[600],
+                              color: (clickNew == true)
+                                  ? Colors.black
+                                  : Colors.grey,
                               fontSize: 17,
                             ),
                           ),
                         )),
-                    const SizedBox(
+                    SizedBox(
                       width: 10,
                     ),
                     TextButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              _isOld ? Colors.green[300] : Colors.grey[200]),
+                          backgroundColor: (clickUsed == false)
+                              ? MaterialStateProperty.all(Colors.grey[300])
+                              : MaterialStateProperty.all(Colors.green[200]),
                         ),
                         onPressed: () {
                           setState(() {
-                            _isOld = true;
-                            _isNew = false;
+                            clickUsed = !clickUsed;
+                            clickNew = !clickNew;
+                            condition = 'Used';
                           });
                         },
                         child: Padding(
@@ -200,20 +228,22 @@ class _SellItemState extends State<SellItem> {
                           child: Text(
                             'Used',
                             style: TextStyle(
-                              color: _isNew ? Colors.grey : Colors.black,
+                              color: (clickUsed == false)
+                                  ? Colors.grey
+                                  : Colors.black,
                               fontSize: 17,
                             ),
                           ),
                         )),
                   ],
                 ),
-                const SizedBox(height: 16),
-                const Text('Price*',
+                SizedBox(height: 16),
+                Text('Price*',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     )),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Container(
                   height: 50,
                   width: double.infinity,
@@ -223,6 +253,7 @@ class _SellItemState extends State<SellItem> {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextField(
+                      controller: price,
                       decoration: InputDecoration.collapsed(hintText: 'Price'),
                     ),
                   ),
@@ -268,7 +299,32 @@ class _SellItemState extends State<SellItem> {
                       color: Colors.amber,
                       borderRadius: BorderRadius.circular(10)),
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        String? pid = '1234';
+                         String? uid = widget.firebaseUser?.uid;
+                        ProductModel productModel = ProductModel(
+                          imageurl: {},
+                          itemName: itemName.text.toString(),
+                          category: _category,
+                          description: description.text.toString(),
+                          condition: condition,
+                          price: price.text.toString(),
+                          location: _choosedLocation,
+                          sellerId: widget.firebaseUser?.uid,
+                          productId: pid,
+                          listedDate: DateTime.now(),
+                        );
+                       
+
+                        await FirebaseFirestore.instance
+                            .collection('products')
+                            .doc(uid)
+                            .collection('Items')
+                            .doc(pid)
+                            .set(productModel.toMap())
+                            .then((value) => 'Product added successfully');
+                        print('Item added successfully');
+                      },
                       child: Center(
                           child: Text('Post Now',
                               style: TextStyle(

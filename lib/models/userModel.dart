@@ -1,5 +1,32 @@
 class UserModel {
   String? uid;
+<<<<<<< HEAD
+  String? fullName;
+  String? email;
+  String? address;
+  String? number;
+
+  UserModel({this.uid, this.fullName, this.email, this.address,this.number});
+
+  UserModel.fromMap(Map<String, dynamic> map) {
+    uid=
+    map['uid'];
+    fullName=
+    map['fullName'];
+    email=    map['email'];
+    address=
+    map['address'];
+    number=
+    map['number'];
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'fullName': fullName,
+      'email': email,
+      'address': address,
+      'number': number,
+=======
   String? fullname;
   String? email;
   // String? profilepic;
@@ -28,6 +55,7 @@ class UserModel {
       "address": address,
       "number": number,
       // "profilepic": profilepic,
+>>>>>>> f1b81ee59923c1cb8b61b9e5437e391fb7bf4a2c
     };
   }
 }
