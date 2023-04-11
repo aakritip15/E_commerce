@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:app_1/models/appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -55,112 +56,86 @@ class _EditInfoState extends State<EditInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Edit Information',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              fontFamily: 'Times',
-              wordSpacing: 0,
-            ),
-          ),
-          centerTitle: true,
-          elevation: 0.0,
-// <<<<<<< HEAD
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back,
-              color: kBrown,
-            ),
-          ),
-          backgroundColor: kAlmond,
-          foregroundColor: kBrown,
-        ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Center(
-                      child: CircleAvatar(
-                        backgroundColor: kBrown,
-                        child: Icon(Icons.photo_camera_back_rounded),
-                        radius: 60.0,
-                      ),
+    return Scaffold(
+      appBar: APPBAR(context),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Center(
+                    child: CircleAvatar(
+                      backgroundColor: kBrown,
+                      child: Icon(Icons.photo_camera_back_rounded),
+                      radius: 60.0,
                     ),
-                    InkWell(
-                      onTap: () {
-                        //TODO: Add functionality to Edit Button
-                      },
-                      child: Container(
-                        width: 70,
-                        height: 27,
-
-                        // color: kBlue,
-                        decoration: BoxDecoration(
-                          color: kGrey,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: const Center(
-                            child: Text(
-                          'Edit',
-                          style: TextStyle(
-                            fontFamily: 'Times',
-                          ),
-                        )),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 35.0,
-              ),
-// <<<<<<< HEAD
-              Text('Name'),
-              textFieldEditInfo(
-                  text: 'username', fieldController: nameController),
-              SizedBox(height: 8.0),
-              Text('Email:'),
-              textFieldEditInfo(
-                  text: 'username@gmail.com', fieldController: emailController),
-              SizedBox(height: 8.0),
-              Text('Phone'),
-              textFieldEditInfo(
-                  text: '+977-', fieldController: phoneController),
-              SizedBox(height: 8.0),
-              Text('Address:'),
-              textFieldEditInfo(
-                text: 'address',
-                fieldController: addressController,
-              ),
-              SizedBox(height: 15.0),
-              Text('Note:Login Email will not be changed'),
-              Center(
-                child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.black),
                   ),
-                  onPressed: () {
-                    updateInformationinDatabase();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50.0, vertical: 15.0),
-                    child: Text(
-                      'Update',
-                      style: TextStyle(color: Colors.black),
+                  InkWell(
+                    onTap: () {
+                      //TODO: Add functionality to Edit Button
+                    },
+                    child: Container(
+                      width: 70,
+                      height: 27,
+
+                      // color: kBlue,
+                      decoration: BoxDecoration(
+                        color: kGrey,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: const Center(
+                          child: Text(
+                        'Edit',
+                        style: TextStyle(
+                          fontFamily: 'Times',
+                        ),
+                      )),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 35.0,
+            ),
+            Text('Name'),
+            textFieldEditInfo(
+                text: 'username', fieldController: nameController),
+            SizedBox(height: 8.0),
+            Text('Email:'),
+            textFieldEditInfo(
+                text: 'username@gmail.com', fieldController: emailController),
+            SizedBox(height: 8.0),
+            Text('Phone'),
+            textFieldEditInfo(
+                text: '+977-', fieldController: phoneController),
+            SizedBox(height: 8.0),
+            Text('Address:'),
+            textFieldEditInfo(
+              text: 'address',
+              fieldController: addressController,
+            ),
+            SizedBox(height: 15.0),
+            Text('Note:Login Email will not be changed'),
+            Center(
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: Colors.black),
+                ),
+                onPressed: () {
+                  updateInformationinDatabase();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 50.0, vertical: 15.0),
+                  child: Text(
+                    'Update',
+                    style: TextStyle(color: Colors.black),
 // =======
 //               const Text(
 //                 'Name',
@@ -321,12 +296,11 @@ class _EditInfoState extends State<EditInfo> {
 //                         fontWeight: FontWeight.bold,
 //                       ),
 // >>>>>>> 16acfb2f9af071af36342b9eeef1b6e8dae56bb4
-                    ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

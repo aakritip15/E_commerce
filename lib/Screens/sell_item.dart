@@ -46,9 +46,18 @@ class _SellItemState extends State<SellItem> {
               )),
           backgroundColor: Colors.white,
           elevation: 0,
+<<<<<<< Updated upstream
           leading: Icon(
             Icons.arrow_back,
             color: Colors.black,
+=======
+          leading: IconButton(
+            color: Colors.black,
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+>>>>>>> Stashed changes
           ),
           centerTitle: true,
         ),
@@ -72,7 +81,7 @@ class _SellItemState extends State<SellItem> {
                         Row(
                           children: [
                             Container(
-                              height: 95,
+                              height: 90,
                               width: 95,
                               decoration: BoxDecoration(
                                   color: Colors.grey[400],
@@ -80,9 +89,13 @@ class _SellItemState extends State<SellItem> {
                             ),
                             SizedBox(width: 10),
                             Container(
+<<<<<<< Updated upstream
                               child: IconButton(
                                   onPressed: () {}, icon: Icon(Icons.add)),
                               height: 95,
+=======
+                              height: 90,
+>>>>>>> Stashed changes
                               width: 95,
                               decoration: BoxDecoration(
                                   color: Colors.grey[400],
