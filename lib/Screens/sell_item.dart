@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+=======
+>>>>>>> parent of f1b81ee (Navigation Form Selling Page)
 import 'package:flutter/material.dart';
 
 
@@ -46,6 +49,7 @@ class _SellItemState extends State<SellItem> {
               )),
           backgroundColor: Colors.white,
           elevation: 0,
+<<<<<<< HEAD
 <<<<<<< Updated upstream
           leading: Icon(
             Icons.arrow_back,
@@ -58,6 +62,11 @@ class _SellItemState extends State<SellItem> {
               Navigator.pop(context);
             },
 >>>>>>> Stashed changes
+=======
+          leading: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+>>>>>>> parent of f1b81ee (Navigation Form Selling Page)
           ),
           centerTitle: true,
         ),
