@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,19 +8,18 @@ import '../widgets/card_widget.dart';
 import '../widgets/searchTextField.dart';
 import '../models/firebaseHelper.dart';
 
-
 class ChatHome extends StatefulWidget {
   final UserModel? userModel;
   final User? firebaseUser;
 
   const ChatHome({super.key, required this.userModel, this.firebaseUser});
-  
+
   @override
   State<ChatHome> createState() => _ChatHomeState();
 }
 
 class _ChatHomeState extends State<ChatHome> {
- TextEditingController searchController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,8 +36,7 @@ class _ChatHomeState extends State<ChatHome> {
               fontSize: 25,
             )),
         centerTitle: true,
-              ),
-      
+      ),
       body: Column(
         children: [
           Padding(
@@ -79,8 +76,8 @@ class _ChatHomeState extends State<ChatHome> {
                           participantKeys.remove(widget.userModel?.uid);
 
                           return FutureBuilder(
-                            future: fireBaseHelper
-                                .getUserModelById(participantKeys[0]),
+                            future: FirebaseHelper.getUserModelById(
+                                participantKeys[0]),
                             builder: (context, userData) {
                               if (userData.connectionState ==
                                   ConnectionState.done) {
@@ -137,5 +134,4 @@ class _ChatHomeState extends State<ChatHome> {
       ),
     );
   }
-  }
-
+}

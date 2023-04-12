@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:app_1/Screens/MyOrders.dart';
 import 'package:app_1/Screens/account_setting.dart';
+import 'package:app_1/Screens/homepage.dart';
+import 'package:app_1/Screens/itemview.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '/Screens/landing_page.dart';
@@ -9,7 +11,7 @@ import '/widgets/customTextFormField.dart';
 import 'Screens/sell_item.dart';
 import 'screens/login.dart';
 import 'models/appbar.dart';
-import 'screens/body.dart';
+//import '/Screens/body.dart';
 import 'package:uuid/uuid.dart';
 import 'firebase_options.dart';
 import 'models/firebaseHelper.dart';
@@ -17,7 +19,6 @@ import 'models/userModel.dart';
 
 var uuid = Uuid();
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -28,16 +29,18 @@ void main() async {
         await FirebaseHelper.getUserModelById(currentUser.uid);
     runApp(MyAppafterLogin(
       userModel: thisUser!,
+      currentuser: currentUser,
     ));
   } else {
     runApp(MyApp());
   }
->>>>>>> f1b81ee59923c1cb8b61b9e5437e391fb7bf4a2c
 }
 
 class MyAppafterLogin extends StatelessWidget {
   final UserModel userModel;
-  const MyAppafterLogin({super.key, required this.userModel});
+  final User? currentuser;
+  const MyAppafterLogin(
+      {super.key, required this.userModel, required this.currentuser});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,9 @@ class MyAppafterLogin extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: Orders(),
+      //home: Orders(),
+      //home: Item_view(),
+      // home: SellItem(firebaseUser: currentuser),
       home: AccountSetting(
         user: userModel,
       ),
@@ -64,7 +69,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-
 
       home: LandingPage(),
 

@@ -101,7 +101,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                               borderRadius: BorderRadius.circular(10)),
                           tileColor: Colors.white,
                           textColor: Colors.black,
-                          title: Text(searchedUser.fullName!),
+                          title: Text(searchedUser.fullname!),
                           subtitle: Text(searchedUser.email!),
                           leading: CircleAvatar(
                             child: Icon(Icons.person),

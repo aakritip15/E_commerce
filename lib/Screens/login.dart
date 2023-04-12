@@ -93,7 +93,7 @@ class _LoginState extends State<Login> {
       ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.all(10.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -112,8 +112,17 @@ class _LoginState extends State<Login> {
                   color: kBrown,
                 ),
               ),
+              // SizedBox(
+              //   height: 30,
+              //   width: 35,
+              // ),
+              // Expanded(
+              //   child: Image(
+              //     image: AssetImage("images/images/Login.png"),
+              //   ),
+              // ),
               SizedBox(
-                height: 300,
+                height: 250,
                 width: 350,
                 child: Expanded(
                   child: Image(

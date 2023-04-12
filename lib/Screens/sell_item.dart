@@ -1,16 +1,13 @@
-<<<<<<< HEAD
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-=======
->>>>>>> parent of f1b81ee (Navigation Form Selling Page)
 import 'package:flutter/material.dart';
-
 
 import '../models/productModel.dart';
 
 class SellItem extends StatefulWidget {
   final User? firebaseUser;
+  // final String? uid;
 
   const SellItem({Key? key, required this.firebaseUser});
 
@@ -49,24 +46,12 @@ class _SellItemState extends State<SellItem> {
               )),
           backgroundColor: Colors.white,
           elevation: 0,
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-          leading: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-=======
           leading: IconButton(
             color: Colors.black,
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pop(context);
             },
->>>>>>> Stashed changes
-=======
-          leading: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
->>>>>>> parent of f1b81ee (Navigation Form Selling Page)
           ),
           centerTitle: true,
         ),
@@ -98,13 +83,9 @@ class _SellItemState extends State<SellItem> {
                             ),
                             SizedBox(width: 10),
                             Container(
-<<<<<<< Updated upstream
                               child: IconButton(
                                   onPressed: () {}, icon: Icon(Icons.add)),
                               height: 95,
-=======
-                              height: 90,
->>>>>>> Stashed changes
                               width: 95,
                               decoration: BoxDecoration(
                                   color: Colors.grey[400],
@@ -323,7 +304,7 @@ class _SellItemState extends State<SellItem> {
                   child: TextButton(
                       onPressed: () async {
                         String? pid = '1234';
-                         String? uid = widget.firebaseUser?.uid;
+                        String? uid = widget.firebaseUser?.uid;
                         ProductModel productModel = ProductModel(
                           imageurl: {},
                           itemName: itemName.text.toString(),
@@ -336,7 +317,6 @@ class _SellItemState extends State<SellItem> {
                           productId: pid,
                           listedDate: DateTime.now(),
                         );
-                       
 
                         await FirebaseFirestore.instance
                             .collection('products')

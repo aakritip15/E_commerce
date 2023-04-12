@@ -18,9 +18,14 @@ import '/services/database_service.dart';
 import '/Screens/login.dart';
 import 'sell_item.dart';
 
+//late String uId;
+
 class AccountSetting extends StatefulWidget {
   final UserModel user;
-  String uid = FirebaseAuth.instance.currentUser!.uid;
+
+  final User? currentUser = FirebaseAuth.instance.currentUser;
+  String? uid = FirebaseAuth.instance.currentUser!.uid;
+
   AccountSetting({
     Key? key,
     required this.user,
@@ -270,7 +275,9 @@ class _AccountSettingState extends State<AccountSetting> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SellItem()));
+                                        builder: (context) => SellItem(
+                                              firebaseUser: widget.currentUser,
+                                            )));
                               },
                               child: Text(
                                 'Sell your item',

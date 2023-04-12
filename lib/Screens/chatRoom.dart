@@ -1,6 +1,3 @@
-
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +37,7 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             CircleAvatar(child: Icon(Icons.camera_alt)),
             SizedBox(width: 15),
-            Text(widget.targetUser.fullName!,
+            Text(widget.targetUser.fullname!,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.italic,
@@ -55,12 +52,13 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(children: [
         Expanded(
           child: Container(
-            padding:EdgeInsets.symmetric(horizontal:10),
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection('chatrooms')
                     .doc(widget.chatRoom.chatRoomId)
-                    .collection('messages').orderBy('createdOn',descending: true)
+                    .collection('messages')
+                    .orderBy('createdOn', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
@@ -75,38 +73,46 @@ class _ChatPageState extends State<ChatPage> {
                               datasnapShot.docs[index].data()
                                   as Map<String, dynamic>);
                           return Row(
-                            mainAxisAlignment: (currentMessage.sender==widget.userModel.uid)?MainAxisAlignment.end:MainAxisAlignment.start,
+                            mainAxisAlignment:
+                                (currentMessage.sender == widget.userModel.uid)
+                                    ? MainAxisAlignment.end
+                                    : MainAxisAlignment.start,
                             children: [
                               Container(
                                 margin: EdgeInsets.symmetric(
-                                  vertical:2,
-                                  
+                                  vertical: 2,
                                 ),
-                                padding: EdgeInsets.symmetric(vertical:12,horizontal:12),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 12),
                                 decoration: BoxDecoration(
-                                  color:(currentMessage.sender==widget.userModel.uid)? Colors.amber:Colors.white,
-                                  borderRadius:(currentMessage.sender==widget.userModel.uid)? 
-                                  BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    topRight: Radius.circular(15),
-                                    bottomLeft: Radius.circular(15),
-                                  ): BorderRadius.only(
-                                    topLeft: Radius.circular(15),
-                                    topRight: Radius.circular(15),
-                                    bottomRight: Radius.circular(15),
-                                  )
+                                    color: (currentMessage.sender ==
+                                            widget.userModel.uid)
+                                        ? Colors.amber
+                                        : Colors.white,
+                                    borderRadius: (currentMessage.sender ==
+                                            widget.userModel.uid)
+                                        ? BorderRadius.only(
+                                            topLeft: Radius.circular(15),
+                                            topRight: Radius.circular(15),
+                                            bottomLeft: Radius.circular(15),
+                                          )
+                                        : BorderRadius.only(
+                                            topLeft: Radius.circular(15),
+                                            topRight: Radius.circular(15),
+                                            bottomRight: Radius.circular(15),
+                                          )),
+                                child: Text(
+                                  currentMessage.text.toString(),
+                                  style: TextStyle(
+                                    color: (currentMessage.sender ==
+                                            widget.userModel.uid)
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: 16,
+                                    // fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                child: Text(currentMessage.text.toString(),
-                                style: TextStyle(
-                                  color: (currentMessage.sender==widget.userModel.uid)? 
-                                  Colors.white:Colors.black,
-                                  fontSize: 16,
-                                  // fontWeight: FontWeight.bold,
-                                ),
-                                ),
-                              
-                                
-                                ),
+                              ),
                             ],
                           );
                         },

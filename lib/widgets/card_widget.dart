@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +11,12 @@ class ChatCard extends StatefulWidget {
   final User firebaseUser;
   final UserModel targetUser;
 
-  const ChatCard({super.key, required this.userModel, required this.chatRoomModel, required this.firebaseUser, required this.targetUser});
-
-  
+  const ChatCard(
+      {super.key,
+      required this.userModel,
+      required this.chatRoomModel,
+      required this.firebaseUser,
+      required this.targetUser});
 
   @override
   State<ChatCard> createState() => _ChatCardState();
@@ -44,9 +46,8 @@ class _ChatCardState extends State<ChatCard> {
           leading: CircleAvatar(
             child: Icon(Icons.person),
           ),
-          title: Text(widget.targetUser.fullName!),
+          title: Text(widget.targetUser.fullname!),
           subtitle: Text(widget.chatRoomModel.lastMessage!),
-          
         ),
       ),
     );
