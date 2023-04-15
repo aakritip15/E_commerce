@@ -43,6 +43,7 @@ class _LoginState extends State<Login> {
         ),
       );
     }
+
     if (credential != null) {
       String uid = credential.user!.uid;
 
@@ -64,9 +65,10 @@ class _LoginState extends State<Login> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) {
-          return AccountSetting(
+          /* return AccountSetting(
             user: userModel,
-          );
+          );*/
+          return MyHomePage();
         }),
       );
     }
@@ -77,6 +79,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        toolbarHeight: 45,
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(
@@ -97,9 +100,6 @@ class _LoginState extends State<Login> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: 20,
-              ),
               const Image(
                 image: AssetImage(appIcon),
                 height: 100,
@@ -112,15 +112,6 @@ class _LoginState extends State<Login> {
                   color: kBrown,
                 ),
               ),
-              // SizedBox(
-              //   height: 30,
-              //   width: 35,
-              // ),
-              // Expanded(
-              //   child: Image(
-              //     image: AssetImage("images/images/Login.png"),
-              //   ),
-              // ),
               SizedBox(
                 height: 250,
                 width: 350,

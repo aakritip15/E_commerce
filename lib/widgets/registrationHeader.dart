@@ -12,7 +12,7 @@ class MyHeader extends StatelessWidget {
       painter: RPSCustomPainter(),
       child: Container(
         height: 150,
-        padding: const EdgeInsets.only(top: 15.0, bottom: 50.0),
+        padding: const EdgeInsets.only(bottom: 50.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
