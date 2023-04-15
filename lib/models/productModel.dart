@@ -1,5 +1,5 @@
 class ProductModel {
-  Map<String, dynamic>? imageurl;
+  String? imageurl;
   String? itemName;
   String? category;
   String? description;
