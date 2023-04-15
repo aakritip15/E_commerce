@@ -82,6 +82,7 @@ class RegisterPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: kYellow,
         elevation: 0,
+        toolbarHeight: 40,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -102,6 +103,7 @@ class RegisterPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold,
+                  
                 ),
               ),
               const SizedBox(

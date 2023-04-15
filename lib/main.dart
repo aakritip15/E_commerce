@@ -52,9 +52,10 @@ class MyAppafterLogin extends StatelessWidget {
       //home: Orders(),
       //home: Item_view(),
       // home: SellItem(firebaseUser: currentuser),
-      home: AccountSetting(
+      /* home: AccountSetting(
         user: userModel,
-      ),
+      ),*/
+      home: MyHomePage(),
     );
   }
 }
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 
-      home: LandingPage(),
+      home: Login(),
 
       //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
       debugShowCheckedModeBanner: false,
