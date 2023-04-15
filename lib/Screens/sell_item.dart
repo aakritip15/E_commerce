@@ -320,8 +320,8 @@ class _SellItemState extends State<SellItem> {
 
                         await FirebaseFirestore.instance
                             .collection('products')
-                            .doc(uid)
-                            .collection('Items')
+                            // .doc(uid)
+                            //.collection('Items')
                             .doc(pid)
                             .set(productModel.toMap())
                             .then((value) => 'Product added successfully');
