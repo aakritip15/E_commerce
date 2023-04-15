@@ -19,7 +19,9 @@ import '/widgets/myTextField.dart';
 // TODO : Solve bottom Overflow bug. Occurance: while trying to give inputs in textFields
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  RegisterPage({Key? key}) : super(key: key);
+
+  final formGlobalKey = GlobalKey<FormState>();
 //TODO: create TextEditingControllers for each fields
   @override
   Widget build(BuildContext context) {
@@ -31,49 +33,35 @@ class RegisterPage extends StatelessWidget {
 
     void SignUp(String email, String password) async {
       UserCredential? credentials;
-      UIHelper.showLoadingDialog(context, 'Creating Account...');
-      try {
-        credentials = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
-        String uid = credentials.user!.uid;
-        UserModel userModel = UserModel(
-          uid: uid,
-          fullname: nameController.text,
-          email: emailController.text,
-          number: numberController.text,
-          address: addressController.text,
-          password: passwordController.text,
-        );
-        FirebaseFirestore.instance.collection('users').doc(uid).set(
-              userModel.toMap(),
-            );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Login()),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Account Created Successfully'),
-          ),
-        );
-      } on Exception catch (e) {
-        throw (e.toString());
-      }
-    }
-
-    void CheckValues() {
-      if (nameController.text.isEmpty ||
-          emailController.text.isEmpty ||
-          numberController.text.isEmpty ||
-          addressController.text.isEmpty ||
-          passwordController.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please fill all the fields'),
-          ),
-        );
-      } else {
-        SignUp(emailController.text.trim(), passwordController.text.trim());
+      if (formGlobalKey.currentState!.validate()) {
+        UIHelper.showLoadingDialog(context, 'Creating Account...');
+        try {
+          credentials = await FirebaseAuth.instance
+              .createUserWithEmailAndPassword(email: email, password: password);
+          String uid = credentials.user!.uid;
+          UserModel userModel = UserModel(
+            uid: uid,
+            fullname: nameController.text,
+            email: emailController.text,
+            number: numberController.text,
+            address: addressController.text,
+            password: passwordController.text,
+          );
+          FirebaseFirestore.instance.collection('users').doc(uid).set(
+                userModel.toMap(),
+              );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Login()),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Account Created Successfully'),
+            ),
+          );
+        } on Exception catch (e) {
+          throw (e.toString());
+        }
       }
     }
 
@@ -98,107 +86,172 @@ class RegisterPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               MyHeader(),
-              const Text(
-                'Create Account',
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                  
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Wrap(
-                      runSpacing: 15.0,
+              Form(
+                key: formGlobalKey,
+                child: Stack(
+                  children: [
+                    Container(
+                      color: Colors.white,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        //SEE: myTextField.dart
-                        myTextField(
-                          text: 'Name',
-                          label: 'Name',
-                          fieldController: nameController,
-                          obscure: false,
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                          child: Text(
+                            'Create Account',
+                            style: TextStyle(
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
                         ),
-                        myTextField(
-                          text: 'Email',
-                          label: 'Email',
-                          fieldController: emailController,
-                          obscure: false,
+                        const SizedBox(
+                          height: 20.0,
                         ),
-                        myTextField(
-                            text: 'Phone Number',
-                            label: 'Phone Number',
-                            fieldController: numberController,
-                            obscure: false),
-                        myTextField(
-                            text: 'Address',
-                            label: 'Address',
-                            fieldController: addressController,
-                            obscure: false),
-                        myTextField(
-                            text: 'Password',
-                            obscure: true,
-                            label: 'Password',
-                            fieldController: passwordController),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                          child: Wrap(
+                            runSpacing: 12.0,
+                            children: [
+                              //SEE: myTextField.dart
+                              TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please Enter Some Text';
+                                  }
+                                  return null;
+                                },
+                                controller: nameController,
+                                decoration: InputDecoration(
+                                  hintText: 'Name',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                              ),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty ||
+                                      !RegExp(r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                                          .hasMatch(value!)) {
+                                    return 'Please Enter Valid mail';
+                                  }
+                                  return null;
+                                },
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                  hintText: 'Email',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                              ),
+                              TextFormField(
+                                validator: (number) {
+                                  if (number!.isEmpty ||
+                                      !RegExp(r'^[0-9]+$').hasMatch(number!)) {
+                                    return 'Please Enter Valid Number';
+                                  }
+                                  return null;
+                                },
+                                controller: numberController,
+                                maxLength: 10,
+                                decoration: InputDecoration(
+                                  hintText: 'Phone Number',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                              ),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please Enter Some Text';
+                                  }
+                                  return null;
+                                },
+                                controller: addressController,
+                                decoration: InputDecoration(
+                                  hintText: 'Address',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                              ),
+                              TextFormField(
+                                validator: (password) {
+                                  if (password == null ||
+                                      password.length != 6) {
+                                    return 'Please Enter Strong Password';
+                                  }
+                                  return null;
+                                },
+                                controller: passwordController,
+                                obscureText: true,
+                                maxLength: 6,
+                                decoration: InputDecoration(
+                                  hintText: 'Password',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 45.0),
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints.tightFor(
+                                height: 40, width: 180),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: kGreen,
+                              ),
+                              onPressed: () {
+                                if (formGlobalKey.currentState!.validate()) {
+                                  SignUp(emailController.text.trim(),
+                                      passwordController.text.trim());
+                                }
+                              },
+                              child: const Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: termsAndConditions,
+                            style: const TextStyle(color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'Terms and Conditions',
+                                style: const TextStyle(
+                                    color: Colors.blue,
+                                    decoration: TextDecoration.underline),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    //TODO: Add navigation to terms and conditions page
+                                  },
+                              ),
+                              const TextSpan(
+                                text: '.',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 5.0)
                       ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 30.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 45.0),
-                    child: ConstrainedBox(
-                      constraints:
-                          const BoxConstraints.tightFor(height: 40, width: 180),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: kGreen,
-                        ),
-                        onPressed: () async {
-                          CheckValues();
-                        },
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: RichText(
-                      text: TextSpan(
-                        text: termsAndConditions,
-                        style: const TextStyle(color: Colors.black),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'Terms and Conditions',
-                            style: const TextStyle(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                //TODO: Add navigation to terms and conditions page
-                              },
-                          ),
-                          const TextSpan(
-                            text: '.',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              )
             ]),
       ),
     );

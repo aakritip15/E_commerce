@@ -3,6 +3,7 @@ import 'package:app_1/Screens/MyOrders.dart';
 import 'package:app_1/Screens/account_setting.dart';
 import 'package:app_1/Screens/homepage.dart';
 import 'package:app_1/Screens/itemview.dart';
+import 'package:app_1/Screens/registration_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '/Screens/landing_page.dart';
@@ -55,7 +56,8 @@ class MyAppafterLogin extends StatelessWidget {
       /* home: AccountSetting(
         user: userModel,
       ),*/
-      home: MyHomePage(),
+      //home: MyHomePage(),
+      home: RegisterPage(),
     );
   }
 }
