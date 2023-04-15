@@ -372,6 +372,7 @@ class _SellItemState extends State<SellItem> {
                             .collection('Products')
                             .doc(uid)
                             .collection('Items')
+
                             .doc(pid)
                             .set(productModel.toMap())
                             .then((value) => 'Product added successfully');

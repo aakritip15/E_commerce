@@ -8,14 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 
 Row TOP(BuildContext context) {
-  String NAME = 'Shashinoor';
-  String INFORMATION = 'Active';
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(
-        'Logo',
-        style: TextStyle(color: Colors.black),
+      Image(
+        image: AssetImage('images/images/logo.png'),
+        height: 45,
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
@@ -26,25 +24,6 @@ Row TOP(BuildContext context) {
               color: Colors.brown,
               onPressed: () {},
               icon: Icon(Icons.notifications),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    NAME,
-                    style: TextStyle(fontSize: 10, color: Colors.black),
-                  ),
-                  Text(
-                    INFORMATION,
-                    style: TextStyle(fontSize: 10, color: Colors.black),
-                  ),
-                ],
-              ),
             ),
             IconButton(
               icon: Icon(
