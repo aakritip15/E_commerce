@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cross_file_image/cross_file_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../models/productModel.dart';
 
@@ -9,7 +12,7 @@ class SellItem extends StatefulWidget {
   final User? firebaseUser;
   // final String? uid;
 
-  const SellItem({Key? key, required this.firebaseUser});
+  SellItem({Key? key, required this.firebaseUser});
 
   @override
   State<SellItem> createState() => _SellItemState();
@@ -22,6 +25,11 @@ class _SellItemState extends State<SellItem> {
   String? condition = 'used';
   bool clickNew = false;
   bool clickUsed = true;
+
+//image and cloud storage section
+  XFile? _image;
+  final ImagePicker _picker = ImagePicker();
+  String imageUrl = '';
 
   List<String> _categoryList = <String>[
     "Mobile",
@@ -75,6 +83,13 @@ class _SellItemState extends State<SellItem> {
                         Row(
                           children: [
                             Container(
+                              child: _image == null
+                                  ? Icon(Icons.cancel)
+                                  : Image(
+                                      image: XFileImage(_image!),
+                                      height: 300,
+                                      width: 300,
+                                    ),
                               height: 90,
                               width: 95,
                               decoration: BoxDecoration(
@@ -84,7 +99,10 @@ class _SellItemState extends State<SellItem> {
                             SizedBox(width: 10),
                             Container(
                               child: IconButton(
-                                  onPressed: () {}, icon: Icon(Icons.add)),
+                                  onPressed: () {
+                                    _showImageSourceDialog();
+                                  },
+                                  icon: Icon(Icons.add)),
                               height: 95,
                               width: 95,
                               decoration: BoxDecoration(
@@ -94,7 +112,39 @@ class _SellItemState extends State<SellItem> {
                           ],
                         ),
                         SizedBox(height: 9),
-                        Text('Tap on images to add or delete them'),
+                        _image == null
+                            ? Text('')
+                            : InkWell(
+                                onTap: () async {
+                                  if (_image == null) return;
+                                  //getting reference to storage root
+                                  Reference referenceRoot =
+                                      FirebaseStorage.instance.ref();
+                                  Reference referenceDirImages =
+                                      referenceRoot.child('images');
+
+                                  //reference for the images to be stored
+                                  String uniqueFileName = DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString();
+                                  Reference referenceImageToUpload =
+                                      referenceDirImages.child(uniqueFileName);
+
+                                  //Store the file
+                                  try {
+                                    await referenceImageToUpload
+                                        .putFile(File(_image!.path));
+
+                                    //get the url of the image
+                                    imageUrl = await referenceImageToUpload
+                                        .getDownloadURL();
+
+                                    //!find out the user model and update the image url
+                                    //!in the user model
+                                    //!then update the user model in the database
+                                  } catch (error) {}
+                                },
+                                child: Text('Click here to upload image')),
                       ],
                     ),
                   ),
@@ -303,10 +353,10 @@ class _SellItemState extends State<SellItem> {
                       borderRadius: BorderRadius.circular(10)),
                   child: TextButton(
                       onPressed: () async {
-                        String? pid = '1234';
+                        String? pid = '12345789';
                         String? uid = widget.firebaseUser?.uid;
                         ProductModel productModel = ProductModel(
-                          imageurl: {},
+                          imageurl: imageUrl,
                           itemName: itemName.text.toString(),
                           category: _category,
                           description: description.text.toString(),
@@ -319,7 +369,7 @@ class _SellItemState extends State<SellItem> {
                         );
 
                         await FirebaseFirestore.instance
-                            .collection('products')
+                            .collection('Products')
                             .doc(uid)
                             .collection('Items')
                             .doc(pid)
@@ -327,7 +377,7 @@ class _SellItemState extends State<SellItem> {
                             .then((value) => 'Product added successfully');
                         print('Item added successfully');
                       },
-                      child: Center(
+                      child: const Center(
                           child: Text('Post Now',
                               style: TextStyle(
                                 fontSize: 18,
@@ -338,5 +388,76 @@ class _SellItemState extends State<SellItem> {
             ),
           ),
         ));
+  }
+
+  _showImageSourceDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Image Source'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.camera_alt),
+                  title: Text('Camera'),
+                  onTap: () {
+                    _openCamera();
+                  },
+                ),
+                Padding(padding: EdgeInsets.all(8.0)),
+                ListTile(
+                  leading: Icon(Icons.photo_library),
+                  title: Text('Gallery'),
+                  onTap: () {
+                    _openGallery();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  _openCamera() async {
+    XFile? image;
+    image = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _openGallery() async {
+    XFile? image;
+    image = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _sendImageCloud() async {
+    if (_image == null) return;
+    //getting reference to storage root
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirImages = referenceRoot.child('images');
+
+    //reference for the images to be stored
+    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
+
+    //Store the file
+    try {
+      await referenceImageToUpload.putFile(File(_image!.path));
+      imageUrl = await referenceImageToUpload.getDownloadURL();
+
+      //!find out the user model and update the image url
+      //!in the user model
+      //!then update the user model in the database
+    } catch (error) {}
   }
 }

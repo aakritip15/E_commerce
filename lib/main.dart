@@ -62,7 +62,7 @@ class MyAppafterLogin extends StatelessWidget {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-
+  User? firebaseUser;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -71,8 +71,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 
-      home: Login(),
-
+      home: LandingPage(),
+      // home: SellItem(firebaseUser: firebaseUser),
       //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
       debugShowCheckedModeBanner: false,
     );
