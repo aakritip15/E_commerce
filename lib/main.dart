@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '/Screens/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import '/widgets/customTextFormField.dart';
+import 'Screens/housepage.dart';
 import 'Screens/sell_item.dart';
 import 'screens/login.dart';
 import 'models/appbar.dart';
@@ -56,8 +57,8 @@ class MyAppafterLogin extends StatelessWidget {
       /* home: AccountSetting(
         user: userModel,
       ),*/
-      //home: MyHomePage(),
-      home: RegisterPage(),
+      home: MyHousePage(),
+      // home: (),
     );
   }
 }

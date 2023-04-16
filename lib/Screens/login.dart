@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:app_1/Screens/housepage.dart';
 import 'package:app_1/Screens/landing_page.dart';
 import 'package:app_1/Screens/splashscreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -68,7 +69,7 @@ class _LoginState extends State<Login> {
           /* return AccountSetting(
             user: userModel,
           );*/
-          return MyHomePage();
+          return MyHousePage();
         }),
       );
     }

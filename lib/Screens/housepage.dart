@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:app_1/Screens/ProductDetails.dart';
 import 'package:app_1/Screens/itemview.dart';
+import 'package:app_1/Screens/landing_page.dart';
 import 'package:app_1/consts/consts.dart';
 import 'package:app_1/models/ProductDetails.dart';
 import 'package:app_1/models/appbar.dart';
@@ -12,15 +13,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../models/nav.dart';
+import '../models/productModel.dart';
 
-class MyHousePage extends StatefulWidget {
-  MyHousePage({Key? key}) : super(key: key);
+/*
+class MyHousePage extends StatelessWidget {
+  final _reference = FirebaseFirestore.instance.collection('products');
 
-  @override
-  State<MyHousePage> createState() => _MyHousePageState();
-}
+  //_reference.get()  ---> returns Future<QuerySnapshot>
+  //_reference.snapshots()--> Stream<QuerySnapshot> -- realtime updates
+  late Stream<QuerySnapshot> _stream;
 
-class _MyHousePageState extends State<MyHousePage> {
+  MyHousePage({Key? key}) : super(key: key) {
+    _stream = _reference.snapshots();
+  }
   @override
   Widget build(BuildContext context) {
     TextEditingController search = TextEditingController();
@@ -65,9 +70,69 @@ class _MyHousePageState extends State<MyHousePage> {
           ),
           Container(
             color: kPink,
-            child: Column(
-              children: [ProductWidget(), ProductWidget(), ProductWidget()],
+            child: /*StreamBuilder<QuerySnapshot>(
+              stream: _stream,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                //Check error
+                if (snapshot.hasError) {
+                  return Center(
+                      child: Text('Some error occurred ${snapshot.error}'));
+                }
+
+                //Check if data arrived
+                if (snapshot.hasData) {
+                  //get the data
+                  QuerySnapshot querySnapshot = snapshot.data;
+                  List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+
+                  //Convert the documents to Maps
+                  List<Map> products = documents
+                      .map((e) => {
+                            'ProductSellerId': e.id,
+                            'ProductName': e['ProductName'],
+                            'ProductID': e['ProductID']
+                          })
+                      .toList();
+
+                  //Display the list
+                  return ListView.builder(
+                      itemCount: products.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        //Get the item at this index
+                        Map thisProduct = products[index];
+                        //REturn the widget for the list items
+
+                        return ProductWidget(
+                          title: thisProduct['ProductName'],
+                          productId: thisProduct['ProductID'],
+                          productSellerId: thisProduct['ProductSellerId'],
+                        );
+                      });
+                }
+
+                //Show loader
+                return Center(child: CircularProgressIndicator());
+              },
+            ),*/
+
+                Column(
+              children: [
+                ProductWidget(
+                    title: 'title',
+                    productId: 'productId',
+                    productSellerId: 'productSellerId'),
+                ProductWidget(
+                    title: 'title',
+                    productId: 'productId',
+                    productSellerId: 'productSellerId'),
+                ProductWidget(
+                    title: 'title',
+                    productId: 'productId',
+                    productSellerId: 'productSellerId'),
+              ],
             ),
+
+            //Display a list //,
           ),
         ]),
       ),
@@ -101,7 +166,15 @@ class _MyHousePageState extends State<MyHousePage> {
 }
 
 class ProductWidget extends StatelessWidget {
-  const ProductWidget({
+  //String image;
+  String title;
+  String productId;
+  String productSellerId;
+  ProductWidget({
+    // required this.image,
+    required this.title,
+    required this.productId,
+    required this.productSellerId,
     super.key,
   });
 
@@ -117,7 +190,7 @@ class ProductWidget extends StatelessWidget {
               Container(
                 height: 180,
                 child: Image(
-                  image: AssetImage('images/images/Login.png'),
+                  image: AssetImage(appIcon),
                 ),
               ),
               Column(
@@ -126,7 +199,8 @@ class ProductWidget extends StatelessWidget {
                   Container(
                     height: 25,
                     width: 150,
-                    color: Colors.grey[300],
+                    color: Colors.grey[100],
+                    child: Text('title'),
                   ),
                   SizedBox(
                     height: 10,
@@ -135,6 +209,7 @@ class ProductWidget extends StatelessWidget {
                     height: 15,
                     width: 70,
                     color: Colors.grey[200],
+                    child: Text('productId'),
                   ),
                   SizedBox(
                     height: 10,
@@ -145,6 +220,7 @@ class ProductWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(12)),
+                    child: Text('productSellerId'),
                   ),
                   SizedBox(
                     height: 25,
@@ -180,5 +256,80 @@ class ProductWidget extends StatelessWidget {
             ],
           ),
         ));
+  }
+}
+*/
+
+class MyHousePage extends StatelessWidget {
+  MyHousePage({Key? key}) : super(key: key) {
+    _stream = _reference.snapshots();
+  }
+
+  final _reference = FirebaseFirestore.instance.collection('products');
+
+  //_reference.get()  ---> returns Future<QuerySnapshot>
+  //_reference.snapshots()--> Stream<QuerySnapshot> -- realtime updates
+  late Stream<QuerySnapshot> _stream;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My House'),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _stream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          //Check error
+          if (snapshot.hasError) {
+            return Center(child: Text('Some error occurred ${snapshot.error}'));
+          }
+
+          //Check if data arrived
+          if (snapshot.hasData) {
+            //get the data
+            QuerySnapshot querySnapshot = snapshot.data;
+            List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+
+            //Convert the documents to Maps
+            List<Map> products = documents
+                .map((e) => {
+                      'ProductSellerId': e.id,
+                      'ProductName': e['ProductName'],
+                      'ProductID': e['ProductID']
+                    })
+                .toList();
+
+            //Display the list
+            return ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (BuildContext context, int index) {
+                  //Get the item at this index
+                  Map thisProduct = products[index];
+                  //REturn the widget for the list items
+                  return ListTile(
+                    title: Text('${thisProduct['ProductName']}'),
+                    subtitle: Text('${thisProduct['ProductID']}'),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => LandingPage()));
+                    },
+                  );
+                });
+          }
+
+          //Show loader
+          return Center(child: CircularProgressIndicator());
+        },
+      ), //Display a list // Add a FutureBuilder
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          /* Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => AddItem()));*/
+        },
+        // tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }
