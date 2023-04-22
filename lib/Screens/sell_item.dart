@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cross_file_image/cross_file_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,10 +8,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../models/firebaseHelper.dart';
 import '../models/productModel.dart';
+import '../models/userModel.dart';
 
 class SellItem extends StatefulWidget {
   final User? firebaseUser;
+
   // final String? uid;
 
   SellItem({Key? key, required this.firebaseUser});
@@ -27,6 +32,7 @@ class _SellItemState extends State<SellItem> {
   bool clickUsed = true;
 
 //image and cloud storage section
+
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
   String imageUrl = '';
@@ -353,9 +359,14 @@ class _SellItemState extends State<SellItem> {
                       borderRadius: BorderRadius.circular(10)),
                   child: TextButton(
                       onPressed: () async {
-                        String? pid = '12345789';
+                        Random random = Random.secure();
+                        String? pid = random.nextInt(5000).toString();
+                        UserModel? SellerName =
+                            await FirebaseHelper.getUserModelById(
+                                widget.firebaseUser!.uid);
                         String? uid = widget.firebaseUser?.uid;
                         ProductModel productModel = ProductModel(
+                          sellername: SellerName!.fullname,
                           imageurl: imageUrl,
                           itemName: itemName.text.toString(),
                           category: _category,
@@ -370,8 +381,8 @@ class _SellItemState extends State<SellItem> {
 
                         await FirebaseFirestore.instance
                             .collection('products')
-                            .doc(uid)
-                            .collection('Items')
+                            //.doc(uid)
+                            //.collection('Items')
                             .doc(pid)
                             .set(productModel.toMap())
                             .then((value) => 'Product added successfully');

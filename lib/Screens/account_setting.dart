@@ -182,8 +182,7 @@ class _AccountSettingState extends State<AccountSetting> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios, color: Colors.brown),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MyHomePage()));
+              Navigator.pop(context);
             },
           ),
           centerTitle: true,
