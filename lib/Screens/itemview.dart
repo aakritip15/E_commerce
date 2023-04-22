@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, must_be_immutable
 
 import 'package:app_1/consts/consts.dart';
+import 'package:app_1/models/productModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,7 +14,8 @@ import '../models/Orders.dart';
 import '../models/ProductDetails.dart';
 
 class ItemView extends StatefulWidget {
-  final Products product;
+  final ProductModel product;
+
   ItemView({super.key, required this.product});
 
   @override
@@ -27,11 +29,11 @@ class _ItemViewState extends State<ItemView> {
   void PlaceOrder() {
     try {
       final order = Items(
-        ProductName: widget.product.ProductName,
-        ProductID: widget.product.ProductID,
-        ProductSellerID: widget.product.ProductSellerID,
+        ProductName: widget.product.itemName,
+        ProductID: widget.product.productId,
+        ProductSellerID: widget.product.sellerId,
         ProductBuyerID: user,
-        ProductPrice: widget.product.ProductPrice,
+        ProductPrice: widget.product.price,
         ProductStatus: Status,
       );
 
@@ -53,10 +55,13 @@ class _ItemViewState extends State<ItemView> {
 
   int _count = 1;
   // final _price = widget.product.ProductPrice;
-
-//! Remove later
-  final _imageUrl =
-      'https://cdn.shopify.com/s/files/1/0533/6393/products/webleedohio-love-football-women-s-raglan-hoodie-small-bone-white-30882159001654_800x.jpg?v=1654843036';
+  // double? price;
+  // @override
+  // void initState() {
+  //   //total Price
+  //   price = double.parse(widget.product.price.toString()) * _count;
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +71,7 @@ class _ItemViewState extends State<ItemView> {
         leading: IconButton(
           onPressed: () {
             //TODO : ADD NAVIGATION TO PREVIOUS PAGE
+            Navigator.pop(context);
           },
           icon: Icon(
             FeatherIcons.arrowLeft,
@@ -101,9 +107,9 @@ class _ItemViewState extends State<ItemView> {
                   color: Colors.yellow,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                //TODO: child: Image(image: AssetImage(appIcon)),
+
                 child: Image(
-                  image: NetworkImage(_imageUrl),
+                  image: NetworkImage(widget.product.imageurl.toString()),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -114,7 +120,7 @@ class _ItemViewState extends State<ItemView> {
             Row(
               children: [
                 Text(
-                  'Hooded Sweatshirt',
+                  widget.product.itemName.toString(),
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -134,14 +140,14 @@ class _ItemViewState extends State<ItemView> {
               ],
             ),
             Text(
-              'By Jarvis Pepperspray',
+              'By ${widget.product.sellername.toString()}',
               style: TextStyle(fontSize: 14, color: Colors.grey[800]),
             ),
             SizedBox(
               height: 15.0,
             ),
             Text(
-              'Rs: ${widget.product.ProductPrice.toString()}',
+              'Rs: ${widget.product.price}',
               style: TextStyle(
                 color: kRed,
                 fontSize: 20,
@@ -175,7 +181,7 @@ class _ItemViewState extends State<ItemView> {
                 padding: const EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
                   child: Text(
-                    widget.product.ProductDescription.toString(),
+                    widget.product.description.toString(),
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,

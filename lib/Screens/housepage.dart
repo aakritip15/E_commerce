@@ -89,7 +89,11 @@ class MyHousePage extends StatelessWidget {
                           'ProductName': e['ProductName'],
                           'Seller': e['SellerName'],
                           'condition': e['ProductCondition'],
-                          'ProductPrice': e['ProductPrice'],
+                          'ProductID': e['ProductID'],
+                          'category': e['ProductCategory'],
+                          'Description': e['ProductDescription'],
+                          'Date': e['ListedDate'],
+                          'location': e['Location']
                         })
                     .toList();
 
@@ -108,6 +112,26 @@ class MyHousePage extends StatelessWidget {
                         sellername: thisProduct['Seller'],
                         condition: thisProduct['condition'],
                         price: thisProduct['ProductPrice'],
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ItemView(
+                                          product: ProductModel(
+                                        itemName: thisProduct['ProductName'],
+                                        productId: thisProduct['ProductID'],
+                                        sellerId:
+                                            thisProduct['ProductSellerId'],
+                                        price: thisProduct['ProductPrice'],
+                                        sellername: thisProduct['Seller'],
+                                        condition: thisProduct['condition'],
+                                        category: thisProduct['category'],
+                                        imageurl: thisProduct['ProductUrl'],
+                                        description: thisProduct['Description'],
+                                        // listedDate: thisProduct['Date'],
+                                        location: thisProduct['location'],
+                                      ))));
+                        },
                       );
                     });
               }
@@ -153,12 +177,14 @@ class ProductWidget extends StatelessWidget {
   String condition;
   String price;
   String sellername;
+  Function()? onPressed;
   ProductWidget({
     required this.condition,
     required this.image,
     required this.title,
     required this.sellername,
     required this.price,
+    this.onPressed,
     super.key,
   });
 
@@ -166,57 +192,60 @@ class ProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.all(12),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12), color: Colors.white),
-          child: Row(
-            children: [
-              Container(
-                height: 180,
-                width: 230,
-                child: Image.network(image),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 25,
-                    width: 130,
-                    color: Colors.grey[100],
-                    child: Text(title),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 15,
-                    width: 90,
-                    color: Colors.grey[200],
-                    child: Text('Price : $price'),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 20,
-                    width: 100,
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Text('Condition: $condition'),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    height: 15,
-                    width: 120,
-                    color: Colors.grey[200],
-                    child: Text('Seller: $sellername'),
-                  ),
-                ],
-              )
-            ],
+        child: InkWell(
+          onTap: onPressed,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12), color: Colors.white),
+            child: Row(
+              children: [
+                Container(
+                  height: 180,
+                  width: 230,
+                  child: Image.network(image),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 25,
+                      width: 130,
+                      color: Colors.grey[100],
+                      child: Text(title),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      height: 15,
+                      width: 90,
+                      color: Colors.grey[200],
+                      child: Text('Price : $price'),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      height: 20,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Text('Condition: $condition'),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      height: 15,
+                      width: 120,
+                      color: Colors.grey[200],
+                      child: Text('Seller: $sellername'),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ));
   }
