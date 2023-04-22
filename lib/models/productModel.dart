@@ -9,8 +9,10 @@ class ProductModel {
   String? sellerId;
   String? productId;
   DateTime? listedDate;
+  String? sellername;
 
   ProductModel({
+    this.sellername,
     this.imageurl,
     this.itemName,
     this.category,
@@ -38,16 +40,17 @@ class ProductModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'ProductImage':imageurl,
-      'ProductName':itemName,
-      'ProductCategory':category,
-      'ProductDescription':description,
-      'ProductCondition':condition,
-      'ProductPrice':price,
-      'Location':location,
-      'ProductSellerId':sellerId,
-      'ProductID':productId,
-      'ListedDate':listedDate,
+      'SellerName': sellername,
+      'ProductImage': imageurl,
+      'ProductName': itemName,
+      'ProductCategory': category,
+      'ProductDescription': description,
+      'ProductCondition': condition,
+      'ProductPrice': price,
+      'Location': location,
+      'ProductSellerId': sellerId,
+      'ProductID': productId,
+      'ListedDate': listedDate,
     };
   }
 }

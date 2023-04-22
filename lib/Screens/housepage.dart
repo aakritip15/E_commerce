@@ -83,9 +83,13 @@ class MyHousePage extends StatelessWidget {
                 //Convert the documents to Maps
                 List<Map> products = documents
                     .map((e) => {
+                          'ProductUrl': e['ProductImage'],
                           'ProductSellerId': e.id,
+                          'ProductPrice': e['ProductPrice'],
                           'ProductName': e['ProductName'],
-                          'ProductID': e['ProductID']
+                          'Seller': e['SellerName'],
+                          'condition': e['ProductCondition'],
+                          'ProductPrice': e['ProductPrice'],
                         })
                     .toList();
 
@@ -99,9 +103,11 @@ class MyHousePage extends StatelessWidget {
                       //REturn the widget for the list items
 
                       return ProductWidget(
+                        image: thisProduct['ProductUrl'],
                         title: thisProduct['ProductName'],
-                        productId: thisProduct['ProductID'],
-                        productSellerId: thisProduct['ProductSellerId'],
+                        sellername: thisProduct['Seller'],
+                        condition: thisProduct['condition'],
+                        price: thisProduct['ProductPrice'],
                       );
                     });
               }
@@ -142,15 +148,17 @@ class MyHousePage extends StatelessWidget {
 }
 
 class ProductWidget extends StatelessWidget {
-  //String image;
+  String image;
   String title;
-  String productId;
-  String productSellerId;
+  String condition;
+  String price;
+  String sellername;
   ProductWidget({
-    // required this.image,
+    required this.condition,
+    required this.image,
     required this.title,
-    required this.productId,
-    required this.productSellerId,
+    required this.sellername,
+    required this.price,
     super.key,
   });
 
@@ -166,9 +174,7 @@ class ProductWidget extends StatelessWidget {
               Container(
                 height: 180,
                 width: 230,
-                child: Image(
-                  image: AssetImage(appIcon),
-                ),
+                child: Image.network(image),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,9 +190,9 @@ class ProductWidget extends StatelessWidget {
                   ),
                   Container(
                     height: 15,
-                    width: 70,
+                    width: 90,
                     color: Colors.grey[200],
-                    child: Text(productId),
+                    child: Text('Price : $price'),
                   ),
                   SizedBox(
                     height: 10,
@@ -197,41 +203,17 @@ class ProductWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(12)),
-                    child: Text(productSellerId),
+                    child: Text('Condition: $condition'),
                   ),
                   SizedBox(
-                    height: 25,
+                    height: 10,
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Item_view()));
-                    },
-                    child: Container(
-                      child: Row(
-                        children: [
-                          SizedBox(width: 70),
-                          Container(
-                            height: 25,
-                            width: 25,
-                            decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(4)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            height: 25,
-                            width: 25,
-                            decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(4)),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
+                  Container(
+                    height: 15,
+                    width: 120,
+                    color: Colors.grey[200],
+                    child: Text('Seller: $sellername'),
+                  ),
                 ],
               )
             ],

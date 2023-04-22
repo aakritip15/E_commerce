@@ -77,19 +77,6 @@ class _EditInfoState extends State<EditInfo> {
                       radius: 60.0,
                     ),
                   ),
-                  Positioned(
-                    bottom: -5.0,
-                    child: InkWell(
-                      onTap: () {
-                        _showImageSourceDialog();
-                      },
-                      child: Icon(
-                        Icons.add_box,
-                        color: kGrey,
-                        size: 30,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -210,8 +197,7 @@ class _EditInfoState extends State<EditInfo> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20))),
                 onPressed: () {
-                  _sendImageCloud();
-                  //updateInformationinDatabase();
+                  updateInformationinDatabase();
                 },
                 child: const Padding(
                   padding:
@@ -230,76 +216,5 @@ class _EditInfoState extends State<EditInfo> {
         ),
       ),
     );
-  }
-
-  _showImageSourceDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Select Image Source'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                ListTile(
-                  leading: Icon(Icons.camera_alt),
-                  title: Text('Camera'),
-                  onTap: () {
-                    _openCamera();
-                  },
-                ),
-                Padding(padding: EdgeInsets.all(8.0)),
-                ListTile(
-                  leading: Icon(Icons.photo_library),
-                  title: Text('Gallery'),
-                  onTap: () {
-                    _openGallery();
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  _openCamera() async {
-    XFile? image;
-    image = await _picker.pickImage(source: ImageSource.camera);
-
-    setState(() {
-      _image = image;
-    });
-  }
-
-  _openGallery() async {
-    XFile? image;
-    image = await _picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image = image;
-    });
-  }
-
-  _sendImageCloud() async {
-    if (_image == null) return;
-    //getting reference to storage root
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirImages = referenceRoot.child('Profileimages');
-
-    //reference for the images to be stored
-    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
-
-    //Store the file
-    try {
-      await referenceImageToUpload.putFile(File(_image!.path));
-      imageUrl = await referenceImageToUpload.getDownloadURL();
-
-      //!find out the user model and update the image url
-      //!in the user model
-      //!then update the user model in the database
-    } catch (error) {}
   }
 }
