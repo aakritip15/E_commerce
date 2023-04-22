@@ -1,194 +1,62 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, must_be_immutable
 
 import 'package:app_1/consts/consts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 
-/*
-class Item_view extends StatelessWidget {
-  Item_view({super.key});
-
-  String Information =
-      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes";
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: Colors.white),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 30,
-            child: Row(children: [
-              IconButton(onPressed: () {}, icon: Icon(FeatherIcons.arrowLeft))
-            ]),
-          ),
-          Scroll_Image(),
-          Info(),
-        ],
-      ),
-    );
-  }
-
-  SizedBox Scroll_Image() {
-    return SizedBox(
-      height: 200,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            ImageDisplay(Colors.amber), //esle url lincha
-            ImageDisplay(Colors.blueAccent),
-            ImageDisplay(Colors.greenAccent),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Container ImageDisplay(Color s) {
-    return Container(
-      decoration: BoxDecoration(color: s),
-      child: SizedBox(
-        height: 200,
-        width: 400,
-      ),
-    );
-  }
-
-  Info() {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-              ),
-              Text(
-                'SellerName',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontFamily: 'Helvetica',
-                ),
-              ), //yo variable hune ho
-              SizedBox(
-                width: 20,
-              ),
-              Text("4.1/5  Review", style: TextStyle(fontSize: 12)),
-            ],
-          ),
-          Row(
-            children: [
-              Text(
-                'Item Name',
-                style: TextStyle(
-                    fontFamily: 'TimesNewRoman',
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    // color: Color.fromARGB(255, 239, 174, 174),
-                    ),
-                padding: const EdgeInsets.only(top: 8.0),
-                width: 350,
-                height: 200,
-                child: Text(Information,
-                    style: TextStyle(color: Colors.grey[600])),
-              )
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 350,
-                  height: 20,
-                  child: Text('Added by the seller on date 2023/Jan/04'),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    if (kDebugMode) {
-                      print('Shopping Bag Clicked');
-                    }
-                  },
-                  icon: Icon(FeatherIcons.shoppingBag),
-                ),
-                IconButton(
-                    onPressed: () {
-                      if (kDebugMode) {
-                        print('Message Clicked');
-                      }
-                    },
-                    icon: Icon(FeatherIcons.send))
-              ],
-            ),
-          ),
-          TextButton(
-              onPressed: () {
-                if (kDebugMode) {
-                  print('Buy Now Clicked');
-                }
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.red[200],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
-                    'Buy Now',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ))
-        ],
-      ),
-    );
-  }
-}
-*/
+import '../models/Orders.dart';
+import '../models/ProductDetails.dart';
 
 class ItemView extends StatefulWidget {
-  ItemView({super.key});
+  final Products product;
+  ItemView({super.key, required this.product});
 
   @override
   State<ItemView> createState() => _ItemViewState();
 }
 
 class _ItemViewState extends State<ItemView> {
+  String? user = FirebaseAuth.instance.currentUser!.uid;
+  String Status = 'Pending';
+
+  void PlaceOrder() {
+    try {
+      final order = Items(
+        ProductName: widget.product.ProductName,
+        ProductID: widget.product.ProductID,
+        ProductSellerID: widget.product.ProductSellerID,
+        ProductBuyerID: user,
+        ProductPrice: widget.product.ProductPrice,
+        ProductStatus: Status,
+      );
+
+      FirebaseFirestore.instance.collection('Orders').add(order.toMap());
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Order Placed"),
+        ),
+      );
+    } on Exception catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Order Failed code:$e"),
+        ),
+      );
+    }
+  }
+
   int _count = 1;
-  final _price = 1200.00;
+  // final _price = widget.product.ProductPrice;
 
 //! Remove later
   final _imageUrl =
       'https://cdn.shopify.com/s/files/1/0533/6393/products/webleedohio-love-football-women-s-raglan-hoodie-small-bone-white-30882159001654_800x.jpg?v=1654843036';
-
-  // String _description =
-  //
-  final _description =
-      'Our premium sweatshirt is made from high-quality cotton blend fabric with a soft fleece lining, providing warmth and comfort. The classic design features ribbed cuffs, hemline, and neckline for a snug fit. Perfect for layering or wearing on its own, it\'s a stylish and versatile addition to any wardrobe.';
 
   @override
   Widget build(BuildContext context) {
@@ -252,24 +120,7 @@ class _ItemViewState extends State<ItemView> {
                       fontWeight: FontWeight.w600,
                       fontFamily: GoogleFonts.poppins().fontFamily),
                 ),
-
                 Spacer(),
-                // SizedBox(
-                //     height: 25,
-                //     width: 25,
-                //     child: IconButton(
-                //       onPressed: () {
-                //         toggle();
-                //         //TODO : Add to My Favourties DataBase
-                //       },
-                //       tooltip: 'Add to Cart',
-                //       // color: Colors.red[600],
-                //       style: _buttonStyle,
-                //       icon: Icon(
-                //         FeatherIcons.shoppingBag,
-                //       ),
-                //     )),
-
                 LikeButton(
                   onTap: (isLiked) {
                     if (!isLiked == true) {
@@ -290,7 +141,7 @@ class _ItemViewState extends State<ItemView> {
               height: 15.0,
             ),
             Text(
-              'Rs ${((_price) * _count).toStringAsFixed(2)}',
+              'Rs: ${widget.product.ProductPrice.toString()}',
               style: TextStyle(
                 color: kRed,
                 fontSize: 20,
@@ -324,7 +175,7 @@ class _ItemViewState extends State<ItemView> {
                 padding: const EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
                   child: Text(
-                    _description,
+                    widget.product.ProductDescription.toString(),
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,
@@ -388,7 +239,9 @@ class _ItemViewState extends State<ItemView> {
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        PlaceOrder();
+                      },
                       child: Text(
                         'Buy Now',
                         style: TextStyle(
