@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, must_be_immutable
 
+import 'package:app_1/Screens/SellerListing.dart';
 import 'package:app_1/consts/consts.dart';
 import 'package:app_1/models/productModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +13,8 @@ import 'package:like_button/like_button.dart';
 
 import '../models/Orders.dart';
 import '../models/ProductDetails.dart';
+import '../models/firebaseHelper.dart';
+import '../models/userModel.dart';
 
 class ItemView extends StatefulWidget {
   final ProductModel product;
@@ -139,9 +142,26 @@ class _ItemViewState extends State<ItemView> {
                 ),
               ],
             ),
-            Text(
-              'By ${widget.product.sellername.toString()}',
-              style: TextStyle(fontSize: 14, color: Colors.grey[800]),
+            InkWell(
+              onTap: () async {
+                String uid = widget.product.sellerId!;
+                UserModel? SellerName =
+                    await FirebaseHelper.getUserModelById(uid);
+
+                if (SellerName != null) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              SellerProfile(user: SellerName)));
+                } else {
+                  Navigator.pop(context);
+                }
+              },
+              child: Text(
+                'By ${widget.product.sellername.toString()}',
+                style: TextStyle(fontSize: 18, color: Colors.grey[800]),
+              ),
             ),
             SizedBox(
               height: 15.0,
@@ -238,7 +258,7 @@ class _ItemViewState extends State<ItemView> {
                   ),
                   SizedBox(width: 10.0),
                   Container(
-                    width: 270,
+                    width: 250,
                     height: 40,
                     decoration: BoxDecoration(
                       color: Color(0xffef6957),
