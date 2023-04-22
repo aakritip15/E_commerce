@@ -84,7 +84,7 @@ class MyHousePage extends StatelessWidget {
                 List<Map> products = documents
                     .map((e) => {
                           'ProductUrl': e['ProductImage'],
-                          'ProductSellerId': e.id,
+                          'ProductSellerId': e['ProductSellerId'],
                           'ProductPrice': e['ProductPrice'],
                           'ProductName': e['ProductName'],
                           'Seller': e['SellerName'],
