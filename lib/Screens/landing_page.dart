@@ -23,8 +23,9 @@ class LandingPage extends StatelessWidget {
             children: const [
               Image(image: AssetImage(gettingStarted)),
               Positioned(
-                bottom: 0,
-                left: 10,
+                height: 100,
+                top: 0,
+                right: 10,
                 child: Image(
                   image: AssetImage(appIcon),
                 ),

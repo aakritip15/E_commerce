@@ -4,6 +4,7 @@ import 'package:app_1/Screens/account_setting.dart';
 import 'package:app_1/Screens/homepage.dart';
 import 'package:app_1/Screens/itemview.dart';
 import 'package:app_1/Screens/registration_page.dart';
+import 'package:app_1/Screens/splashscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '/Screens/landing_page.dart';
@@ -49,7 +50,7 @@ class MyAppafterLogin extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.brown,
       ),
       //home: Orders(),
       //home: Item_view(),
@@ -57,7 +58,10 @@ class MyAppafterLogin extends StatelessWidget {
       /* home: AccountSetting(
         user: userModel,
       ),*/
-      home: MyHousePage(),
+      //home: MyHousePage(),
+      home: MyHomePage(
+        user: userModel,
+      ),
       // home: (),
     );
   }
@@ -74,7 +78,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 
-      home: LandingPage(),
+      home: Splash(),
       // home: SellItem(firebaseUser: firebaseUser),
       //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
       debugShowCheckedModeBanner: false,

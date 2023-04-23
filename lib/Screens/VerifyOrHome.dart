@@ -1,8 +1,12 @@
 import 'dart:async';
 
 import 'package:app_1/Screens/homepage.dart';
+import 'package:app_1/Screens/housepage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../models/firebaseHelper.dart';
+import '../models/userModel.dart';
 //import 'package:main/Interfaces/allRoutes.dart';
 //import 'package:main/Interfaces/home-page.dart';
 
@@ -17,6 +21,7 @@ class _VerifyOrHomeState extends State<VerifyOrHome> {
   bool isEmailVerified = false;
   bool canResendEmail = true;
   Timer? timer;
+  late UserModel? userModel;
 
   @override
   void initState() {
@@ -53,6 +58,8 @@ class _VerifyOrHomeState extends State<VerifyOrHome> {
     try {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
+      userModel = await FirebaseHelper.getUserModelById(
+          FirebaseAuth.instance.currentUser!.uid);
       setState(() => canResendEmail = false);
       await Future.delayed(Duration(seconds: 2));
       setState(() => canResendEmail = true);
@@ -66,7 +73,7 @@ class _VerifyOrHomeState extends State<VerifyOrHome> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ? MyHomePage()
+      ? MyHomePage(user: userModel!)
       : Scaffold(
           appBar: AppBar(title: Text("Verify your Email")),
           body: Center(

@@ -27,7 +27,7 @@ class _ChatHomeState extends State<ChatHome> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.amber[400],
-        title: Text('Hello',
+        title: Text('Chats',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontStyle: FontStyle.italic,

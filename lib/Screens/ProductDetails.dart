@@ -2,6 +2,7 @@
 
 import 'package:app_1/models/ProductDetails.dart';
 import 'package:app_1/models/appbar.dart';
+import 'package:app_1/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,8 @@ import '../models/Orders.dart';
 
 class ProductDetails extends StatefulWidget {
   final Products product;
-  ProductDetails({super.key, required this.product});
+  final UserModel user;
+  ProductDetails({super.key, required this.product, required this.user});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();

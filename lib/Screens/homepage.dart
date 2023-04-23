@@ -1,19 +1,21 @@
-// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, prefer_const_constructors_in_immutables, use_build_context_synchronously
 
-import 'dart:async';
-
-import 'package:app_1/Screens/ProductDetails.dart';
 import 'package:app_1/consts/consts.dart';
 import 'package:app_1/models/ProductDetails.dart';
 import 'package:app_1/models/appbar.dart';
-import 'package:app_1/models/search.dart';
+import 'package:app_1/models/userModel.dart';
+import 'package:app_1/widgets/tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../models/nav.dart';
 
+Future<List<Products>>? filteredProducts;
+String? uid = FirebaseAuth.instance.currentUser!.uid;
+
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  final UserModel user;
+  MyHomePage({Key? key, required this.user}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -21,24 +23,77 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Future<List<Products>>? productsFuture;
+  Future<List<Products>>? SearchedProducts;
 
   @override
   void initState() {
     super.initState();
-    productsFuture = fetchProducts();
+    productsFuture = getProducts();
   }
 
-  Future<List<Products>> fetchProducts() async {
+  Future<List<Products>> getProducts() async {
+    String? uid = FirebaseAuth.instance.currentUser!.uid;
     List<Products> products = [];
-    QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('Products').get();
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Products')
+        .where('ProductSellerID', isNotEqualTo: uid)
+        .get();
     snapshot.docs.forEach((element) {
       products.add(Products.fromMap(element.data() as Map<String, dynamic>));
     });
-
     return products;
   }
 
+  Future<List<Products>> searchProducts(String? search) async {
+    String? uid = FirebaseAuth.instance.currentUser!.uid;
+    List<Products> products = [];
+    List<Products> filteredProducts = [];
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Products')
+        .where('ProductSellerID', isNotEqualTo: uid)
+        .get();
+    snapshot.docs.forEach((element) {
+      products.add(Products.fromMap(element.data() as Map<String, dynamic>));
+    });
+    filteredProducts = products
+        .where((element) => element.ProductName!
+            .toLowerCase()
+            .startsWith(search!.toLowerCase()))
+        .toList();
+    return filteredProducts;
+  }
+
+  Future<List<Products>> searchProductsUsingCategories(String? search) async {
+    List<Products> products = [];
+    List<Products> filteredProducts = [];
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Products')
+        .where('ProductSellerID', isNotEqualTo: uid)
+        .get();
+    for (var element in snapshot.docs) {
+      products.add(Products.fromMap(element.data() as Map<String, dynamic>));
+    }
+    filteredProducts = products
+        .where((element) => element.ProductCategory!
+            .toLowerCase()
+            .startsWith(search!.toLowerCase()))
+        .toList();
+    if (filteredProducts.isEmpty) {}
+    return filteredProducts;
+  }
+
+  List Categories = [
+    'Mobile',
+    'Stationary',
+    'Clothes',
+    'Shoes',
+    'Electronics',
+    'Furniture',
+    'Books',
+    'Toys',
+    'Sports',
+    'Other'
+  ];
   @override
   Widget build(BuildContext context) {
     TextEditingController search = TextEditingController();
@@ -51,90 +106,136 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
-          SEARCH(search),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 320,
+                decoration: BoxDecoration(
+                  color: kGrey,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: TextField(
+                  controller: search,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    hintText: 'Search',
+                    prefixIcon: IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () async {
+                        productsFuture =
+                            searchProducts(search.text.toLowerCase());
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: kGrey,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    productsFuture = searchProducts(search.text.toLowerCase());
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.search),
+                ),
+              ),
+            ],
+          ),
           Container(
-            decoration: BoxDecoration(color: kGreen),
+            decoration: BoxDecoration(color: Colors.transparent),
             height: 50,
-            child: ListView(
+            child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              children: [
-                Catagories('Item1'),
-                Catagories('Item2'),
-                Catagories('Item3'),
-                Catagories('Item4'),
-                Catagories('Item5'),
-              ],
+              itemCount: Categories.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Catagories(Categories[index].toString(), context);
+              },
             ),
           ),
-          FutureBuilder(
-            future: productsFuture,
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Products>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('Error fetching data.'),
-                );
-              } else {
-                List<Products> products = snapshot.data!;
-
-                return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: products.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        onTap: () {
-                          print(products[index].ProductName);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProductDetails(
-                                        product: products[index],
-                                      )));
-                        },
-                        title: Text(products[index].ProductName!),
-                        subtitle: Text(
-                            '\$${products[index].ProductPrice!.toString()}'),
-                      ),
-                    );
-                  },
-                );
-              }
-            },
-          ),
+          ListDisplay(productsFuture),
         ],
       ),
     );
   }
 
-  Padding Catagories(String text) {
+  FutureBuilder<List<Products>> ListDisplay(total) {
+    return FutureBuilder(
+      future: total,
+      builder: (BuildContext context, AsyncSnapshot<List<Products>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text(snapshot.error.toString()),
+          );
+        } else {
+          List<Products> products = snapshot.data!;
+          return Expanded(
+            child: SizedBox(
+              width: 350,
+              child: ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Tile(context,
+                      product: products[index], user: widget.user);
+                },
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Padding Catagories(String text, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.grey,
+          color: Colors.grey.shade400,
         ),
         width: 150,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
+          padding: EdgeInsets.symmetric(vertical: 0),
           child: TextButton(
-            onPressed: () {
-              print(text);
+            onPressed: () async {
+              QuerySnapshot snapshot = await FirebaseFirestore.instance
+                  .collection('Products')
+                  .where('ProductCategory', isEqualTo: text)
+                  .get();
+              if (snapshot.docs.isEmpty) {
+                productsFuture = getProducts();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("No Products were Found for $text"),
+                  ),
+                );
+              } else {
+                productsFuture =
+                    searchProductsUsingCategories(text.toLowerCase());
+              }
+              setState(() {});
             },
             child: Text(
               text,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 15,
               ),
             ),
@@ -144,3 +245,5 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+//Homepage

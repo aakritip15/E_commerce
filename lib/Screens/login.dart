@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
           /* return AccountSetting(
             user: userModel,
           );*/
-          return MyHousePage();
+          return MyHomePage(user: userModel);
         }),
       );
     }

@@ -10,14 +10,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
-
 import '../models/Orders.dart';
 import '../models/ProductDetails.dart';
 import '../models/firebaseHelper.dart';
 import '../models/userModel.dart';
 
 class ItemView extends StatefulWidget {
-  final ProductModel product;
+  final Products product;
 
   ItemView({super.key, required this.product});
 
@@ -32,11 +31,11 @@ class _ItemViewState extends State<ItemView> {
   void PlaceOrder() {
     try {
       final order = Items(
-        ProductName: widget.product.itemName,
-        ProductID: widget.product.productId,
-        ProductSellerID: widget.product.sellerId,
+        ProductName: widget.product.ProductName,
+        ProductID: widget.product.ProductID,
+        ProductSellerID: widget.product.ProductSellerID,
         ProductBuyerID: user,
-        ProductPrice: widget.product.price,
+        ProductPrice: widget.product.ProductPrice,
         ProductStatus: Status,
       );
 
@@ -112,7 +111,7 @@ class _ItemViewState extends State<ItemView> {
                 ),
 
                 child: Image(
-                  image: NetworkImage(widget.product.imageurl.toString()),
+                  image: NetworkImage(widget.product.ProductImage.toString()),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -123,7 +122,7 @@ class _ItemViewState extends State<ItemView> {
             Row(
               children: [
                 Text(
-                  widget.product.itemName.toString(),
+                  widget.product.ProductName.toString(),
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -144,30 +143,30 @@ class _ItemViewState extends State<ItemView> {
             ),
             InkWell(
               onTap: () async {
-                String uid = widget.product.sellerId!;
-                UserModel? SellerName =
+                String uid = widget.product.ProductSellerID!;
+                UserModel? SellerModel =
                     await FirebaseHelper.getUserModelById(uid);
 
-                if (SellerName != null) {
+                if (SellerModel != null) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              SellerProfile(user: SellerName)));
+                              SellerProfile(user: SellerModel!)));
                 } else {
                   Navigator.pop(context);
                 }
               },
               child: Text(
-                'By ${widget.product.sellername.toString()}',
-                style: TextStyle(fontSize: 18, color: Colors.grey[800]),
+                'By Seller',
+                style: TextStyle(fontSize: 22, color: Colors.grey[800]),
               ),
             ),
             SizedBox(
               height: 15.0,
             ),
             Text(
-              'Rs: ${widget.product.price}',
+              'Rs: ${widget.product.ProductPrice}',
               style: TextStyle(
                 color: kRed,
                 fontSize: 20,
@@ -201,7 +200,7 @@ class _ItemViewState extends State<ItemView> {
                 padding: const EdgeInsets.all(8.0),
                 child: SingleChildScrollView(
                   child: Text(
-                    widget.product.description.toString(),
+                    widget.product.ProductDescription.toString(),
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,

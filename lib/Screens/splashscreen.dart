@@ -1,3 +1,4 @@
+import 'package:app_1/Screens/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'homepage.dart';
@@ -21,13 +22,13 @@ class _SplashState extends State<Splash> {
   _navigateToHome() async {
     await Future.delayed(Duration(milliseconds: 3000), () {});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => MyHomePage()));
+        context, MaterialPageRoute(builder: (context) => LandingPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFB930),
+      backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -38,11 +39,11 @@ class _SplashState extends State<Splash> {
           ),
           Text(
             'Resell-It',
-            style: GoogleFonts.lato(
+            style: GoogleFonts.nunito(
               fontSize: 50.0,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontStyle: FontStyle.normal,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFFFFB930),
+              fontStyle: FontStyle.italic,
             ),
           ),
         ],
