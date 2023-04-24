@@ -56,13 +56,7 @@ class _ItemViewState extends State<ItemView> {
   }
 
   int _count = 1;
-  // final _price = widget.product.ProductPrice;
-  // double? price;
-  // @override
-  // void initState() {
-  //   //total Price
-  //   price = double.parse(widget.product.price.toString()) * _count;
-  //   super.initState();
+
   // }
 
   @override
@@ -72,7 +66,6 @@ class _ItemViewState extends State<ItemView> {
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
-            //TODO : ADD NAVIGATION TO PREVIOUS PAGE
             Navigator.pop(context);
           },
           icon: Icon(
@@ -136,7 +129,27 @@ class _ItemViewState extends State<ItemView> {
                       onTap: (isLiked) {
                         if (!isLiked == true) {
                           //TODO : Add to My Favourties DataBase
-                          print('liked');
+
+                          // add to favourites database on firebase
+                          var myFav = {
+                            'ProductID': widget.product
+                                .ProductID, // only product id is added since if further info is required, it can be fetched from the product database
+                            'UserID': FirebaseAuth.instance.currentUser!.uid,
+                          };
+                          try {
+                            FirebaseFirestore.instance
+                                .collection('Favourites')
+                                .doc(widget.product.ProductID)
+                                .set(myFav);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Task Failed :$e"),
+                              ),
+                            );
+                          }
+
+                          // print('liked');
                         }
 
                         return Future.value(!isLiked);
