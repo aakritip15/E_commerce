@@ -25,6 +25,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<List<Products>>? productsFuture;
   Future<List<Products>>? SearchedProducts;
 
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
   @override
   void initState() {
     super.initState();
@@ -185,14 +188,21 @@ class _MyHomePageState extends State<MyHomePage> {
           return Expanded(
             child: SizedBox(
               width: 350,
-              child: ListView.builder(
-                itemCount: products.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Tile(context,
-                      product: products[index], user: widget.user);
+              child: RefreshIndicator(
+                key: _refreshIndicatorKey,
+                onRefresh: () async {
+                  productsFuture = getProducts();
+                  setState(() {});
                 },
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
+                child: ListView.builder(
+                  itemCount: products.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Tile(context,
+                        product: products[index], user: widget.user);
+                  },
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                ),
               ),
             ),
           );
