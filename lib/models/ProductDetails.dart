@@ -10,19 +10,20 @@ class Products {
   String? ListedDate;
   String? ItemCondition;
   String? ListedLocation;
+  String? ProductSellerName;
 
-  Products({
-    this.ProductName,
-    this.ProductPrice,
-    this.ProductDescription,
-    this.ProductImage,
-    this.ProductCategory,
-    this.ProductID,
-    this.ProductSellerID,
-    this.ListedDate,
-    this.ItemCondition,
-    this.ListedLocation,
-  });
+  Products(
+      {this.ProductName,
+      this.ProductPrice,
+      this.ProductDescription,
+      this.ProductImage,
+      this.ProductCategory,
+      this.ProductID,
+      this.ProductSellerID,
+      this.ListedDate,
+      this.ItemCondition,
+      this.ListedLocation,
+      this.ProductSellerName});
 
   Products.fromMap(Map<String, dynamic> map) {
     ProductName = map["ProductName"];
@@ -35,6 +36,7 @@ class Products {
     ListedDate = map["ListedDate"];
     ItemCondition = map["ItemCondition"];
     ListedLocation = map["ListedLocation"];
+    ProductSellerName = map["ProductSellerName"];
   }
 
   Map<String, dynamic> toMap() {
@@ -49,6 +51,7 @@ class Products {
       "ListedDate": ListedDate,
       "ItemCondition": ItemCondition,
       "ListedLocation": ListedLocation,
+      "ProductSellerName": ProductSellerName
     };
   }
 }

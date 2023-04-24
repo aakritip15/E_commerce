@@ -158,7 +158,7 @@ class _ItemViewState extends State<ItemView> {
                 }
               },
               child: Text(
-                'By Seller',
+                'By ${widget.product.ProductSellerName}',
                 style: TextStyle(fontSize: 22, color: Colors.grey[800]),
               ),
             ),
