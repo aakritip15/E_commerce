@@ -139,8 +139,7 @@ class _ItemViewState extends State<ItemView> {
                           try {
                             FirebaseFirestore.instance
                                 .collection('Favourites')
-                                .doc(widget.product.ProductID)
-                                .set(myFav);
+                                .add(myFav);
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
