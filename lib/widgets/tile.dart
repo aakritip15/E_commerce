@@ -17,6 +17,9 @@ Tile(context, {required Products product, required user}) {
       ? product.ProductDescription!.substring(0, 20) + '...'
       : product.ProductDescription!;
   String? IMAGE = product.ProductImage;
+  String? sellerName =
+      product.ProductSellerName; //! Use this Name in card to show seller name
+
   return Padding(
     padding: EdgeInsets.all(7),
     child: InkWell(

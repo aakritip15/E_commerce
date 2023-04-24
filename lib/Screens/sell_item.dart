@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app_1/models/ProductDetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cross_file_image/cross_file_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -144,11 +145,14 @@ class _SellItemState extends State<SellItem> {
                                     //get the url of the image
                                     imageUrl = await referenceImageToUpload
                                         .getDownloadURL();
-
-                                    //!find out the user model and update the image url
-                                    //!in the user model
-                                    //!then update the user model in the database
-                                  } catch (error) {}
+                                  } catch (error) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            "Failed to Upload Image :$error"),
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Text('Click here to upload image')),
                       ],
@@ -365,28 +369,33 @@ class _SellItemState extends State<SellItem> {
                             await FirebaseHelper.getUserModelById(
                                 widget.firebaseUser!.uid);
                         String? uid = widget.firebaseUser?.uid;
-                        ProductModel productModel = ProductModel(
-                          sellername: SellerName!.fullname,
-                          imageurl: imageUrl,
-                          itemName: itemName.text.toString(),
-                          category: _category,
-                          description: description.text.toString(),
-                          condition: condition,
-                          price: price.text.toString(),
-                          location: _choosedLocation,
-                          sellerId: widget.firebaseUser?.uid,
-                          productId: pid,
-                          listedDate: DateTime.now(),
+                        Products productModel = Products(
+                          ProductSellerName: SellerName!.fullname,
+                          ProductImage: imageUrl,
+                          ProductName: itemName.text.toString(),
+                          ProductCategory: _category,
+                          ProductDescription: description.text.toString(),
+                          ItemCondition: condition,
+                          ProductPrice: price.text.toString(),
+                          ListedLocation: _choosedLocation,
+                          ProductSellerID: widget.firebaseUser?.uid,
+                          ProductID: pid,
+                          ListedDate: DateTime.now().toString(),
                         );
 
                         await FirebaseFirestore.instance
-                            .collection('products')
+                            .collection('Products')
                             //.doc(uid)
                             //.collection('Items')
                             .doc(pid)
                             .set(productModel.toMap())
                             .then((value) => 'Product added successfully');
                         print('Item added successfully');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Item Added Succesfully"),
+                          ),
+                        );
                       },
                       child: const Center(
                           child: Text('Post Now',
@@ -465,10 +474,6 @@ class _SellItemState extends State<SellItem> {
     try {
       await referenceImageToUpload.putFile(File(_image!.path));
       imageUrl = await referenceImageToUpload.getDownloadURL();
-
-      //!find out the user model and update the image url
-      //!in the user model
-      //!then update the user model in the database
     } catch (error) {}
   }
 }
