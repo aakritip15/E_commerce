@@ -56,13 +56,7 @@ class _ItemViewState extends State<ItemView> {
   }
 
   int _count = 1;
-  // final _price = widget.product.ProductPrice;
-  // double? price;
-  // @override
-  // void initState() {
-  //   //total Price
-  //   price = double.parse(widget.product.price.toString()) * _count;
-  //   super.initState();
+
   // }
 
   @override
@@ -72,7 +66,6 @@ class _ItemViewState extends State<ItemView> {
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
-            //TODO : ADD NAVIGATION TO PREVIOUS PAGE
             Navigator.pop(context);
           },
           icon: Icon(
@@ -93,194 +86,219 @@ class _ItemViewState extends State<ItemView> {
         elevation: 0,
         toolbarHeight: 40,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16.0),
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Container(
-                width: double.infinity,
-                height: 230,
-                // color: Colors.yellow,
-                decoration: BoxDecoration(
-                  color: Colors.yellow,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-
-                child: Image(
-                  image: NetworkImage(widget.product.ProductImage.toString()),
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            Row(
+      body: ListView(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.product.ProductName.toString(),
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: GoogleFonts.poppins().fontFamily),
-                ),
-                Spacer(),
-                LikeButton(
-                  onTap: (isLiked) {
-                    if (!isLiked == true) {
-                      //TODO : Add to My Favourties DataBase
-                      print('liked');
-                    }
-
-                    return Future.value(!isLiked);
-                  },
-                ),
-              ],
-            ),
-            InkWell(
-              onTap: () async {
-                String uid = widget.product.ProductSellerID!;
-                UserModel? SellerModel =
-                    await FirebaseHelper.getUserModelById(uid);
-
-                if (SellerModel != null) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              SellerProfile(user: SellerModel!)));
-                } else {
-                  Navigator.pop(context);
-                }
-              },
-              child: Text(
-                'By Seller',
-                style: TextStyle(fontSize: 22, color: Colors.grey[800]),
-              ),
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            Text(
-              'Rs: ${widget.product.ProductPrice}',
-              style: TextStyle(
-                color: kRed,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontFamily: GoogleFonts.openSans().fontFamily,
-              ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Text(
-              'Description',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[800],
-                fontWeight: FontWeight.w600,
-                fontFamily: GoogleFonts.poppins().fontFamily,
-              ),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            Container(
-              width: double.infinity,
-              height: 150,
-              color: Colors.grey[50],
-
-              //make this text scroallable
-
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  child: Text(
-                    widget.product.ProductDescription.toString(),
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                      fontFamily: GoogleFonts.lato().fontFamily,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  top: 20.0), // margin: const EdgeInsets.only(top: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CounterButton(
-                    child: Icon(
-                      FeatherIcons.minus,
-                      size: 15,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        if (_count > 1) {
-                          _count--;
-                        }
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    _count.toString(),
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: GoogleFonts.openSans().fontFamily,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  CounterButton(
-                    child: Icon(
-                      FeatherIcons.plus,
-                      size: 15,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _count++;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 10.0),
-                  Container(
-                    width: 250,
-                    height: 40,
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 230,
+                    // color: Colors.yellow,
                     decoration: BoxDecoration(
-                      color: Color(0xffef6957),
-                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.yellow,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: TextButton(
-                      onPressed: () {
-                        PlaceOrder();
+
+                    child: Image(
+                      image:
+                          NetworkImage(widget.product.ProductImage.toString()),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      widget.product.ProductName.toString(),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: GoogleFonts.poppins().fontFamily),
+                    ),
+                    Spacer(),
+                    LikeButton(
+                      onTap: (isLiked) {
+                        if (!isLiked == true) {
+                          //TODO : Add to My Favourties DataBase
+
+                          // add to favourites database on firebase
+                          var myFav = {
+                            'ProductID': widget.product
+                                .ProductID, // only product id is added since if further info is required, it can be fetched from the product database
+                            'UserID': FirebaseAuth.instance.currentUser!.uid,
+                          };
+                          try {
+                            FirebaseFirestore.instance
+                                .collection('Favourites')
+                                .doc(widget.product.ProductID)
+                                .set(myFav);
+                          } catch (e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Task Failed :$e"),
+                              ),
+                            );
+                          }
+
+                          // print('liked');
+                        }
+
+                        return Future.value(!isLiked);
                       },
+                    ),
+                  ],
+                ),
+                InkWell(
+                  onTap: () async {
+                    String uid = widget.product.ProductSellerID!;
+                    UserModel? SellerModel =
+                        await FirebaseHelper.getUserModelById(uid);
+
+                    if (SellerModel != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SellerProfile(user: SellerModel!)));
+                    } else {
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text(
+                    'By Seller',
+                    style: TextStyle(fontSize: 22, color: Colors.grey[800]),
+                  ),
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Text(
+                  'Rs: ${widget.product.ProductPrice}',
+                  style: TextStyle(
+                    color: kRed,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: GoogleFonts.openSans().fontFamily,
+                  ),
+                ),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Text(
+                  'Description',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.w600,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 150,
+                  color: Colors.grey[50],
+
+                  //make this text scroallable
+
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SingleChildScrollView(
                       child: Text(
-                        'Buy Now',
+                        widget.product.ProductDescription.toString(),
                         style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontFamily: GoogleFonts.poppins().fontFamily),
+                          fontSize: 14,
+                          color: Colors.black,
+                          fontFamily: GoogleFonts.lato().fontFamily,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            )
-          ],
-        ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20.0), // margin: const EdgeInsets.only(top: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CounterButton(
+                        child: Icon(
+                          FeatherIcons.minus,
+                          size: 15,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            if (_count > 1) {
+                              _count--;
+                            }
+                          });
+                        },
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        _count.toString(),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: GoogleFonts.openSans().fontFamily,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      CounterButton(
+                        child: Icon(
+                          FeatherIcons.plus,
+                          size: 15,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _count++;
+                          });
+                        },
+                      ),
+                      SizedBox(width: 10.0),
+                      Container(
+                        width: 250,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Color(0xffef6957),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            PlaceOrder();
+                          },
+                          child: Text(
+                            'Place order',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                                fontFamily: GoogleFonts.poppins().fontFamily),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
