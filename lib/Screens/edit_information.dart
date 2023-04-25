@@ -1,21 +1,17 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
-import 'dart:io';
-
-import 'package:app_1/models/appbar.dart';
+import 'package:app_1/Screens/account_setting.dart';
+import 'package:app_1/models/firebaseHelper.dart';
+import 'package:app_1/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '/consts/colors.dart';
-import '/widgets/customTextFormField.dart';
 import '/widgets/myTextField.dart';
-import 'package:image_picker/image_picker.dart';
 
 class EditInfo extends StatefulWidget {
-  const EditInfo({super.key});
+  final UserModel user;
+  const EditInfo({super.key, required this.user});
 
   @override
   State<EditInfo> createState() => _EditInfoState();
@@ -23,196 +19,181 @@ class EditInfo extends StatefulWidget {
 
 class _EditInfoState extends State<EditInfo> {
   TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
-  XFile? _image;
-  final ImagePicker _picker = ImagePicker();
-  String imageUrl = "";
-
-  void updateInformationinDatabase() {
+  void updateInformationinDatabase() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
     String name = nameController.text.trim();
+    String email = emailController.text.trim();
     String phone = phoneController.text.trim();
     String address = addressController.text.trim();
-    //If any of the fields are empty, then return
-    if (name.isNotEmpty && phone.isNotEmpty && address.isNotEmpty) {
-      FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'name': name,
-        'phone': phone,
-        'address': address,
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Information Updated!"),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please fill all the fields!"),
-        ),
-      );
+
+    if (name.isEmpty) {
+      name = widget.user.fullname!;
     }
+    if (email.isEmpty) {
+      email = widget.user.email!;
+    }
+    if (phone.isEmpty) {
+      phone = widget.user.number!;
+    }
+    if (address.isEmpty) {
+      address = widget.user.address!;
+    }
+
+    FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'fullname': name,
+      'email': email,
+      'phone': phone,
+      'address': address,
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Information Updated!"),
+      ),
+    );
+    FirebaseFirestore.instance.collection('users').doc(uid).get().then((value) {
+      widget.user.fullname = value['fullname'];
+      widget.user.email = value['email'];
+      widget.user.number = value['phone'];
+      widget.user.address = value['address'];
+    });
+    setState(() {});
+    String uid1 = FirebaseAuth.instance.currentUser!.uid;
+    UserModel? newInfo = await FirebaseHelper.getUserModelById(uid1);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AccountSetting(
+          user: newInfo!,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: APPBAR(context),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Center(
-                    child: CircleAvatar(
-                      backgroundColor: kBrown,
-                      child: Icon(Icons.photo_camera_back_rounded),
-                      radius: 60.0,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Edit Information',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              fontFamily: 'Times',
+              wordSpacing: 0,
+            ),
+          ),
+          centerTitle: true,
+          elevation: 0.0,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: kBrown,
+            ),
+          ),
+          backgroundColor: kAlmond,
+          foregroundColor: kBrown,
+        ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Center(
+                      child: CircleAvatar(
+                        backgroundColor: kBrown,
+                        radius: 60.0,
+                        child: Icon(Icons.photo_camera_back_rounded),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 35.0,
-            ),
-            const Text(
-              'Name',
-              style: TextStyle(
-                fontFamily: 'Times',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                TextFormField(
-                  maxLines: 1,
-                  decoration: const InputDecoration(
-                      isDense: true,
-                      hintText: 'Username',
-                      filled: true,
-                      fillColor: Color(0xffD9D9D9),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                        gapPadding: 4.0,
-                      )),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.edit,
-                    //color: Colors.white12,
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 10.0),
-            const Text(
-              'Phone',
-              style: TextStyle(
-                fontFamily: 'Times',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                TextFormField(
-                  maxLines: 1,
-                  decoration: const InputDecoration(
-                      isDense: true,
-                      hintText: '+977-',
-                      filled: true,
-                      fillColor: Color(0xffD9D9D9),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                        gapPadding: 4.0,
-                      )),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.edit,
-                    //color: Colors.white12,
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 10.0),
-            const Text(
-              'Address',
-              style: TextStyle(
-                fontFamily: 'Times',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10.0),
-            Stack(
-              alignment: Alignment.centerRight,
-              children: [
-                TextFormField(
-                  maxLines: 1,
-                  decoration: const InputDecoration(
-                      isDense: true,
-                      hintText: 'Address',
-                      filled: true,
-                      fillColor: Color(0xffD9D9D9),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                        gapPadding: 4.0,
-                      )),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.edit,
-                    //color: Colors.white12,
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 30.0),
-            Center(
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    side: BorderSide(
-                      color: Colors.black,
+                    InkWell(
+                      onTap: () {
+                        //TODO: Add functionality to Edit Button
+                      },
+                      child: Container(
+                        width: 70,
+                        height: 27,
+
+                        // color: kBlue,
+                        decoration: BoxDecoration(
+                          color: kGrey,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: const Center(
+                            child: Text(
+                          'Edit',
+                          style: TextStyle(
+                            fontFamily: 'Times',
+                          ),
+                        )),
+                      ),
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20))),
-                onPressed: () {
-                  updateInformationinDatabase();
-                },
-                child: const Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
-                  child: Text(
-                    'Change Now',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 35.0,
+              ),
+              Text('Name'),
+              textFieldEditInfo(
+                text: 'username',
+                fieldController: nameController,
+                inActive: false,
+              ),
+              SizedBox(height: 8.0),
+              Text('Email:'),
+              textFieldEditInfo(
+                text: widget.user.email!,
+                fieldController: emailController,
+                inActive: true,
+              ),
+              SizedBox(height: 8.0),
+              Text('Phone'),
+              textFieldEditInfo(
+                  text: '+977-',
+                  fieldController: phoneController,
+                  inActive: false),
+              SizedBox(height: 8.0),
+              Text('Address:'),
+              textFieldEditInfo(
+                text: 'address',
+                fieldController: addressController,
+                inActive: false,
+              ),
+              SizedBox(height: 15.0),
+              Center(
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: Colors.black),
+                  ),
+                  onPressed: () {
+                    updateInformationinDatabase();
+                    setState(() {});
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50.0, vertical: 15.0),
+                    child: Text(
+                      'Update',
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
