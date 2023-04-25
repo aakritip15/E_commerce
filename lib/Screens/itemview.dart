@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, must_be_immutable
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, must_be_immutable, use_build_context_synchronously, unnecessary_brace_in_string_interps
 
 import 'package:app_1/Screens/SellerListing.dart';
 import 'package:app_1/consts/consts.dart';
@@ -59,7 +59,28 @@ class _ItemViewState extends State<ItemView> {
 
   // }
 
+  String sellerName = '';
+  Future<String> getSellerName(String sellerId) async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(sellerId)
+        .get();
+    String name = snapshot['fullname'];
+    print(name);
+    return name;
+  }
+
   @override
+  void initState() {
+    super.initState();
+    String uid = widget.product.ProductSellerID!;
+    getSellerName(uid).then((value) {
+      setState(() {
+        sellerName = value;
+      });
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -168,13 +189,13 @@ class _ItemViewState extends State<ItemView> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  SellerProfile(user: SellerModel!)));
+                                  SellerProfile(user: SellerModel)));
                     } else {
                       Navigator.pop(context);
                     }
                   },
                   child: Text(
-                    'By ${widget.product.ProductSellerName}',
+                    'By $sellerName',
                     style: TextStyle(fontSize: 22, color: Colors.grey[800]),
                   ),
                 ),
