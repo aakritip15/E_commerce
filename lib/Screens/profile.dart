@@ -73,7 +73,12 @@ class _ProfileState extends State<Profile> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.brown),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MyHomePage(
+                          user: widget.user,
+                        )));
           },
         ),
         centerTitle: true,
