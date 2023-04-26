@@ -62,28 +62,20 @@ class _ItemViewState extends State<ItemView> {
     print("build");
     return Scaffold(
       appBar: AppBar(
+        title: Text('Product View',
+            style: TextStyle(
+              color: Colors.brown,
+              fontWeight: FontWeight.bold,
+            )),
         backgroundColor: Colors.white,
+        elevation: 0,
         leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.brown),
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
-            FeatherIcons.arrowLeft,
-            color: Colors.black,
-          ),
-        ),
-        title: Text(
-          'Product Details',
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
-              fontFamily: 'TimesNewRoman',
-              letterSpacing: 0.5),
         ),
         centerTitle: true,
-        elevation: 0,
-        toolbarHeight: 40,
       ),
       body: ListView(
         children: [

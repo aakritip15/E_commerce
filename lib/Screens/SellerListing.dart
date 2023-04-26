@@ -57,19 +57,7 @@ class _SellerProfileState extends State<SellerProfile> {
               color: Colors.brown,
               fontWeight: FontWeight.bold,
             )),
-        actions: <Widget>[
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            AccountSetting(user: widget.user)));
-              },
-              color: kBrown,
-              icon: Icon(Icons.settings))
-        ],
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.brown),
