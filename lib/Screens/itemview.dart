@@ -99,7 +99,7 @@ class _ItemViewState extends State<ItemView> {
                     child: Image(
                       image:
                           NetworkImage(widget.product.ProductImage.toString()),
-                      fit: BoxFit.fill,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
