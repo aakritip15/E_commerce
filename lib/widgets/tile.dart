@@ -106,7 +106,7 @@ Tile(context, {required Products product, required user}) {
                           print('CALL');
                         },
                         icon: Icon(
-                          Icons.call,
+                          Icons.message_outlined,
                           size: 15,
                         ),
                       ),

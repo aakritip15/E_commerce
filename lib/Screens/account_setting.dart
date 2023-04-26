@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, use_build_context_synchronously, prefer_const_constructors_in_immutables, unused_element, prefer_const_literals_to_create_immutables, prefer_final_fields, non_constant_identifier_names
 
 import 'package:app_1/Screens/MySellings.dart';
-
+import 'package:app_1/models/profile.dart';
+import 'profile.dart' as profile;
 import 'MyOrders.dart';
 import 'package:app_1/Screens/edit_information.dart';
 import 'package:app_1/Screens/homepage.dart';
@@ -10,22 +11,15 @@ import 'package:app_1/models/uiHelper.dart';
 import 'package:app_1/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '/authentication/authentication.dart';
-import '/models/profile.dart';
-import '/services/database_service.dart';
 import '/Screens/login.dart';
 import 'sell_item.dart';
 
-//late String uId;
-
 class AccountSetting extends StatefulWidget {
   final UserModel user;
-
-  final User? currentUser = FirebaseAuth.instance.currentUser;
-  String? uid = FirebaseAuth.instance.currentUser!.uid;
-
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  User currentUser = FirebaseAuth.instance.currentUser!;
   AccountSetting({
     Key? key,
     required this.user,
@@ -41,6 +35,7 @@ class _AccountSettingState extends State<AccountSetting> {
   TextEditingController _CnewPassword = TextEditingController();
 
   void _deleteAccount() {
+    String? uid = FirebaseAuth.instance.currentUser!.uid;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -61,6 +56,9 @@ class _AccountSettingState extends State<AccountSetting> {
                     .doc(widget.uid)
                     .delete();
                 FirebaseAuth.instance.currentUser!.delete();
+                setState(() {
+                  uid = '';
+                });
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -166,6 +164,7 @@ class _AccountSettingState extends State<AccountSetting> {
   // AccountSetting({Key? key, required this.email}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    setState(() {});
     return Scaffold(
         bottomNavigationBar: BottomAppBar(
           child: NavBar(),
@@ -182,7 +181,12 @@ class _AccountSettingState extends State<AccountSetting> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios, color: Colors.brown),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => profile.Profile(
+                            user: widget.user,
+                          )));
             },
           ),
           centerTitle: true,
@@ -297,8 +301,12 @@ class _AccountSettingState extends State<AccountSetting> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => EditInfo()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditInfo(
+                                  user: widget.user,
+                                )));
                   },
                   leading: Icon(Icons.edit),
                   title: Text(
@@ -330,8 +338,12 @@ class _AccountSettingState extends State<AccountSetting> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Orders()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Orders(),
+                      ),
+                    );
                   },
                   leading: Icon(Icons.shopping_bag_outlined),
                   title: Text(
@@ -390,15 +402,15 @@ class _AccountSettingState extends State<AccountSetting> {
                     ),
                     child: TextButton.icon(
                       onPressed: () async {
-                        final result = await AuthService().SignOut();
-                        if (result!.contains('success')) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: ((context) => Login()),
-                            ),
-                          );
-                        }
+                        String? uid = FirebaseAuth.instance.currentUser!.uid;
+                        await FirebaseAuth.instance.signOut();
+                        // final result = await AuthService().SignOut();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: ((context) => Login()),
+                          ),
+                        );
                       },
                       label: Text(
                         'Log Out',

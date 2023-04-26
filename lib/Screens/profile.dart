@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:app_1/Screens/account_setting.dart';
 import 'package:app_1/consts/consts.dart';
 import 'package:app_1/models/userModel.dart';
@@ -73,7 +75,12 @@ class _ProfileState extends State<Profile> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.brown),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MyHomePage(
+                          user: widget.user,
+                        )));
           },
         ),
         centerTitle: true,

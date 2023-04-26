@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/chatRoomModel.dart';
 import '../models/userModel.dart';
+import '../screens/chatRoom.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/searchTextField.dart';
 import '../models/firebaseHelper.dart';
@@ -82,9 +83,7 @@ class _ChatHomeState extends State<ChatHome> {
                               if (userData.connectionState ==
                                   ConnectionState.done) {
                                 if (userData.data != null) {
-                                  UserModel targetUser =
-                                      userData.data as UserModel;
-
+                                  UserModel targetUser = userData.data!;
                                   return ChatCard(
                                       userModel: widget.userModel!,
                                       chatRoomModel: chatRoomModel,

@@ -58,6 +58,7 @@ textFieldSell({
 textFieldEditInfo({
   required TextEditingController fieldController,
   String text = '',
+  required bool inActive,
 }) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -69,6 +70,7 @@ textFieldEditInfo({
           color: kGrey,
         ),
         hintText: text,
+        enabled: !inActive,
         // contentPadding: EdgeInsets.only(left: 10.0)
         // // contentPadding: EdgeInsets.symmetric(
         // //  // horizontal: 10.0,
