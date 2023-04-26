@@ -114,13 +114,9 @@ class _LoginState extends State<Login> {
                 ),
               ),
               SizedBox(
-                height: 250,
+                height: 300,
                 width: 350,
-                child: Expanded(
-                  child: Image(
-                    image: AssetImage("images/images/Login.png"),
-                  ),
-                ),
+                child: Image(image: AssetImage("images/images/Login.png")),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
