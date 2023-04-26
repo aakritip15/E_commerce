@@ -57,31 +57,9 @@ class _ItemViewState extends State<ItemView> {
 
   int _count = 1;
 
-  // }
-
-  String sellerName = '';
-  Future<String> getSellerName(String sellerId) async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(sellerId)
-        .get();
-    String name = snapshot['fullname'];
-    print(name);
-    return name;
-  }
-
   @override
-  void initState() {
-    super.initState();
-    String uid = widget.product.ProductSellerID!;
-    getSellerName(uid).then((value) {
-      setState(() {
-        sellerName = value;
-      });
-    });
-  }
-
   Widget build(BuildContext context) {
+    print("build");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -195,7 +173,7 @@ class _ItemViewState extends State<ItemView> {
                     }
                   },
                   child: Text(
-                    'By $sellerName',
+                    'By ${widget.product.ProductSellerName}',
                     style: TextStyle(fontSize: 22, color: Colors.grey[800]),
                   ),
                 ),
