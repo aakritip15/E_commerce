@@ -55,3 +55,7 @@ Contributions are what make the open source community such an amazing place to b
    git push origin feature/AmazingFeature
    ```
 5. Open a pull request
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
