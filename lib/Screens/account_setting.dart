@@ -335,33 +335,12 @@ class _AccountSettingState extends State<AccountSetting> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Orders(),
-                      ),
-                    );
-                  },
-                  leading: Icon(Icons.shopping_bag_outlined),
-                  title: Text(
-                    'My Orders',
-                    style: TextStyle(
-                      fontSize: 17,
-                    ),
-                  ),
-                  trailing: Icon(Icons.keyboard_arrow_right_sharp),
-                ),
-                Divider(
-                  color: Colors.grey,
-                ),
-                ListTile(
-                  onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Selling()));
                   },
                   leading: Icon(Icons.store),
                   title: Text(
-                    'My items',
+                    'My Sellings',
                     style: TextStyle(
                       fontSize: 17,
                     ),

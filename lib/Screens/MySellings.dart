@@ -1,4 +1,3 @@
-
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
@@ -9,6 +8,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../models/Orders.dart';
+import '../models/firebaseHelper.dart';
+import '../models/userModel.dart';
+import 'homepage.dart';
 
 class Selling extends StatefulWidget {
   const Selling({super.key});
@@ -43,8 +45,27 @@ class _SellingState extends State<Selling> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.amber[50],
-      appBar: APPBAR(
-        context,
+      appBar: AppBar(
+        title: const Text('My Sellings',
+            style: TextStyle(
+              color: Colors.brown,
+              fontWeight: FontWeight.bold,
+            )),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.brown),
+          onPressed: () async {
+            UserModel? User = await FirebaseHelper.getUserModelById(user!);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MyHomePage(
+                          user: User!,
+                        )));
+          },
+        ),
+        centerTitle: true,
       ),
       body: Column(children: [
         FutureBuilder(
