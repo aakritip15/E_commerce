@@ -37,8 +37,6 @@ class _ChatPageState extends State<ChatPage> {
         backgroundColor: Colors.amber[400],
         title: Row(
           children: [
-            CircleAvatar(child: Icon(Icons.camera_alt)),
-            SizedBox(width: 15),
             Text(widget.targetUser.fullname!,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,

@@ -43,8 +43,9 @@ class _ChatCardState extends State<ChatCard> {
           );
         },
         child: ListTile(
-          leading: CircleAvatar(
-            child: Icon(Icons.person),
+           leading: CircleAvatar(
+            backgroundColor: Colors.grey,
+            child: Text(widget.targetUser.fullname![0]),
           ),
           title: Text(widget.targetUser.fullname!),
           subtitle: Text(widget.chatRoomModel.lastMessage!),
