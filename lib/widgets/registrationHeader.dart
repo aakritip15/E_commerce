@@ -13,7 +13,7 @@ class MyHeader extends StatelessWidget {
       child: Container(
         height: 150,
         padding: const EdgeInsets.only(bottom: 50.0),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image(

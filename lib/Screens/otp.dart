@@ -172,7 +172,7 @@ class _otpVerificationState extends State<otpVerification> {
             const SizedBox(
               height: 10,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
