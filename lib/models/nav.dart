@@ -166,15 +166,12 @@ class _NavBarState extends State<NavBar> {
               ),
               IconButton(
                 icon: Icon(
-                  Icons.person,
+                  Icons.shopping_cart_rounded,
                   color: kBrown,
                 ),
-                onPressed: () async {
-                  UserModel? user = await FirebaseHelper.getUserModelById(uid!);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Profile(user: user!)));
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Orders()));
                 },
               ),
             ],

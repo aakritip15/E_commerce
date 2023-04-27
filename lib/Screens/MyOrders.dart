@@ -1,10 +1,10 @@
-
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
 
 import 'package:app_1/consts/colors.dart';
 import 'package:app_1/models/appbar.dart';
+import 'package:app_1/models/nav.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +46,7 @@ class _OrdersState extends State<Orders> {
       appBar: APPBAR(
         context,
       ),
+      bottomNavigationBar: NavBar(),
       body: Column(children: [
         FutureBuilder(
           future: OrderFuture,
