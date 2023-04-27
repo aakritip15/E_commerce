@@ -42,17 +42,10 @@ class MyAppafterLogin extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      //home: Orders(),
-      //home: Item_view(),
-      // home: SellItem(firebaseUser: currentuser),
-      /* home: AccountSetting(
-        user: userModel,
-      ),*/
-      //home: MyHousePage(),
       home: MyHomePage(
         user: userModel,
       ),
-      // home: (),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -67,10 +60,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-
       home: Splash(),
-      // home: SellItem(firebaseUser: firebaseUser),
-      //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
       debugShowCheckedModeBanner: false,
     );
   }
