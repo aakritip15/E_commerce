@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -27,22 +26,20 @@ class messageTextField extends StatefulWidget {
 class _messageTextFieldState extends State<messageTextField> {
   void sendMessage() async {
     String msg = widget.messageController.text.trim();
-    if (msg != null) {
-      MessageModel newMessage = MessageModel(
-        messageId: uuid.v1(),
-        sender: widget.userModel.uid,
-        text: msg,
-        createdOn: DateTime.now(),
-        seen: false,
-      );
+    MessageModel newMessage = MessageModel(
+      messageId: uuid.v1(),
+      sender: widget.userModel.uid,
+      text: msg,
+      createdOn: DateTime.now(),
+      seen: false,
+    );
 
-      FirebaseFirestore.instance
-          .collection('chatrooms')
-          .doc(widget.chatRoom.chatRoomId)
-          .collection('messages')
-          .doc(newMessage.messageId)
-          .set(newMessage.toMap());
-    }
+    FirebaseFirestore.instance
+        .collection('chatrooms')
+        .doc(widget.chatRoom.chatRoomId)
+        .collection('messages')
+        .doc(newMessage.messageId)
+        .set(newMessage.toMap());
     widget.chatRoom.lastMessage = msg;
     FirebaseFirestore.instance
         .collection('chatrooms')
@@ -67,7 +64,7 @@ class _messageTextFieldState extends State<messageTextField> {
                   sendMessage();
                   print('Message sent');
                 },
-                icon: Icon(Icons.send),
+                icon: const Icon(Icons.send),
                 color: Colors.amber,
               ),
             ),

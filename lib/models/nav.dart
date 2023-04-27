@@ -6,11 +6,14 @@ import 'package:app_1/models/userModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../Screens/donation.dart';
 import 'firebaseHelper.dart';
 
 class NavBar extends StatelessWidget {
   final User? currentUser = FirebaseAuth.instance.currentUser;
   String? uid = FirebaseAuth.instance.currentUser!.uid;
+
+  NavBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +69,11 @@ class NavBar extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.clean_hands_rounded),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => Donation(firebaseUser: currentUser,))));
+             
+              },
             ),
           ],
         ));

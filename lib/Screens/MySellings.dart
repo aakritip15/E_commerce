@@ -20,6 +20,7 @@ class Selling extends StatefulWidget {
 class _SellingState extends State<Selling> {
   Future<List<Items>>? OrderFuture;
   String? user = FirebaseAuth.instance.currentUser!.uid;
+  @override
   void initState() {
     super.initState();
     OrderFuture = fetchProducts();
@@ -31,9 +32,9 @@ class _SellingState extends State<Selling> {
         .collection('Orders')
         .where('ProductSellerID', isEqualTo: user)
         .get();
-    snapshot.docs.forEach((element) {
+    for (var element in snapshot.docs) {
       products.add(Items.fromMap(element.data() as Map<String, dynamic>));
-    });
+    }
 
     return products;
   }
@@ -112,12 +113,12 @@ class _SellingState extends State<Selling> {
                                                 products[index].ProductName)
                                         .get()
                                         .then((value) {
-                                      value.docs.forEach((element) {
+                                      for (var element in value.docs) {
                                         FirebaseFirestore.instance
                                             .collection('Orders')
                                             .doc(element.id)
                                             .delete();
-                                      });
+                                      }
                                       products.removeAt(index);
                                       setState(
                                           () {}); // This line will trigger a rebuild of the widget tree

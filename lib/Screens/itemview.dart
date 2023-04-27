@@ -2,11 +2,9 @@
 
 import 'package:app_1/Screens/SellerListing.dart';
 import 'package:app_1/consts/consts.dart';
-import 'package:app_1/models/productModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
@@ -18,7 +16,7 @@ import '../models/userModel.dart';
 class ItemView extends StatefulWidget {
   final Products product;
 
-  ItemView({super.key, required this.product});
+  const ItemView({super.key, required this.product});
 
   @override
   State<ItemView> createState() => _ItemViewState();
