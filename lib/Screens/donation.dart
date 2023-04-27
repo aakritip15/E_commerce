@@ -51,13 +51,18 @@ class _DonationState extends State<Donation> {
         appBar: AppBar(
           title: const Text('Upcoming Events',
               style: TextStyle(
+                color: Colors.brown,
                 fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                color: Colors.white,
-                letterSpacing: 3,
-                fontSize: 25,
               )),
-          backgroundColor: Colors.amber,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.brown),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          centerTitle: true,
         ),
         body: Column(
           children: [
@@ -69,7 +74,7 @@ class _DonationState extends State<Donation> {
                     height: 180,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        image:DecorationImage(
+                        image: DecorationImage(
                             image: AssetImage('images/donation/donation.png'),
                             fit: BoxFit.fill),
                         borderRadius: BorderRadius.circular(15)),
@@ -147,7 +152,8 @@ class _DonationState extends State<Donation> {
                 child: ListView.builder(
                   itemCount: campaign.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return DonationBox(context, campaign: campaign[index],images: images[index]);
+                    return DonationBox(context,
+                        campaign: campaign[index], images: images[index]);
                   },
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
@@ -159,7 +165,7 @@ class _DonationState extends State<Donation> {
   }
 }
 
-DonationBox(context, {required Campaign campaign,required String images}) {
+DonationBox(context, {required Campaign campaign, required String images}) {
   String? CampaignName = campaign.CampaignName;
   return Padding(
     padding: const EdgeInsets.fromLTRB(3, 5, 3, 5),
@@ -172,10 +178,8 @@ DonationBox(context, {required Campaign campaign,required String images}) {
             height: 220,
             width: double.infinity,
             decoration: BoxDecoration(
-                image:  DecorationImage(
-                    image: AssetImage(
-                        images),
-                    fit: BoxFit.fill),
+                image: DecorationImage(
+                    image: AssetImage(images), fit: BoxFit.fill),
                 borderRadius: BorderRadius.circular(35)),
           ),
         ),
@@ -242,7 +246,9 @@ DonationBox(context, {required Campaign campaign,required String images}) {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => DonationDetail(
-                                              campaign: campaign,image: images,)));
+                                                campaign: campaign,
+                                                image: images,
+                                              )));
                                 },
                                 icon: const Icon(
                                   Icons.arrow_right_alt,
@@ -257,4 +263,3 @@ DonationBox(context, {required Campaign campaign,required String images}) {
     ),
   );
 }
-

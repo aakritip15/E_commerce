@@ -36,15 +36,6 @@ class _SplashState extends State<Splash> {
             height: 30.0,
             width: double.infinity,
           ),
-          Text(
-            'Resell-It',
-            style: GoogleFonts.nunito(
-              fontSize: 50.0,
-              fontWeight: FontWeight.w500,
-              color: const Color(0xFFFFB930),
-              fontStyle: FontStyle.italic,
-            ),
-          ),
         ],
       ),
     );

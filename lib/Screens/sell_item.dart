@@ -54,16 +54,15 @@ class _SellItemState extends State<SellItem> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('Item Details',
+          title: const Text('Item Details',
               style: TextStyle(
-                color: Colors.black,
+                color: Colors.brown,
                 fontWeight: FontWeight.bold,
               )),
           backgroundColor: Colors.white,
           elevation: 0,
           leading: IconButton(
-            color: Colors.black,
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.brown),
             onPressed: () {
               Navigator.pop(context);
             },

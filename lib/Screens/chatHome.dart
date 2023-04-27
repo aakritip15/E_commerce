@@ -1,3 +1,4 @@
+import 'package:app_1/consts/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,16 +26,19 @@ class _ChatHomeState extends State<ChatHome> {
     return Scaffold(
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.amber[400],
         title: const Text('Chats',
             style: TextStyle(
+              color: Colors.brown,
               fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              color: Colors.white,
-              letterSpacing: 3,
-              fontSize: 25,
             )),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.brown),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         centerTitle: true,
       ),
       body: Column(
