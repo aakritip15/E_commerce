@@ -13,17 +13,17 @@ class MyHeader extends StatelessWidget {
       child: Container(
         height: 150,
         padding: const EdgeInsets.only(bottom: 50.0),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Image(
+            Image(
               image: AssetImage(appIcon),
               height: 80.0,
             ),
-            const SizedBox(width: 10.0),
+            SizedBox(width: 10.0),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
+              children: [
                 Text(
                   'ReSell- It',
                   style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),

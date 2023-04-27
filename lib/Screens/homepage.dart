@@ -38,9 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
         .collection('Products')
         .where('ProductSellerID', isNotEqualTo: uid)
         .get();
-    snapshot.docs.forEach((element) {
+    for (var element in snapshot.docs) {
       products.add(Products.fromMap(element.data() as Map<String, dynamic>));
-    });
+    }
     return products;
   }
 
@@ -52,9 +52,9 @@ class _MyHomePageState extends State<MyHomePage> {
         .collection('Products')
         .where('ProductSellerID', isNotEqualTo: uid)
         .get();
-    snapshot.docs.forEach((element) {
+    for (var element in snapshot.docs) {
       products.add(Products.fromMap(element.data() as Map<String, dynamic>));
-    });
+    }
     filteredProducts = products
         .where((element) => element.ProductName!
             .toLowerCase()

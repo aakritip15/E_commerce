@@ -22,7 +22,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
-            decoration: InputDecoration(),
+            decoration: const InputDecoration(),
           ),
         ),
       ),

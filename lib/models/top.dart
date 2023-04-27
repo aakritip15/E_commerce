@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously, prefer_const_constructors, non_constant_identifier_names
 
-import 'package:app_1/Screens/account_setting.dart';
 import 'package:app_1/Screens/profile.dart';
 import 'package:app_1/models/firebaseHelper.dart';
 import 'package:app_1/models/userModel.dart';

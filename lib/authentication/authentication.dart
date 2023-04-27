@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import '/services/database_service.dart';
-import 'package:flutter/material.dart';
 
 class AuthService {
   Future<String?> SignIn(
@@ -18,6 +15,7 @@ class AuthService {
         return 'Wrong password provided for that user.';
       }
     }
+    return null;
   }
 
   Future<String?> CreateAccount({
@@ -40,6 +38,7 @@ class AuthService {
       print('error');
       return 'error adding user';
     }
+    return null;
   }
 
   Future<String?> Reset({required String emailId}) async {
@@ -47,7 +46,7 @@ class AuthService {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: emailId);
       return 'success';
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

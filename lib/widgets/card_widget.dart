@@ -27,7 +27,7 @@ class _ChatCardState extends State<ChatCard> {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -43,7 +43,7 @@ class _ChatCardState extends State<ChatCard> {
           );
         },
         child: ListTile(
-          leading: CircleAvatar(
+          leading: const CircleAvatar(
             child: Icon(Icons.person),
           ),
           title: Text(widget.targetUser.fullname!),

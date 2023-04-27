@@ -1,6 +1,5 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:app_1/Screens/ProductDetails.dart';
 import 'package:app_1/Screens/itemview.dart';
 import 'package:app_1/models/ProductDetails.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ Tile(context, {required Products product, required user}) {
   String NAME = product.ProductName!;
   String PRICE = product.ProductPrice!;
   String DESCRIPTION = product.ProductDescription!.length > 20
-      ? product.ProductDescription!.substring(0, 20) + '...'
+      ? '${product.ProductDescription!.substring(0, 20)}...'
       : product.ProductDescription!;
   String? IMAGE = product.ProductImage;
   String? sellerName =
@@ -68,7 +67,7 @@ Tile(context, {required Products product, required user}) {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: SizedBox(
                     child: Text(
-                      '${NAME}',
+                      NAME,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 4, 9, 35),
@@ -82,12 +81,12 @@ Tile(context, {required Products product, required user}) {
                   height: 60,
                   width: 150,
                   child: Text(
-                    '${DESCRIPTION}',
+                    DESCRIPTION,
                   ),
                 ),
                 //Price
                 Text(
-                  'Nrs.${PRICE}',
+                  'Nrs.$PRICE',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),

@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/chatRoomModel.dart';
 import '../models/userModel.dart';
-import '../screens/chatRoom.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/searchTextField.dart';
 import '../models/firebaseHelper.dart';
@@ -28,7 +27,7 @@ class _ChatHomeState extends State<ChatHome> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.amber[400],
-        title: Text('Chats',
+        title: const Text('Chats',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontStyle: FontStyle.italic,
@@ -41,7 +40,7 @@ class _ChatHomeState extends State<ChatHome> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 10),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 10),
             child: SearchTextField(
                 userModel: widget.userModel!,
                 firebaseUser: widget.firebaseUser!,
@@ -104,12 +103,12 @@ class _ChatHomeState extends State<ChatHome> {
                         child: Text(snapshot.error.toString()),
                       );
                     } else {
-                      return Center(
+                      return const Center(
                         child: Text("No Chats"),
                       );
                     }
                   } else {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
@@ -129,7 +128,7 @@ class _ChatHomeState extends State<ChatHome> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         backgroundColor: Colors.amber[400],
-        child: Icon(Icons.chat),
+        child: const Icon(Icons.chat),
       ),
     );
   }
