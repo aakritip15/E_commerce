@@ -31,6 +31,7 @@ class _LoginState extends State<Login> {
       credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (ex) {
+      Navigator.pop(context);
       // Close the loading dialog
       print(ex.toString());
       ScaffoldMessenger.of(context).showSnackBar(
