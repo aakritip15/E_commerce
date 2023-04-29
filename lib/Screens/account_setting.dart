@@ -1,18 +1,15 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable, use_build_context_synchronously, prefer_const_constructors_in_immutables, unused_element, prefer_const_literals_to_create_immutables, prefer_final_fields, non_constant_identifier_names
 
 import 'package:app_1/Screens/MySellings.dart';
-import 'package:app_1/models/profile.dart';
 import 'profile.dart' as profile;
 import 'MyOrders.dart';
 import 'package:app_1/Screens/edit_information.dart';
-import 'package:app_1/Screens/homepage.dart';
 import 'package:app_1/models/nav.dart';
 import 'package:app_1/models/uiHelper.dart';
 import 'package:app_1/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '/authentication/authentication.dart';
 import '/Screens/login.dart';
 import 'sell_item.dart';
 
@@ -338,33 +335,12 @@ class _AccountSettingState extends State<AccountSetting> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Orders(),
-                      ),
-                    );
-                  },
-                  leading: Icon(Icons.shopping_bag_outlined),
-                  title: Text(
-                    'My Orders',
-                    style: TextStyle(
-                      fontSize: 17,
-                    ),
-                  ),
-                  trailing: Icon(Icons.keyboard_arrow_right_sharp),
-                ),
-                Divider(
-                  color: Colors.grey,
-                ),
-                ListTile(
-                  onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Selling()));
                   },
                   leading: Icon(Icons.store),
                   title: Text(
-                    'My items',
+                    'My Sellings',
                     style: TextStyle(
                       fontSize: 17,
                     ),

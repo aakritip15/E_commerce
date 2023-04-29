@@ -1,20 +1,15 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
-import 'package:app_1/Screens/housepage.dart';
 import 'package:app_1/Screens/landing_page.dart';
-import 'package:app_1/Screens/splashscreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import '../models/uiHelper.dart';
 import '../models/userModel.dart';
-import '/Screens/account_setting.dart';
 import '/Screens/homepage.dart';
-import '/authentication/authentication.dart';
 import '/consts/consts.dart';
 import '/widgets/myTextField.dart';
-import '/main.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -114,13 +109,9 @@ class _LoginState extends State<Login> {
                 ),
               ),
               SizedBox(
-                height: 250,
+                height: 300,
                 width: 350,
-                child: Expanded(
-                  child: Image(
-                    image: AssetImage("images/images/Login.png"),
-                  ),
-                ),
+                child: Image(image: AssetImage("images/images/Login.png")),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),

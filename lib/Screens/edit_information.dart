@@ -78,28 +78,20 @@ class _EditInfoState extends State<EditInfo> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Edit Information',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontStyle: FontStyle.italic,
-              fontFamily: 'Times',
-              wordSpacing: 0,
-            ),
-          ),
-          centerTitle: true,
-          elevation: 0.0,
+          title: Text('Edit Information',
+              style: TextStyle(
+                color: Colors.brown,
+                fontWeight: FontWeight.bold,
+              )),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios, color: Colors.brown),
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(
-              Icons.arrow_back,
-              color: kBrown,
-            ),
           ),
-          backgroundColor: kAlmond,
-          foregroundColor: kBrown,
+          centerTitle: true,
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0),

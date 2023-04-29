@@ -11,7 +11,7 @@ import '../models/Orders.dart';
 class ProductDetails extends StatefulWidget {
   final Products product;
   final UserModel user;
-  ProductDetails({super.key, required this.product, required this.user});
+  const ProductDetails({super.key, required this.product, required this.user});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -61,7 +61,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
           Center(
             child: ElevatedButton(
-                child: Text('Buy'),
+                child: const Text('Buy'),
                 onPressed: () {
                   PlaceOrder();
                 }),

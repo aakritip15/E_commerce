@@ -7,8 +7,8 @@ const Color kGreen = Color(0xffD7FFC9);
 const Color kBrown = Color.fromRGBO(107, 94, 94, 1);
 const Color kPink = Color(0xffFECCCC);
 
-Color kNavy = Color(0xff1e3d59);
-Color kAlmond = Color(0xfff5f0e1);
+Color kNavy = const Color(0xff1e3d59);
+Color kAlmond = const Color(0xfff5f0e1);
 
-Color kMango = Color(0xffffc13b);
+Color kMango = const Color(0xffffc13b);
 const Color kGrey = Color(0xffE0E0E0);

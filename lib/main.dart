@@ -1,19 +1,9 @@
 // ignore_for_file: prefer_const_constructors
-import 'package:app_1/Screens/MyOrders.dart';
-import 'package:app_1/Screens/account_setting.dart';
 import 'package:app_1/Screens/homepage.dart';
-import 'package:app_1/Screens/itemview.dart';
-import 'package:app_1/Screens/registration_page.dart';
 import 'package:app_1/Screens/splashscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '/Screens/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import '/widgets/customTextFormField.dart';
-import 'Screens/housepage.dart';
-import 'Screens/sell_item.dart';
-import 'screens/login.dart';
-import 'models/appbar.dart';
 //import '/Screens/body.dart';
 import 'package:uuid/uuid.dart';
 import 'firebase_options.dart';
@@ -52,17 +42,10 @@ class MyAppafterLogin extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      //home: Orders(),
-      //home: Item_view(),
-      // home: SellItem(firebaseUser: currentuser),
-      /* home: AccountSetting(
-        user: userModel,
-      ),*/
-      //home: MyHousePage(),
       home: MyHomePage(
         user: userModel,
       ),
-      // home: (),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -77,10 +60,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-
       home: Splash(),
-      // home: SellItem(firebaseUser: firebaseUser),
-      //home: AnimatedSplashScreen(splash: Icons.home, nextScreen: MyHomePage(), duration: 2500, backgroundColor: Color(0xFFFFB930), splashTransition: SplashTransition.fadeTransition),
       debugShowCheckedModeBanner: false,
     );
   }

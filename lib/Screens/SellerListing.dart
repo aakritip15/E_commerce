@@ -1,4 +1,3 @@
-import 'package:app_1/Screens/account_setting.dart';
 import 'package:app_1/consts/consts.dart';
 import 'package:app_1/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/material.dart';
 import '../models/ProductDetails.dart';
 import '../models/nav.dart';
 import '../widgets/tile.dart';
-import 'homepage.dart';
 
 class SellerProfile extends StatefulWidget {
   UserModel user;
@@ -33,11 +31,11 @@ class _SellerProfileState extends State<SellerProfile> {
     List<Products> products = [];
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('Products')
-        .where('ProductSellerID', isEqualTo: widget.user!.uid)
+        .where('ProductSellerID', isEqualTo: widget.user.uid)
         .get();
-    snapshot.docs.forEach((element) {
+    for (var element in snapshot.docs) {
       products.add(Products.fromMap(element.data() as Map<String, dynamic>));
-    });
+    }
     return products;
   }
 
@@ -52,27 +50,15 @@ class _SellerProfileState extends State<SellerProfile> {
       ),
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Seller',
+        title: const Text('Seller',
             style: TextStyle(
               color: Colors.brown,
               fontWeight: FontWeight.bold,
             )),
-        actions: <Widget>[
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            AccountSetting(user: widget.user)));
-              },
-              color: kBrown,
-              icon: Icon(Icons.settings))
-        ],
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.brown),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.brown),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -89,14 +75,14 @@ class _SellerProfileState extends State<SellerProfile> {
                 backgroundColor: Colors.grey,
                 child: Text(
                   l,
-                  style: TextStyle(
+                  style: const TextStyle(
                       // fontWeight: FontWeight.bold,
                       fontSize: 60,
                       color: Colors.white),
                 ),
                 //child: Icon(Icons.camera_alt, size: 30, color: Colors.white),
               ),
-              SizedBox(width: 25),
+              const SizedBox(width: 25),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 // ignore: prefer_const_literals_to_create_immutables
@@ -104,26 +90,26 @@ class _SellerProfileState extends State<SellerProfile> {
                   //Name
                   Text(
                     widget.user.fullname!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   Text(
                     "Email:${widget.user.email!}",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 15,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text(
                     'Address:${widget.user.address!}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 15,
                     ),
                   ),
@@ -132,7 +118,7 @@ class _SellerProfileState extends State<SellerProfile> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           const Text(
@@ -155,7 +141,7 @@ class _SellerProfileState extends State<SellerProfile> {
       future: total,
       builder: (BuildContext context, AsyncSnapshot<List<Products>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {

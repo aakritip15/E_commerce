@@ -1,6 +1,5 @@
 import 'package:app_1/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class FirebaseHelper {
   static Future<UserModel?> getUserModelById(String uid) async {

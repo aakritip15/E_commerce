@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Padding SEARCH(TextEditingController SEARCHED_ITEM) {
+Padding SEARCH(TextEditingController searchedItem) {
   return Padding(
     padding: const EdgeInsets.all(18.0),
     child: Container(
@@ -11,14 +11,14 @@ Padding SEARCH(TextEditingController SEARCHED_ITEM) {
       child: SizedBox(
         height: 50,
         child: TextField(
-          controller: SEARCHED_ITEM,
+          controller: searchedItem,
           textAlign: TextAlign.center,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
             ),
             hintText: 'Search',
-            prefixIcon: Icon(Icons.search),
+            prefixIcon: const Icon(Icons.search),
           ),
         ),
       ),

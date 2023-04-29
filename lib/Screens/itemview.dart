@@ -2,11 +2,9 @@
 
 import 'package:app_1/Screens/SellerListing.dart';
 import 'package:app_1/consts/consts.dart';
-import 'package:app_1/models/productModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
@@ -18,7 +16,7 @@ import '../models/userModel.dart';
 class ItemView extends StatefulWidget {
   final Products product;
 
-  ItemView({super.key, required this.product});
+  const ItemView({super.key, required this.product});
 
   @override
   State<ItemView> createState() => _ItemViewState();
@@ -57,55 +55,25 @@ class _ItemViewState extends State<ItemView> {
 
   int _count = 1;
 
-  // }
-
-  String sellerName = '';
-  Future<String> getSellerName(String sellerId) async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(sellerId)
-        .get();
-    String name = snapshot['fullname'];
-    print(name);
-    return name;
-  }
-
   @override
-  void initState() {
-    super.initState();
-    String uid = widget.product.ProductSellerID!;
-    getSellerName(uid).then((value) {
-      setState(() {
-        sellerName = value;
-      });
-    });
-  }
-
   Widget build(BuildContext context) {
+    print("build");
     return Scaffold(
       appBar: AppBar(
+        title: Text('Product View',
+            style: TextStyle(
+              color: Colors.brown,
+              fontWeight: FontWeight.bold,
+            )),
         backgroundColor: Colors.white,
+        elevation: 0,
         leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.brown),
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
-            FeatherIcons.arrowLeft,
-            color: Colors.black,
-          ),
-        ),
-        title: Text(
-          'Product Details',
-          style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
-              fontFamily: 'TimesNewRoman',
-              letterSpacing: 0.5),
         ),
         centerTitle: true,
-        elevation: 0,
-        toolbarHeight: 40,
       ),
       body: ListView(
         children: [
@@ -160,8 +128,7 @@ class _ItemViewState extends State<ItemView> {
                           try {
                             FirebaseFirestore.instance
                                 .collection('Favourites')
-                                .doc(widget.product.ProductID)
-                                .set(myFav);
+                                .add(myFav);
                           } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -195,7 +162,7 @@ class _ItemViewState extends State<ItemView> {
                     }
                   },
                   child: Text(
-                    'By $sellerName',
+                    'By ${widget.product.ProductSellerName}',
                     style: TextStyle(fontSize: 22, color: Colors.grey[800]),
                   ),
                 ),
