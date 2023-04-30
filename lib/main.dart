@@ -38,7 +38,7 @@ class MyAppafterLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Resell It',
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Resell It',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
