@@ -1,9 +1,17 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:app_1/Screens/ProductDetails.dart';
+import 'package:app_1/Screens/chatRoom.dart';
+import 'package:app_1/Screens/homepage.dart';
 import 'package:app_1/Screens/itemview.dart';
 import 'package:app_1/models/ProductDetails.dart';
+import 'package:app_1/models/firebaseHelper.dart';
+import 'package:app_1/models/userModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../main.dart';
+import '../models/chatRoomModel.dart';
 
 //TODO:Provide Context as to use Navigation
 
@@ -14,12 +22,11 @@ Tile(context, {required Products product, required user}) {
   String NAME = product.ProductName!;
   String PRICE = product.ProductPrice!;
   String DESCRIPTION = product.ProductDescription!.length > 20
-      ? product.ProductDescription!.substring(0, 20) + '...'
+      ? '${product.ProductDescription!.substring(0, 20)}...'
       : product.ProductDescription!;
   String? IMAGE = product.ProductImage;
   String? sellerName =
       product.ProductSellerName; //! Use this Name in card to show seller name
-
   return Padding(
     padding: EdgeInsets.all(7),
     child: InkWell(
@@ -68,7 +75,7 @@ Tile(context, {required Products product, required user}) {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: SizedBox(
                     child: Text(
-                      '${NAME}',
+                      NAME,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 4, 9, 35),
@@ -82,12 +89,12 @@ Tile(context, {required Products product, required user}) {
                   height: 60,
                   width: 150,
                   child: Text(
-                    '${DESCRIPTION}',
+                    DESCRIPTION,
                   ),
                 ),
                 //Price
                 Text(
-                  'Nrs.${PRICE}',
+                  'Nrs.$PRICE',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
@@ -102,8 +109,51 @@ Tile(context, {required Products product, required user}) {
                     CircleAvatar(
                       maxRadius: 15,
                       child: IconButton(
-                        onPressed: () {
-                          print('CALL');
+                        onPressed: () async {
+                          ChatRoomModel? chatRoom;
+                          User you = FirebaseAuth.instance.currentUser!;
+                          final chatroomQuery = await FirebaseFirestore.instance
+                              .collection('chatrooms')
+                              .where('participants.${product.ProductSellerID!}',
+                                  isEqualTo: true)
+                              .where('participants.${you.uid}', isEqualTo: true)
+                              .get();
+                          String cID;
+                          if (chatroomQuery.docs.isEmpty) {
+                            ChatRoomModel newChatroom = ChatRoomModel(
+                              chatRoomId: uuid.v1(),
+                              lastMessage: "",
+                              participants: {
+                                you.uid.toString(): true,
+                                product.ProductSellerID!: true,
+                              },
+                            );
+                            await FirebaseFirestore.instance
+                                .collection("chatrooms")
+                                .doc(newChatroom.chatRoomId)
+                                .set(newChatroom.toMap());
+                            chatRoom = newChatroom;
+                          } else {
+                            chatRoom = ChatRoomModel.fromMap(
+                                chatroomQuery.docs.first.data());
+                          }
+                          //firebaseUser as required fromChatRoom.dart
+                          //seller Information as required fromChatRoom.dart
+                          UserModel? userModel =
+                              await FirebaseHelper.getUserModelById(uid!);
+                          UserModel? sellerModel =
+                              await FirebaseHelper.getUserModelById(
+                                  product.ProductSellerID!);
+                          print(userModel!.fullname);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ChatPage(
+                              targetUser: sellerModel!,
+                              chatRoom: chatRoom!,
+                              userModel: userModel,
+                              firebaseUser: you,
+                            );
+                          }));
                         },
                         icon: Icon(
                           Icons.message_outlined,

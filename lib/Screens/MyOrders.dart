@@ -1,10 +1,10 @@
-
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
 
 import 'package:app_1/consts/colors.dart';
 import 'package:app_1/models/appbar.dart';
+import 'package:app_1/models/nav.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +20,7 @@ class Orders extends StatefulWidget {
 class _OrdersState extends State<Orders> {
   Future<List<Items>>? OrderFuture;
   String? user = FirebaseAuth.instance.currentUser!.uid;
+  @override
   void initState() {
     super.initState();
     OrderFuture = fetchProducts();
@@ -31,9 +32,9 @@ class _OrdersState extends State<Orders> {
         .collection('Orders')
         .where('ProductBuyerID', isEqualTo: user)
         .get();
-    snapshot.docs.forEach((element) {
+    for (var element in snapshot.docs) {
       products.add(Items.fromMap(element.data() as Map<String, dynamic>));
-    });
+    }
 
     return products;
   }
@@ -45,6 +46,7 @@ class _OrdersState extends State<Orders> {
       appBar: APPBAR(
         context,
       ),
+      bottomNavigationBar: NavBar(),
       body: Column(children: [
         FutureBuilder(
           future: OrderFuture,
@@ -112,12 +114,12 @@ class _OrdersState extends State<Orders> {
                                                 products[index].ProductName)
                                         .get()
                                         .then((value) {
-                                      value.docs.forEach((element) {
+                                      for (var element in value.docs) {
                                         FirebaseFirestore.instance
                                             .collection('Orders')
                                             .doc(element.id)
                                             .delete();
-                                      });
+                                      }
                                       products.removeAt(index);
                                       setState(
                                           () {}); // This line will trigger a rebuild of the widget tree

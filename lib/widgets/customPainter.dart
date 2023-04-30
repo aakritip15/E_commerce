@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '/consts/colors.dart';
 
 class RPSCustomPainter extends CustomPainter {

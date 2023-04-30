@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Screens/chatRoom.dart';
@@ -33,7 +32,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
         .where('participants.${widget.userModel.uid}', isEqualTo: true)
         .where('participants.${targetUser.uid}', isEqualTo: true)
         .get();
-    if (snapshot.docs.length > 0) {
+    if (snapshot.docs.isNotEmpty) {
       var docData = snapshot.docs[0].data();
       ChatRoomModel existingChatRoom =
           ChatRoomModel.fromMap(docData as Map<String, dynamic>);
@@ -65,7 +64,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
             filled: true,
             fillColor: Colors.white,
             prefixIcon: IconButton(
-              icon: Icon(Icons.search),
+              icon: const Icon(Icons.search),
               onPressed: () {
                 setState(() {});
               },
@@ -89,7 +88,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                 if (snapshot.hasData) {
                   QuerySnapshot dataSnapshot = snapshot.data as QuerySnapshot;
 
-                  if (dataSnapshot.docs.length > 0) {
+                  if (dataSnapshot.docs.isNotEmpty) {
                     Map<String, dynamic> userMap =
                         dataSnapshot.docs[0].data() as Map<String, dynamic>;
                     UserModel searchedUser = UserModel.fromMap(userMap);
@@ -103,10 +102,10 @@ class _SearchTextFieldState extends State<SearchTextField> {
                           textColor: Colors.black,
                           title: Text(searchedUser.fullname!),
                           subtitle: Text(searchedUser.email!),
-                          leading: CircleAvatar(
+                          leading: const CircleAvatar(
                             child: Icon(Icons.person),
                           ),
-                          trailing: Icon(Icons.keyboard_arrow_right),
+                          trailing: const Icon(Icons.keyboard_arrow_right),
                           onTap: () async {
                             ChatRoomModel? chatroomModel =
                                 await getChatroomModel(searchedUser);
@@ -117,29 +116,29 @@ class _SearchTextFieldState extends State<SearchTextField> {
                                       builder: (context) => ChatPage(
                                             targetUser: searchedUser,
                                             chatRoom: chatroomModel,
-                                            userModel: widget.userModel!,
-                                            firebaseUser: widget.firebaseUser!,
+                                            userModel: widget.userModel,
+                                            firebaseUser: widget.firebaseUser,
                                           )));
                             }
                           }),
                     );
                   } else {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 16, 10, 0),
+                    return const Padding(
+                      padding: EdgeInsets.fromLTRB(10, 16, 10, 0),
                       child: ListTile(title: Text('No results found')),
                     );
                   }
                 } else if (snapshot.hasError) {
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 16, 10, 0),
+                  return const Padding(
+                    padding: EdgeInsets.fromLTRB(10, 16, 10, 0),
                     child: ListTile(title: Text('An error occurred')),
                   );
                 } else {
                   return Container();
                 }
               }
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(10, 16, 10, 0),
+              return const Padding(
+                padding: EdgeInsets.fromLTRB(10, 16, 10, 0),
                 child: Center(child: CircularProgressIndicator()),
               );
             },
