@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:app_1/Screens/chatRoom.dart';
+import 'package:app_1/Screens/homepage.dart';
 import 'package:app_1/Screens/itemview.dart';
 import 'package:app_1/models/ProductDetails.dart';
 import 'package:app_1/models/firebaseHelper.dart';
@@ -9,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
 import '../models/chatRoomModel.dart';
 
 //TODO:Provide Context as to use Navigation
@@ -108,6 +110,7 @@ Tile(context, {required Products product, required user}) {
                       maxRadius: 15,
                       child: IconButton(
                         onPressed: () async {
+                          ChatRoomModel? chatRoom;
                           User you = FirebaseAuth.instance.currentUser!;
                           final chatroomQuery = await FirebaseFirestore.instance
                               .collection('chatrooms')
@@ -117,36 +120,36 @@ Tile(context, {required Products product, required user}) {
                               .get();
                           String cID;
                           if (chatroomQuery.docs.isEmpty) {
-                            final newChatroom = await FirebaseFirestore.instance
-                                .collection('chatrooms')
-                                .add({
-                              'participants': {
+                            ChatRoomModel newChatroom = ChatRoomModel(
+                              chatRoomId: uuid.v1(),
+                              lastMessage: "",
+                              participants: {
+                                you.uid.toString(): true,
                                 product.ProductSellerID!: true,
-                                you.uid: true,
                               },
-                              'lastMessage': '',
-                            });
-                            cID = newChatroom.id;
+                            );
+                            await FirebaseFirestore.instance
+                                .collection("chatrooms")
+                                .doc(newChatroom.chatRoomId)
+                                .set(newChatroom.toMap());
+                            chatRoom = newChatroom;
                           } else {
-                            cID = chatroomQuery.docs[0].id;
+                            chatRoom = ChatRoomModel.fromMap(
+                                chatroomQuery.docs.first.data());
                           }
                           //firebaseUser as required fromChatRoom.dart
                           //seller Information as required fromChatRoom.dart
                           UserModel? userModel =
+                              await FirebaseHelper.getUserModelById(uid!);
+                          UserModel? sellerModel =
                               await FirebaseHelper.getUserModelById(
                                   product.ProductSellerID!);
                           print(userModel!.fullname);
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return ChatPage(
-                              targetUser: userModel,
-                              chatRoom: ChatRoomModel(
-                                  chatRoomId: cID,
-                                  lastMessage: '',
-                                  participants: {
-                                    you.uid: true,
-                                    userModel.uid!: true
-                                  }),
+                              targetUser: sellerModel!,
+                              chatRoom: chatRoom!,
                               userModel: userModel,
                               firebaseUser: you,
                             );
