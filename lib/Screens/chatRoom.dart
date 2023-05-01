@@ -38,6 +38,7 @@ class _ChatPageState extends State<ChatPage> {
         backgroundColor: kYellow,
         title: Row(
           children: [
+
             CircleAvatar(
                 backgroundColor: Colors.white,
                 child: Text(widget.targetUser.fullname![0],
@@ -46,6 +47,7 @@ class _ChatPageState extends State<ChatPage> {
                       color: Colors.brown,
                     ))),
             SizedBox(width: 15),
+
             Text(widget.targetUser.fullname!,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,

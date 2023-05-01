@@ -32,7 +32,7 @@ class _otpVerificationState extends State<otpVerification> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   void SignUp(String email, String password) async {
     UserCredential? credentials;
-    UIHelper.showLoadingDialog(context, 'Creating Account...');
+    // UIHelper.showLoadingDialog(context, 'Creating Account...');
     try {
       credentials = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -152,6 +152,7 @@ class _otpVerificationState extends State<otpVerification> {
                     await auth.signInWithCredential(credential);
 
                     print('correct otp');
+                    UIHelper.showLoadingDialog(context, 'Creating Account...');
                     SignUp(widget.email, widget.password);
                   } catch (e) {
                     print('wrong otp');
