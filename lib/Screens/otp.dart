@@ -152,6 +152,7 @@ class _otpVerificationState extends State<otpVerification> {
                     await auth.signInWithCredential(credential);
 
                     print('correct otp');
+                    UIHelper.showLoadingDialog(context, 'Creating Account...');
                     SignUp(widget.email, widget.password);
                   } catch (e) {
                     print('wrong otp');
