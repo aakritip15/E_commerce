@@ -423,6 +423,7 @@ class _SellItemState extends State<SellItem> {
                   title: Text('Camera'),
                   onTap: () {
                     _openCamera();
+                    Navigator.pop(context);
                   },
                 ),
                 Padding(padding: EdgeInsets.all(8.0)),
@@ -431,6 +432,7 @@ class _SellItemState extends State<SellItem> {
                   title: Text('Gallery'),
                   onTap: () {
                     _openGallery();
+                    Navigator.pop(context);
                   },
                 ),
               ],

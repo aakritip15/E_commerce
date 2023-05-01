@@ -119,20 +119,8 @@ class _ChatHomeState extends State<ChatHome> {
                 },
               ),
             ),
-
-            // ListView.builder(
-            //     physics: BouncingScrollPhysics(),
-            //     itemCount: 2,
-            //     itemBuilder: ((context, index) {
-            //       return ChatCard();
-            //     })),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.amber[400],
-        child: const Icon(Icons.chat),
       ),
     );
   }
