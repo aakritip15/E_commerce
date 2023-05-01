@@ -63,7 +63,7 @@ class _EditInfoState extends State<EditInfo> {
     setState(() {});
     String uid1 = FirebaseAuth.instance.currentUser!.uid;
     UserModel? newInfo = await FirebaseHelper.getUserModelById(uid1);
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => AccountSetting(
