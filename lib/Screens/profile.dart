@@ -75,7 +75,7 @@ class _ProfileState extends State<Profile> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.brown),
           onPressed: () {
-            Navigator.push(
+            Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                     builder: (context) => MyHomePage(
