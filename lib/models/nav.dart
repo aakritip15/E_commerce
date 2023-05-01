@@ -128,7 +128,7 @@ class _NavBarState extends State<NavBar> {
                 ),
                 onPressed: () async {
                   UserModel? user = await FirebaseHelper.getUserModelById(uid!);
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => MyHomePage(user: user!)));

@@ -336,11 +336,11 @@ class _AccountSettingState extends State<AccountSetting> {
                 ListTile(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Selling()));
+                        MaterialPageRoute(builder: (context) => Orders()));
                   },
                   leading: Icon(Icons.store),
                   title: Text(
-                    'My Sellings',
+                    'My Orders',
                     style: TextStyle(
                       fontSize: 17,
                     ),
