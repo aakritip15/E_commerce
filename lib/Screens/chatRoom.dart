@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:app_1/consts/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,18 +35,24 @@ class _ChatPageState extends State<ChatPage> {
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.amber[400],
+        backgroundColor: kYellow,
         title: Row(
           children: [
-            CircleAvatar(child: Text(widget.targetUser.fullname![0])),
+            CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Text(widget.targetUser.fullname![0],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown,
+                    ))),
             SizedBox(width: 15),
             Text(widget.targetUser.fullname!,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.italic,
                   color: Colors.white,
-                  letterSpacing: 1.5,
-                  fontSize: 23,
+                  letterSpacing: 1.2,
+                  fontSize: 15,
                 )),
           ],
         ),
