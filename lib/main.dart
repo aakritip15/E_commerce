@@ -9,6 +9,7 @@ import 'package:uuid/uuid.dart';
 import 'firebase_options.dart';
 import 'models/firebaseHelper.dart';
 import 'models/userModel.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
 var uuid = Uuid();
 void main() async {

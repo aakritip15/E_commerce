@@ -2,6 +2,7 @@
 
 import 'package:app_1/Screens/SellerListing.dart';
 import 'package:app_1/consts/consts.dart';
+import 'package:app_1/models/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,6 +13,7 @@ import '../models/Orders.dart';
 import '../models/ProductDetails.dart';
 import '../models/firebaseHelper.dart';
 import '../models/userModel.dart';
+import 'profile.dart' as profile;
 
 class ItemView extends StatefulWidget {
   final Products product;
@@ -40,7 +42,7 @@ class _ItemViewState extends State<ItemView> {
       FirebaseFirestore.instance.collection('Orders').add(order.toMap());
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text("Order Placed"),
         ),
       );
@@ -54,6 +56,15 @@ class _ItemViewState extends State<ItemView> {
   }
 
   int _count = 1;
+  String DisplayText = 'Place Order';
+  String? Display() {
+    String text = 'Place Order';
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+    if (uid == widget.product.ProductSellerID) {
+      text = 'Delete Product';
+    }
+    return text;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -268,10 +279,15 @@ class _ItemViewState extends State<ItemView> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            PlaceOrder();
+                            String check = Display()!;
+                            if (check == 'Place Order') {
+                              PlaceOrder();
+                            } else if (check == 'Delete Product') {
+                              DeleteOrder();
+                            }
                           },
                           child: Text(
-                            'Place order',
+                            Display()!,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -288,6 +304,25 @@ class _ItemViewState extends State<ItemView> {
         ],
       ),
     );
+  }
+
+  void DeleteOrder() async {
+    FirebaseFirestore.instance
+        .collection('Products')
+        .doc(widget.product.ProductID)
+        .delete();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Product Deleted"),
+      ),
+    );
+    UserModel? CurrentUser = await FirebaseHelper.getUserModelById(
+        FirebaseAuth.instance.currentUser!.uid);
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => profile.Profile(user: CurrentUser!)));
+    setState(() {});
   }
 }
 
