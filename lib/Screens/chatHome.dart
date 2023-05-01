@@ -119,15 +119,8 @@ class _ChatHomeState extends State<ChatHome> {
                 },
               ),
             ),
-
-          
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Colors.amber[400],
-        child: const Icon(Icons.chat),
       ),
     );
   }
