@@ -133,6 +133,11 @@ class _ItemViewState extends State<ItemView> {
                             'ProductID': widget.product
                                 .ProductID, // only product id is added since if further info is required, it can be fetched from the product database
                             'UserID': FirebaseAuth.instance.currentUser!.uid,
+                            'ProductName': widget.product.ProductName,
+                            'ProductPrice': widget.product.ProductPrice,
+                            'ProductSellerName':
+                                widget.product.ProductSellerName,
+                            'ProductSellerID': widget.product.ProductSellerID
                           };
                           try {
                             FirebaseFirestore.instance

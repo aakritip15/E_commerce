@@ -7,6 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:feather_icons/feather_icons.dart';
 
+import '../Screens/favourites.dart';
+
 Row TOP(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -22,7 +24,14 @@ Row TOP(BuildContext context) {
           children: [
             IconButton(
               color: Colors.brown,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Favourites(),
+                  ),
+                );
+              },
               icon: Icon(Icons.favorite),
             ),
             IconButton(
