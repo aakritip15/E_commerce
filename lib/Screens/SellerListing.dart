@@ -1,13 +1,13 @@
 import 'package:app_1/consts/consts.dart';
 import 'package:app_1/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/ProductDetails.dart';
 import '../models/nav.dart';
 import '../widgets/tile.dart';
 
+// ignore: must_be_immutable
 class SellerProfile extends StatefulWidget {
   UserModel user;
 
@@ -27,7 +27,7 @@ class _SellerProfileState extends State<SellerProfile> {
   }
 
   Future<List<Products>> getProducts() async {
-    String? uid = FirebaseAuth.instance.currentUser!.uid;
+    // String? uid = FirebaseAuth.instance.currentUser!.uid;
     List<Products> products = [];
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('Products')

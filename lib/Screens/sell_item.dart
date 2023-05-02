@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../models/firebaseHelper.dart';
-import '../models/productModel.dart';
 import '../models/userModel.dart';
 
 class SellItem extends StatefulWidget {
@@ -18,7 +17,10 @@ class SellItem extends StatefulWidget {
 
   // final String? uid;
 
-  SellItem({Key? key, required this.firebaseUser});
+  SellItem({
+    super.key,
+    required this.firebaseUser,
+  });
 
   @override
   State<SellItem> createState() => _SellItemState();
@@ -38,7 +40,7 @@ class _SellItemState extends State<SellItem> {
   final ImagePicker _picker = ImagePicker();
   String imageUrl = '';
 
-  List<String> _categoryList = <String>[
+  final List<String> _categoryList = <String>[
     "Mobile",
     "Stationary",
     "Grocery",
@@ -46,7 +48,7 @@ class _SellItemState extends State<SellItem> {
   ];
   String _category = 'Mobile';
 
-  List<String> _location = <String>["Kathmandu", "Lalitpur", "Bhaktapur"];
+  final List<String> _location = <String>["Kathmandu", "Lalitpur", "Bhaktapur"];
   String _choosedLocation = 'Kathmandu';
 
   @override
@@ -89,6 +91,11 @@ class _SellItemState extends State<SellItem> {
                         Row(
                           children: [
                             Container(
+                              height: 90,
+                              width: 95,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[400],
+                                  borderRadius: BorderRadius.circular(10)),
                               child: _image == null
                                   ? Icon(Icons.cancel)
                                   : Image(
@@ -96,24 +103,19 @@ class _SellItemState extends State<SellItem> {
                                       height: 300,
                                       width: 300,
                                     ),
-                              height: 90,
-                              width: 95,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[400],
-                                  borderRadius: BorderRadius.circular(10)),
                             ),
                             SizedBox(width: 10),
                             Container(
-                              child: IconButton(
-                                  onPressed: () {
-                                    _showImageSourceDialog();
-                                  },
-                                  icon: Icon(Icons.add)),
                               height: 95,
                               width: 95,
                               decoration: BoxDecoration(
                                   color: Colors.grey[400],
                                   borderRadius: BorderRadius.circular(10)),
+                              child: IconButton(
+                                  onPressed: () {
+                                    _showImageSourceDialog();
+                                  },
+                                  icon: Icon(Icons.add)),
                             ),
                           ],
                         ),
@@ -367,7 +369,7 @@ class _SellItemState extends State<SellItem> {
                         UserModel? SellerName =
                             await FirebaseHelper.getUserModelById(
                                 widget.firebaseUser!.uid);
-                        String? uid = widget.firebaseUser?.uid;
+                        // String? uid = widget.firebaseUser?.uid;
                         Products productModel = Products(
                           ProductSellerName: SellerName!.fullname,
                           ProductImage: imageUrl,
@@ -461,6 +463,7 @@ class _SellItemState extends State<SellItem> {
     });
   }
 
+  // ignore: unused_element
   _sendImageCloud() async {
     if (_image == null) return;
     //getting reference to storage root
@@ -475,6 +478,8 @@ class _SellItemState extends State<SellItem> {
     try {
       await referenceImageToUpload.putFile(File(_image!.path));
       imageUrl = await referenceImageToUpload.getDownloadURL();
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+    }
   }
 }

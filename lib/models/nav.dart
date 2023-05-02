@@ -83,8 +83,6 @@ import 'package:app_1/Screens/MyOrders.dart';
 import 'package:app_1/Screens/chatHome.dart';
 import 'package:app_1/Screens/donation.dart';
 import 'package:app_1/Screens/homepage.dart';
-import 'package:app_1/Screens/landing_page.dart';
-import 'package:app_1/Screens/profile.dart';
 import 'package:app_1/Screens/sell_item.dart';
 import 'package:app_1/consts/colors.dart';
 import 'package:app_1/models/firebaseHelper.dart';
@@ -93,6 +91,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatefulWidget {
+  const NavBar({super.key});
+
   @override
   State<NavBar> createState() => _NavBarState();
 }
@@ -103,8 +103,8 @@ class _NavBarState extends State<NavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 80,
+    return SizedBox(
+      height: 70,
       child: Scaffold(
         bottomNavigationBar: Container(
           height: 80,
@@ -202,7 +202,8 @@ class _NavBarState extends State<NavBar> {
             child: Icon(Icons.add, color: Colors.white, size: 32),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterDocked,
       ),
     );
   }

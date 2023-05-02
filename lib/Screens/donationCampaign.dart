@@ -160,6 +160,7 @@ class _DonationCampaignState extends State<DonationCampaign> {
                     onPressed: () async {
                       Random random = Random.secure();
                       String cid = random.nextInt(7000).toString();
+                      // ignore: unused_local_variable
                       UserModel? EventOrganizer =
                           await FirebaseHelper.getUserModelById(
                               widget.firebaseUser!.uid);
@@ -176,8 +177,11 @@ class _DonationCampaignState extends State<DonationCampaign> {
                           .collection('Campaigns')
                           .doc(cid)
                           .set(campaign.toMap())
-                          .then((value) =>Navigator.push(context, MaterialPageRoute(builder: (context)=>Donation(firebaseUser: widget.firebaseUser))));
-                          
+                          .then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Donation(
+                                      firebaseUser: widget.firebaseUser))));
                     },
                     child: const Center(
                         child: Text('Post Campaign',

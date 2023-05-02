@@ -3,12 +3,10 @@
 import 'dart:async';
 
 import 'package:app_1/Screens/itemview.dart';
-import 'package:app_1/consts/colors.dart';
 import 'package:app_1/models/appbar.dart';
 import 'package:app_1/models/nav.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../models/Orders.dart';
 import '../models/ProductDetails.dart';
@@ -151,12 +149,12 @@ class _OrdersState extends State<Orders> {
                         .where('ProductName', isEqualTo: ProductName)
                         .get()
                         .then((value) {
-                      value.docs.forEach((element) {
+                      for (var element in value.docs) {
                         FirebaseFirestore.instance
                             .collection('Orders')
                             .doc(element.id)
                             .delete();
-                      });
+                      }
                       products.removeWhere((element) =>
                           element.ProductName == ProductName &&
                           element.ProductSellerID == SellerName &&

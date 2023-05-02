@@ -1,4 +1,3 @@
-import 'package:app_1/consts/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,72 +51,70 @@ class _ChatHomeState extends State<ChatHome> {
                 searchController: searchController),
           ),
           Expanded(
-            child: Container(
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("chatrooms")
-                    .where("participants.${widget.userModel?.uid}",
-                        isEqualTo: true)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
-                    if (snapshot.hasData) {
-                      QuerySnapshot chatRoomSnapshot =
-                          snapshot.data as QuerySnapshot;
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("chatrooms")
+                  .where("participants.${widget.userModel?.uid}",
+                      isEqualTo: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  if (snapshot.hasData) {
+                    QuerySnapshot chatRoomSnapshot =
+                        snapshot.data as QuerySnapshot;
 
-                      return ListView.builder(
-                        itemCount: chatRoomSnapshot.docs.length,
-                        itemBuilder: (context, index) {
-                          ChatRoomModel chatRoomModel = ChatRoomModel.fromMap(
-                              chatRoomSnapshot.docs[index].data()
-                                  as Map<String, dynamic>);
+                    return ListView.builder(
+                      itemCount: chatRoomSnapshot.docs.length,
+                      itemBuilder: (context, index) {
+                        ChatRoomModel chatRoomModel = ChatRoomModel.fromMap(
+                            chatRoomSnapshot.docs[index].data()
+                                as Map<String, dynamic>);
 
-                          Map<String, dynamic> participants =
-                              chatRoomModel.participants!;
+                        Map<String, dynamic> participants =
+                            chatRoomModel.participants!;
 
-                          List<String> participantKeys =
-                              participants.keys.toList();
-                          participantKeys.remove(widget.userModel?.uid);
+                        List<String> participantKeys =
+                            participants.keys.toList();
+                        participantKeys.remove(widget.userModel?.uid);
 
-                          return FutureBuilder(
-                            future: FirebaseHelper.getUserModelById(
-                                participantKeys[0]),
-                            builder: (context, userData) {
-                              if (userData.connectionState ==
-                                  ConnectionState.done) {
-                                if (userData.data != null) {
-                                  UserModel targetUser = userData.data!;
-                                  return ChatCard(
-                                      userModel: widget.userModel!,
-                                      chatRoomModel: chatRoomModel,
-                                      firebaseUser: widget.firebaseUser!,
-                                      targetUser: targetUser);
-                                } else {
-                                  return Container();
-                                }
+                        return FutureBuilder(
+                          future: FirebaseHelper.getUserModelById(
+                              participantKeys[0]),
+                          builder: (context, userData) {
+                            if (userData.connectionState ==
+                                ConnectionState.done) {
+                              if (userData.data != null) {
+                                UserModel targetUser = userData.data!;
+                                return ChatCard(
+                                    userModel: widget.userModel!,
+                                    chatRoomModel: chatRoomModel,
+                                    firebaseUser: widget.firebaseUser!,
+                                    targetUser: targetUser);
                               } else {
                                 return Container();
                               }
-                            },
-                          );
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else {
-                      return const Center(
-                        child: Text("No Chats"),
-                      );
-                    }
+                            } else {
+                              return Container();
+                            }
+                          },
+                        );
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
+                    );
                   } else {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: Text("No Chats"),
                     );
                   }
-                },
-              ),
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           ),
         ],
