@@ -45,9 +45,6 @@ class _SellerProfileState extends State<SellerProfile> {
     String letter = widget.user.fullname!;
     String l = letter[0];
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child: NavBar(),
-      ),
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Seller',

@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+//import 'dart:html';
+
 import 'package:app_1/Screens/chatRoom.dart';
 import 'package:app_1/Screens/homepage.dart';
 import 'package:app_1/Screens/itemview.dart';
@@ -105,7 +107,7 @@ Tile(context, {required Products product, required user}) {
                   height: 10,
                 ),
                 //Call Buttons
-                Row(
+                product.ProductSellerID != FirebaseAuth.instance.currentUser!.uid ?  Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     CircleAvatar(
@@ -179,6 +181,8 @@ Tile(context, {required Products product, required user}) {
                     ),
                   ],
                 )
+                 : ElevatedButton(onPressed: (){}, child: Text('Delete')),
+               
               ],
             )
           ],
