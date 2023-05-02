@@ -49,6 +49,8 @@ class _messageTextFieldState extends State<messageTextField> {
         .set(widget.chatRoom.toMap());
   }
 
+ 
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -63,6 +65,7 @@ class _messageTextFieldState extends State<messageTextField> {
               icon: IconButton(
                 onPressed: () {
                   sendMessage();
+                  widget.messageController.clear();
                   print('Message sent');
                 },
                 icon: const Icon(Icons.send),

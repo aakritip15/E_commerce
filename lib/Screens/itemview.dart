@@ -40,11 +40,85 @@ class _ItemViewState extends State<ItemView> {
 
       FirebaseFirestore.instance.collection('Orders').add(order.toMap());
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Order Placed"),
-        ),
-      );
+      showModalBottomSheet(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+          context: context,
+          builder: (context) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(8),
+                    tileColor: Colors.grey[200],
+                    leading: Container(
+                      height: 50,
+                      width: 50,
+                      child: Image(
+                        image: NetworkImage(
+                          widget.product.ProductImage!.toString(),
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    title: Text(widget.product.ProductName!),
+                    subtitle: Text(widget.product.ProductDescription!),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: Row(
+                    children: [
+                      Text('Total Amount:',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          )),
+                      SizedBox(width: 5),
+                      Text(widget.product.ProductPrice!,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ))
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Color(0xffef6957),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Order Placed"),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Conform Order',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontFamily: GoogleFonts.poppins().fontFamily),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            );
+          });
     } on Exception catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
