@@ -47,12 +47,13 @@ class _messageTextFieldState extends State<messageTextField> {
         .set(widget.chatRoom.toMap());
   }
 
+ 
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 32, 18, 18),
       child: TextField(
-        
           controller: widget.messageController,
           decoration: InputDecoration(
             filled: true,
@@ -62,6 +63,7 @@ class _messageTextFieldState extends State<messageTextField> {
               icon: IconButton(
                 onPressed: () {
                   sendMessage();
+                  widget.messageController.clear();
                   print('Message sent');
                 },
                 icon: const Icon(Icons.send),
