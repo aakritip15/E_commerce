@@ -163,9 +163,6 @@ class _AccountSettingState extends State<AccountSetting> {
   Widget build(BuildContext context) {
     setState(() {});
     return Scaffold(
-        bottomNavigationBar: BottomAppBar(
-          child: NavBar(),
-        ),
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('Account Setting',

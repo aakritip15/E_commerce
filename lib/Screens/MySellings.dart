@@ -179,10 +179,22 @@ class _SellingsState extends State<Sellings> {
 
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 250, 249, 244),
-      appBar: APPBAR(
-        context,
+           appBar: AppBar(
+        title: const Text('My Sellings',
+            style: TextStyle(
+              color: Colors.brown,
+              fontWeight: FontWeight.bold,
+            )),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.brown),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
       ),
-      bottomNavigationBar: NavBar(),
       body: Column(children: [
         FutureBuilder(
           future: OrderFuture,
