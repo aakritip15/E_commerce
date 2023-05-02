@@ -1,7 +1,11 @@
 // ignore_for_file: use_build_context_synchronously, prefer_const_constructors, non_constant_identifier_names, unnecessary_null_comparison
 
+import 'package:app_1/Screens/MySellings.dart';
+import 'package:app_1/Screens/account_setting.dart';
+import 'package:app_1/Screens/edit_information.dart';
 import 'package:app_1/Screens/landing_page.dart';
 import 'package:app_1/Screens/otp.dart';
+import 'package:app_1/Screens/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -39,29 +43,43 @@ class RegisterPage extends StatelessWidget {
           ),
         );
       } else {
-        try {
-          print("+977$phoneNumber");
-          await FirebaseAuth.instance.verifyPhoneNumber(
-            phoneNumber: "+977$phoneNumber",
-            verificationCompleted: (PhoneAuthCredential credential) {},
-            verificationFailed: (FirebaseAuthException e) {},
-            codeSent: (String verificationId, int? resendToken) {
-              RegisterPage.verify = verificationId;
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => otpVerification(
-                          email: emailController.text.toString(),
-                          password: passwordController.text.toString(),
-                          name: nameController.text.toString(),
-                          number: numberController.text.toString(),
-                          address: addressController.text.toString())));
-            },
-            codeAutoRetrievalTimeout: (String verificationId) {},
-          );
-        } catch (e) {
-          print('error');
-        }
+        await FirebaseAuth.instance.verifyPhoneNumber(
+          phoneNumber: "+977$phoneNumber",
+          verificationCompleted: (PhoneAuthCredential credential) {},
+          verificationFailed: (FirebaseAuthException e) {
+            print(e.toString());
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
+              ),
+            );
+          },
+          codeSent: (String verificationId, int? resendToken) {
+            RegisterPage.verify = verificationId;
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => otpVerification(
+                    email: emailController.text.toString(),
+                    password: passwordController.text.toString(),
+                    name: nameController.text.toString(),
+                    number: numberController.text.toString(),
+                    address: addressController.text.toString()),
+              ),
+            );
+          },
+          codeAutoRetrievalTimeout: (String verificationId) {},
+        );
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (builder) => newPage(
+        //           email: emailController.text.toString(),
+        //           password: passwordController.text.toString(),
+        //           name: nameController.text.toString(),
+        //           number: numberController.text.toString(),
+        //           address: addressController.text.toString()),
+        //     ));
       }
     }
 

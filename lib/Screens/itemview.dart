@@ -2,7 +2,6 @@
 
 import 'package:app_1/Screens/SellerListing.dart';
 import 'package:app_1/consts/consts.dart';
-import 'package:app_1/models/profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_auth/firebase_auth.dart';

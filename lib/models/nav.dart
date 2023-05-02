@@ -104,7 +104,7 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 70,
       child: Scaffold(
         bottomNavigationBar: Container(
           height: 80,
@@ -202,7 +202,8 @@ class _NavBarState extends State<NavBar> {
             child: Icon(Icons.add, color: Colors.white, size: 32),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniCenterDocked,
       ),
     );
   }
