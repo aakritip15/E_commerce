@@ -107,7 +107,7 @@ class _ItemViewState extends State<ItemView> {
                         );
                       },
                       child: Text(
-                        'Conform Order',
+                        'Confirm Order',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -128,7 +128,6 @@ class _ItemViewState extends State<ItemView> {
     }
   }
 
-  int _count = 1;
   String DisplayText = 'Place Order';
   String? Display() {
     String text = 'Place Order';
@@ -309,44 +308,6 @@ class _ItemViewState extends State<ItemView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CounterButton(
-                        child: Icon(
-                          FeatherIcons.minus,
-                          size: 15,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            if (_count > 1) {
-                              _count--;
-                            }
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        _count.toString(),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: GoogleFonts.openSans().fontFamily,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10.0,
-                      ),
-                      CounterButton(
-                        child: Icon(
-                          FeatherIcons.plus,
-                          size: 15,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _count++;
-                          });
-                        },
-                      ),
                       SizedBox(width: 10.0),
                       Container(
                         width: 250,
