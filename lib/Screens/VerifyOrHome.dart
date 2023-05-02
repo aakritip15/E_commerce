@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_1/Screens/homepage.dart';
+import 'package:app_1/consts/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -74,44 +75,56 @@ class _VerifyOrHomeState extends State<VerifyOrHome> {
   Widget build(BuildContext context) => isEmailVerified
       ? MyHomePage(user: userModel!)
       : Scaffold(
-          appBar: AppBar(title: const Text("Verify your Email")),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "A verification mail has been sent to your Email",
-                  style: TextStyle(fontSize: 20),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 25),
-                const SizedBox(height: 30),
-                SizedBox(
-                  height: 50,
-                  width: 380,
-                  child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 23, 17, 17),
-                          side: const BorderSide(
-                              width: 1, color: Color.fromARGB(255, 72, 71, 71)),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                      icon: const Icon(Icons.email),
-                      label: const Text("Resent Email"),
-                      onPressed:
-                          canResendEmail ? sendVerificationEmail : () {}),
-                ),
-                const Text(
-                  "Wait for some time before pressing again",
-                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 10),
-                ),
-                TextButton(
-                    onPressed: () => FirebaseAuth.instance.signOut(),
-                    child: const Text(
-                      "Cancel",
-                      style: TextStyle(fontSize: 25),
-                    ))
-              ],
+          appBar: AppBar(
+            backgroundColor: kYellow,
+            title: const Text("Verify your Email")),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image(image: AssetImage('images/images/emailverify.png')),
+                  //Image.asset('images/images/emailverify.png'),
+                  Text(
+                    "A verification mail has been sent to your Email",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: kBrown
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 25),
+                  const Text(
+                    "Wait for some time before pressing again",
+                    style: TextStyle(
+                      fontStyle: FontStyle.italic, fontSize: 16, color: kBrown),
+                  ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    height: 50,
+                    width: 380,
+                    child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: kYellow,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        icon: const Icon(Icons.email),
+                        label: const Text("Resent Email"),
+                        onPressed:
+                            canResendEmail ? sendVerificationEmail : () {}),
+                  ),
+                  
+                  TextButton(
+                      onPressed: () {FirebaseAuth.instance.signOut();
+                      Navigator.pop(context);
+                      },
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(fontSize: 22,color: kBrown),
+                      ))
+                ],
+              ),
             ),
           ),
         );
