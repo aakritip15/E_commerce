@@ -9,7 +9,6 @@ import 'package:uuid/uuid.dart';
 import 'firebase_options.dart';
 import 'models/firebaseHelper.dart';
 import 'models/userModel.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
 var uuid = Uuid();
 void main() async {
@@ -51,9 +50,16 @@ class MyAppafterLogin extends StatelessWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   User? firebaseUser;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

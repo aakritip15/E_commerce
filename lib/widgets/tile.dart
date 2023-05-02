@@ -26,6 +26,7 @@ Tile(context, {required Products product, required user}) {
       ? '${product.ProductDescription!.substring(0, 20)}...'
       : product.ProductDescription!;
   String? IMAGE = product.ProductImage;
+  // ignore: unused_local_variable
   String? sellerName =
       product.ProductSellerName; //! Use this Name in card to show seller name
   return Padding(
@@ -119,7 +120,6 @@ Tile(context, {required Products product, required user}) {
                                   isEqualTo: true)
                               .where('participants.${you.uid}', isEqualTo: true)
                               .get();
-                          String cID;
                           if (chatroomQuery.docs.isEmpty) {
                             ChatRoomModel newChatroom = ChatRoomModel(
                               chatRoomId: uuid.v1(),

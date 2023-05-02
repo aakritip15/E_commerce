@@ -2,7 +2,6 @@
 
 import 'package:app_1/Screens/landing_page.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '/consts/consts.dart';
 
 class Splash extends StatefulWidget {

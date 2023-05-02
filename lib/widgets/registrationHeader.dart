@@ -23,7 +23,7 @@ class MyHeader extends StatelessWidget {
             SizedBox(width: 10.0),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: const [
                 Text(
                   'ReSell- It',
                   style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),

@@ -1,3 +1,5 @@
+// ignore_for_file: camel_case_types
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +54,6 @@ class _messageTextFieldState extends State<messageTextField> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 32, 18, 18),
       child: TextField(
-        
           controller: widget.messageController,
           decoration: InputDecoration(
             filled: true,
