@@ -8,6 +8,7 @@ import '../models/uiHelper.dart';
 import '../models/userModel.dart';
 import 'login.dart';
 
+// ignore: camel_case_types
 class otpVerification extends StatefulWidget {
   final String email;
   final String password;
@@ -27,8 +28,10 @@ class otpVerification extends StatefulWidget {
   State<otpVerification> createState() => _otpVerificationState();
 }
 
+// ignore: camel_case_types
 class _otpVerificationState extends State<otpVerification> {
   @override
+  // ignore: override_on_non_overriding_member
   final FirebaseAuth auth = FirebaseAuth.instance;
   void SignUp(String email, String password) async {
     UserCredential? credentials;
@@ -179,7 +182,7 @@ class _otpVerificationState extends State<otpVerification> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+                children: const [
                   Text(
                     'Didn\'t receive a code?',
                     style: TextStyle(fontSize: 15, color: Colors.black),

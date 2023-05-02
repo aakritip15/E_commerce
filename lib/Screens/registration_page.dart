@@ -1,11 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, prefer_const_constructors, non_constant_identifier_names, unnecessary_null_comparison
-
-import 'package:app_1/Screens/MySellings.dart';
-import 'package:app_1/Screens/account_setting.dart';
-import 'package:app_1/Screens/edit_information.dart';
 import 'package:app_1/Screens/landing_page.dart';
 import 'package:app_1/Screens/otp.dart';
-import 'package:app_1/Screens/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
