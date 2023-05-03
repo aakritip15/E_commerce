@@ -213,10 +213,14 @@ class _AccountSettingState extends State<AccountSetting> {
                         SizedBox(
                           height: 12,
                         ),
-                        Text(
-                          "Email:${widget.user.email!}",
-                          style: TextStyle(
-                            fontSize: 15,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: Text(
+                            "Email:${widget.user.email!}",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -267,6 +271,11 @@ class _AccountSettingState extends State<AccountSetting> {
                                 color: Colors.grey,
                                 borderRadius: BorderRadius.circular(9)),
                             child: TextButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Color.fromARGB(255, 156, 202, 133)),
+                              ),
                               onPressed: () {
                                 Navigator.push(
                                     context,

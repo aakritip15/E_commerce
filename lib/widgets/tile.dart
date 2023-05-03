@@ -107,82 +107,86 @@ Tile(context, {required Products product, required user}) {
                   height: 10,
                 ),
                 //Call Buttons
-                product.ProductSellerID != FirebaseAuth.instance.currentUser!.uid ?  Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    CircleAvatar(
-                      maxRadius: 15,
-                      child: IconButton(
-                        onPressed: () async {
-                          ChatRoomModel? chatRoom;
-                          User you = FirebaseAuth.instance.currentUser!;
-                          final chatroomQuery = await FirebaseFirestore.instance
-                              .collection('chatrooms')
-                              .where('participants.${product.ProductSellerID!}',
-                                  isEqualTo: true)
-                              .where('participants.${you.uid}', isEqualTo: true)
-                              .get();
-                          if (chatroomQuery.docs.isEmpty) {
-                            ChatRoomModel newChatroom = ChatRoomModel(
-                              chatRoomId: uuid.v1(),
-                              lastMessage: "",
-                              participants: {
-                                you.uid.toString(): true,
-                                product.ProductSellerID!: true,
+                product.ProductSellerID !=
+                        FirebaseAuth.instance.currentUser!.uid
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          CircleAvatar(
+                            maxRadius: 15,
+                            child: IconButton(
+                              onPressed: () async {
+                                ChatRoomModel? chatRoom;
+                                User you = FirebaseAuth.instance.currentUser!;
+                                final chatroomQuery = await FirebaseFirestore
+                                    .instance
+                                    .collection('chatrooms')
+                                    .where(
+                                        'participants.${product.ProductSellerID!}',
+                                        isEqualTo: true)
+                                    .where('participants.${you.uid}',
+                                        isEqualTo: true)
+                                    .get();
+                                if (chatroomQuery.docs.isEmpty) {
+                                  ChatRoomModel newChatroom = ChatRoomModel(
+                                    chatRoomId: uuid.v1(),
+                                    lastMessage: "",
+                                    participants: {
+                                      you.uid.toString(): true,
+                                      product.ProductSellerID!: true,
+                                    },
+                                  );
+                                  await FirebaseFirestore.instance
+                                      .collection("chatrooms")
+                                      .doc(newChatroom.chatRoomId)
+                                      .set(newChatroom.toMap());
+                                  chatRoom = newChatroom;
+                                } else {
+                                  chatRoom = ChatRoomModel.fromMap(
+                                      chatroomQuery.docs.first.data());
+                                }
+                                //firebaseUser as required fromChatRoom.dart
+                                //seller Information as required fromChatRoom.dart
+                                UserModel? userModel =
+                                    await FirebaseHelper.getUserModelById(uid!);
+                                UserModel? sellerModel =
+                                    await FirebaseHelper.getUserModelById(
+                                        product.ProductSellerID!);
+                                print(userModel!.fullname);
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return ChatPage(
+                                    targetUser: sellerModel!,
+                                    chatRoom: chatRoom!,
+                                    userModel: userModel,
+                                    firebaseUser: you,
+                                  );
+                                }));
                               },
-                            );
-                            await FirebaseFirestore.instance
-                                .collection("chatrooms")
-                                .doc(newChatroom.chatRoomId)
-                                .set(newChatroom.toMap());
-                            chatRoom = newChatroom;
-                          } else {
-                            chatRoom = ChatRoomModel.fromMap(
-                                chatroomQuery.docs.first.data());
-                          }
-                          //firebaseUser as required fromChatRoom.dart
-                          //seller Information as required fromChatRoom.dart
-                          UserModel? userModel =
-                              await FirebaseHelper.getUserModelById(uid!);
-                          UserModel? sellerModel =
-                              await FirebaseHelper.getUserModelById(
-                                  product.ProductSellerID!);
-                          print(userModel!.fullname);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ChatPage(
-                              targetUser: sellerModel!,
-                              chatRoom: chatRoom!,
-                              userModel: userModel,
-                              firebaseUser: you,
-                            );
-                          }));
-                        },
-                        icon: Icon(
-                          EvaIcons.messageCircle,
-                          size: 15,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    CircleAvatar(
-                      maxRadius: 15,
-                      child: IconButton(
-                        onPressed: () {
-                          print('FAVOURITE');
-                        },
-                        icon: Icon(
-                          Icons.favorite,
-                          size: 15,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-                 : ElevatedButton(onPressed: (){}, child: Text('Delete')),
-               
+                              icon: Icon(
+                                EvaIcons.messageCircle,
+                                size: 15,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          CircleAvatar(
+                            maxRadius: 15,
+                            child: IconButton(
+                              onPressed: () {
+                                print('FAVOURITE');
+                              },
+                              icon: Icon(
+                                Icons.favorite,
+                                size: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : ElevatedButton(onPressed: () {}, child: Text('Delete')),
               ],
             )
           ],

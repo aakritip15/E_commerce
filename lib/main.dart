@@ -25,7 +25,9 @@ void main() async {
       currentuser: currentUser,
     ));
   } else {
-    runApp(MyApp());
+    runApp(
+      MyApp(),
+    );
   }
 }
 
