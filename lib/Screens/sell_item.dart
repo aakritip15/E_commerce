@@ -12,10 +12,11 @@ import 'package:image_picker/image_picker.dart';
 import '../models/firebaseHelper.dart';
 import '../models/userModel.dart';
 
+Color activeConditionColor = Color.fromARGB(255, 139, 216, 141);
+Color inactiveConditionColor = Color.fromARGB(255, 176, 171, 171);
+
 class SellItem extends StatefulWidget {
   final User? firebaseUser;
-
-  // final String? uid;
 
   SellItem({
     super.key,
@@ -33,6 +34,9 @@ class _SellItemState extends State<SellItem> {
   String condition = 'used';
   bool clickNew = false;
   bool clickUsed = true;
+
+  Color newColor = activeConditionColor;
+  Color usedColor = inactiveConditionColor;
 
 //image and cloud storage section
 
@@ -120,42 +124,6 @@ class _SellItemState extends State<SellItem> {
                           ],
                         ),
                         SizedBox(height: 9),
-                        // _image == null
-                        //     ? Text('')
-                        //     : InkWell(
-                        //         onTap: () async {
-                        //           if (_image == null) return;
-                        //           //getting reference to storage root
-                        //           Reference referenceRoot =
-                        //               FirebaseStorage.instance.ref();
-                        //           Reference referenceDirImages =
-                        //               referenceRoot.child('images');
-
-                        //           //reference for the images to be stored
-                        //           String uniqueFileName = DateTime.now()
-                        //               .millisecondsSinceEpoch
-                        //               .toString();
-                        //           Reference referenceImageToUpload =
-                        //               referenceDirImages.child(uniqueFileName);
-
-                        //           //Store the file
-                        //           try {
-                        //             await referenceImageToUpload
-                        //                 .putFile(File(_image!.path));
-
-                        //             //get the url of the image
-                        //             imageUrl = await referenceImageToUpload
-                        //                 .getDownloadURL();
-                        //           } catch (error) {
-                        //             ScaffoldMessenger.of(context).showSnackBar(
-                        //               SnackBar(
-                        //                 content: Text(
-                        //                     "Failed to Upload Image :$error"),
-                        //               ),
-                        //             );
-                        //           }
-                        //         },
-                        //         child: Text('Click here to upload image')),
                       ],
                     ),
                   ),
@@ -248,16 +216,22 @@ class _SellItemState extends State<SellItem> {
                   children: [
                     TextButton(
                         style: ButtonStyle(
-                          backgroundColor: (clickNew == false)
-                              ? MaterialStateProperty.all(Colors.grey[300])
-                              : MaterialStateProperty.all(Colors.green[200]),
-                        ),
+                            backgroundColor:
+                                MaterialStateProperty.all(newColor)),
                         onPressed: () {
-                          setState(() {
-                            condition = 'New';
-                            clickNew = !clickNew;
-                            clickUsed = !clickUsed;
-                          });
+                          if (condition == 'New') {
+                            setState(() {
+                              condition = 'New';
+                              newColor = activeConditionColor;
+                              usedColor = inactiveConditionColor;
+                            });
+                          } else {
+                            setState(() {
+                              condition = 'New';
+                              newColor = activeConditionColor;
+                              usedColor = inactiveConditionColor;
+                            });
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -276,16 +250,22 @@ class _SellItemState extends State<SellItem> {
                     ),
                     TextButton(
                         style: ButtonStyle(
-                          backgroundColor: (clickUsed == false)
-                              ? MaterialStateProperty.all(Colors.grey[300])
-                              : MaterialStateProperty.all(Colors.green[200]),
+                          backgroundColor: MaterialStateProperty.all(usedColor),
                         ),
                         onPressed: () {
-                          setState(() {
-                            clickUsed = !clickUsed;
-                            clickNew = !clickNew;
-                            condition = 'Used';
-                          });
+                          if (condition == 'New') {
+                            setState(() {
+                              condition = 'Used';
+                              usedColor = activeConditionColor;
+                              newColor = inactiveConditionColor;
+                            });
+                          } else {
+                            setState(() {
+                              condition = 'Used';
+                              usedColor = activeConditionColor;
+                              newColor = inactiveConditionColor;
+                            });
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -364,35 +344,8 @@ class _SellItemState extends State<SellItem> {
                       borderRadius: BorderRadius.circular(10)),
                   child: TextButton(
                       onPressed: () async {
-                        Random random = Random.secure();
-                        String? pid = random.nextInt(5000).toString();
-                        UserModel? SellerName =
-                            await FirebaseHelper.getUserModelById(
-                                widget.firebaseUser!.uid);
-                        // String? uid = widget.firebaseUser?.uid;
-                        Products productModel = Products(
-                          ProductSellerName: SellerName!.fullname,
-                          ProductImage: imageUrl,
-                          ProductName: itemName.text.toString(),
-                          ProductCategory: _category,
-                          ProductDescription: description.text.toString(),
-                          ItemCondition: condition,
-                          ProductPrice: price.text.toString(),
-                          ListedLocation: _choosedLocation,
-                          ProductSellerID: widget.firebaseUser?.uid,
-                          ProductID: pid,
-                          ListedDate: DateTime.now().toString(),
-                        );
+// first sending image to firebase storage
 
-                        await FirebaseFirestore.instance
-                            .collection('Products')
-                            //.doc(uid)
-                            //.collection('Items')
-                            .doc(pid)
-                            .set(productModel.toMap())
-                            .then((value) => 'Product added successfully');
-
-                        //uploading image to firebase storage section
                         if (_image == null) return;
                         //getting reference to storage root
                         Reference referenceRoot =
@@ -421,6 +374,35 @@ class _SellItemState extends State<SellItem> {
                             ),
                           );
                         }
+
+// Products Section
+                        Random random = Random.secure();
+                        String? pid = random.nextInt(5000).toString();
+                        UserModel? SellerName =
+                            await FirebaseHelper.getUserModelById(
+                                widget.firebaseUser!.uid);
+                        // String? uid = widget.firebaseUser?.uid;
+                        Products productModel = Products(
+                          ProductSellerName: SellerName!.fullname,
+                          ProductImage: imageUrl,
+                          ProductName: itemName.text.toString(),
+                          ProductCategory: _category,
+                          ProductDescription: description.text.toString(),
+                          ItemCondition: condition,
+                          ProductPrice: price.text.toString(),
+                          ListedLocation: _choosedLocation,
+                          ProductSellerID: widget.firebaseUser?.uid,
+                          ProductID: pid,
+                          ListedDate: DateTime.now().toString(),
+                        );
+
+                        await FirebaseFirestore.instance
+                            .collection('Products')
+                            //.doc(uid)
+                            //.collection('Items')
+                            .doc(pid)
+                            .set(productModel.toMap())
+                            .then((value) => 'Product added successfully');
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
