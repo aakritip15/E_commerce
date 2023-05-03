@@ -30,7 +30,7 @@ class _SellItemState extends State<SellItem> {
   TextEditingController description = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController itemName = TextEditingController();
-  String? condition = 'used';
+  String condition = 'used';
   bool clickNew = false;
   bool clickUsed = true;
 
@@ -41,12 +41,12 @@ class _SellItemState extends State<SellItem> {
   String imageUrl = '';
 
   final List<String> _categoryList = <String>[
-    "Mobile",
+    "Electronics",
     "Stationary",
     "Grocery",
     "Vehicle"
   ];
-  String _category = 'Mobile';
+  String _category = 'Electronics';
 
   final List<String> _location = <String>["Kathmandu", "Lalitpur", "Bhaktapur"];
   String _choosedLocation = 'Kathmandu';
@@ -120,42 +120,42 @@ class _SellItemState extends State<SellItem> {
                           ],
                         ),
                         SizedBox(height: 9),
-                        _image == null
-                            ? Text('')
-                            : InkWell(
-                                onTap: () async {
-                                  if (_image == null) return;
-                                  //getting reference to storage root
-                                  Reference referenceRoot =
-                                      FirebaseStorage.instance.ref();
-                                  Reference referenceDirImages =
-                                      referenceRoot.child('images');
+                        // _image == null
+                        //     ? Text('')
+                        //     : InkWell(
+                        //         onTap: () async {
+                        //           if (_image == null) return;
+                        //           //getting reference to storage root
+                        //           Reference referenceRoot =
+                        //               FirebaseStorage.instance.ref();
+                        //           Reference referenceDirImages =
+                        //               referenceRoot.child('images');
 
-                                  //reference for the images to be stored
-                                  String uniqueFileName = DateTime.now()
-                                      .millisecondsSinceEpoch
-                                      .toString();
-                                  Reference referenceImageToUpload =
-                                      referenceDirImages.child(uniqueFileName);
+                        //           //reference for the images to be stored
+                        //           String uniqueFileName = DateTime.now()
+                        //               .millisecondsSinceEpoch
+                        //               .toString();
+                        //           Reference referenceImageToUpload =
+                        //               referenceDirImages.child(uniqueFileName);
 
-                                  //Store the file
-                                  try {
-                                    await referenceImageToUpload
-                                        .putFile(File(_image!.path));
+                        //           //Store the file
+                        //           try {
+                        //             await referenceImageToUpload
+                        //                 .putFile(File(_image!.path));
 
-                                    //get the url of the image
-                                    imageUrl = await referenceImageToUpload
-                                        .getDownloadURL();
-                                  } catch (error) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            "Failed to Upload Image :$error"),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Text('Click here to upload image')),
+                        //             //get the url of the image
+                        //             imageUrl = await referenceImageToUpload
+                        //                 .getDownloadURL();
+                        //           } catch (error) {
+                        //             ScaffoldMessenger.of(context).showSnackBar(
+                        //               SnackBar(
+                        //                 content: Text(
+                        //                     "Failed to Upload Image :$error"),
+                        //               ),
+                        //             );
+                        //           }
+                        //         },
+                        //         child: Text('Click here to upload image')),
                       ],
                     ),
                   ),
@@ -391,7 +391,37 @@ class _SellItemState extends State<SellItem> {
                             .doc(pid)
                             .set(productModel.toMap())
                             .then((value) => 'Product added successfully');
-                        print('Item added successfully');
+
+                        //uploading image to firebase storage section
+                        if (_image == null) return;
+                        //getting reference to storage root
+                        Reference referenceRoot =
+                            FirebaseStorage.instance.ref();
+                        Reference referenceDirImages =
+                            referenceRoot.child('images');
+
+                        //reference for the images to be stored
+                        String uniqueFileName =
+                            DateTime.now().millisecondsSinceEpoch.toString();
+                        Reference referenceImageToUpload =
+                            referenceDirImages.child(uniqueFileName);
+
+                        //Store the file
+                        try {
+                          await referenceImageToUpload
+                              .putFile(File(_image!.path));
+
+                          //get the url of the image
+                          imageUrl =
+                              await referenceImageToUpload.getDownloadURL();
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Failed to Upload Image :$error"),
+                            ),
+                          );
+                        }
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text("Item Added Succesfully"),
