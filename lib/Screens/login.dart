@@ -2,6 +2,7 @@
 
 import 'package:app_1/Screens/landing_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -21,6 +22,53 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController ResetemailController = TextEditingController();
+  IconData visibility_off = EvaIcons.eyeOffOutline;
+
+  void forgotPassWord() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Forgot Password"),
+          content: Container(
+            height: 90,
+            child: Column(
+              children: [
+                Text("Email:"),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                    width: 250,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextField(
+                        controller: ResetemailController,
+                        decoration: InputDecoration(
+                          hintText: "Email",
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(10),
+                        ))),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                FirebaseAuth.instance.sendPasswordResetEmail(
+                    email: ResetemailController.text.trim());
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void loginAttempt() async {
     String email = emailController.text.trim();
@@ -134,8 +182,14 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
+              TextButton(
+                onPressed: () {
+                  forgotPassWord();
+                },
+                child: Text('Forgot Password?'),
+              ),
               const SizedBox(
-                height: 30.0,
+                height: 10.0,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -171,24 +225,26 @@ class _LoginState extends State<Login> {
                 ),
               ),
               SizedBox(
-                height: 50,
+                height: 30,
               ),
-              RichText(
-                text: TextSpan(
-                  text: "By signing up you will be accepting our ",
-                  style: TextStyle(color: Colors.black),
-                  children: <TextSpan>[
-                    TextSpan(
-                        text: 'Terms and Conditions',
-                        style: TextStyle(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()..onTap = () {}),
-                    const TextSpan(
-                      text: '.',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    text: "By signing up you will be accepting our ",
+                    style: TextStyle(color: Colors.black),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: 'Terms and Conditions',
+                          style: TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline),
+                          recognizer: TapGestureRecognizer()..onTap = () {}),
+                      const TextSpan(
+                        text: '.',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

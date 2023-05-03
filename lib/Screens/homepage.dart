@@ -120,6 +120,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 child: TextField(
                   controller: search,
+                  //This code will erase everything in the text field and only show the first returning match item.
+                  // onChanged: (value) {
+                  //   if (value.isEmpty) {
+                  //     productsFuture = getProducts();
+                  //     setState(() {});
+                  //   } else {
+                  //     productsFuture = searchProducts(value.toLowerCase());
+                  //     setState(() {
+                  //       value = value;
+                  //     });
+                  //   }
+                  // },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
