@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app_1/consts/consts.dart';
 import 'package:app_1/models/ProductDetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cross_file_image/cross_file_image.dart';
@@ -42,7 +43,7 @@ class _SellItemState extends State<SellItem> {
 
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
-  String imageUrl = '';
+  String imageUrl = noimageavailable;
 
   final List<String> _categoryList = <String>[
     "Electronics",
