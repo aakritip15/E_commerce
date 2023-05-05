@@ -232,7 +232,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 productsFuture = getProducts();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text("No Products were Found for $text"),
+                    content: Text("No Products were Found for $text",
+                        style: TextStyle(fontSize: 12)),
+                    padding:
+                        EdgeInsets.only(bottom: 10.0, top: 10.0, left: 2.0),
                   ),
                 );
               } else {

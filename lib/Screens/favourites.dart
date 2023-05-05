@@ -1,58 +1,58 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, use_build_context_synchronously, unnecessary_cast
-
-import 'dart:async';
-
-import 'package:app_1/Screens/itemview.dart';
-import 'package:app_1/models/appbar.dart';
-import 'package:app_1/models/nav.dart';
+import 'package:app_1/models/favModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../models/Orders.dart';
-import '../models/ProductDetails.dart';
 
-class Orders extends StatefulWidget {
-  const Orders({super.key});
+import '../models/ProductDetails.dart';
+import '../models/appbar.dart';
+import '../models/nav.dart';
+import 'itemview.dart';
+
+class Favourites extends StatefulWidget {
+  const Favourites({super.key});
 
   @override
-  State<Orders> createState() => _OrdersState();
+  State<Favourites> createState() => _FavouritesState();
 }
 
-class _OrdersState extends State<Orders> {
-  Future<List<Items>>? OrderFuture;
+class _FavouritesState extends State<Favourites> {
+  Future<List<FavModel>>? FavFuture;
   String? user = FirebaseAuth.instance.currentUser!.uid;
   @override
   void initState() {
     super.initState();
-    OrderFuture = fetchProducts();
+    FavFuture = fetchFavs();
   }
 
-  Future<List<Items>> fetchProducts() async {
-    List<Items> products = [];
+  Future<List<FavModel>> fetchFavs() async {
+    List<FavModel> favourites = [];
     QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('Orders')
-        .where('ProductBuyerID', isEqualTo: user)
+        .collection('Favourites')
+        .where('UserID', isEqualTo: user)
         .get();
     for (var element in snapshot.docs) {
-      products.add(Items.fromMap(element.data() as Map<String, dynamic>));
+      favourites.add(FavModel.fromMap(element.data() as Map<String, dynamic>));
     }
 
-    return products;
+    return favourites;
   }
 
   @override
   Widget build(BuildContext context) {
-    Container orderTile(String? ProductName, String? SellerName, String? Price,
-        String? Status, List<Items> products, BuildContext context) {
-      // String? ProductName = "Samsung Phone";
-      // String? SellerName = "Shashinoor Ghimire";
-      // String? Price = "1000";
-      // String? Status = "Pending";
+    Container favTile(
+        String? ProductName,
+        String? UserID,
+        String? Price,
+        // String? Status,
+        String? SellerName,
+        String? ProductID,
+        List<FavModel> favourites,
+        BuildContext context) {
       return Container(
-        margin: EdgeInsets.all(10),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        margin: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 223, 232, 224),
+          color: const Color.fromARGB(255, 223, 232, 224),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
@@ -61,50 +61,50 @@ class _OrdersState extends State<Orders> {
           children: [
             Text(
               ProductName!,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Seller:$SellerName',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w300,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Row(
               children: [
                 Text(
                   'Price: $Price!',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                SizedBox(width: 10),
-                Text(
-                  'Status: $Status!',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
+                const SizedBox(width: 10),
+                // Text(
+                //   'Status: $Status!',
+                //   style: const TextStyle(
+                //     fontSize: 15,
+                //     fontWeight: FontWeight.w300,
+                //   ),
+                // ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               children: [
                 TextButton(
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 0, 0, 0)),
+                        const Color.fromARGB(255, 0, 0, 0)),
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 244, 249, 103)),
+                        const Color.fromARGB(255, 244, 249, 103)),
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.all(15)),
+                        const EdgeInsets.all(15)),
                   ),
                   onPressed: () async {
                     Products ProductInfo = await FirebaseFirestore.instance
@@ -133,39 +133,39 @@ class _OrdersState extends State<Orders> {
                     ],
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 TextButton(
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 255, 255, 255)),
+                        const Color.fromARGB(255, 255, 255, 255)),
                     backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 228, 69, 45)),
+                        const Color.fromARGB(255, 228, 69, 45)),
                     padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.all(15)),
+                        const EdgeInsets.all(15)),
                   ),
                   onPressed: () {
                     FirebaseFirestore.instance
-                        .collection('Orders')
-                        .where('ProductName', isEqualTo: ProductName)
+                        .collection('Favourites')
+                        .where('ProductID', isEqualTo: ProductID)
                         .get()
                         .then((value) {
-                      for (var element in value.docs) {
+                      value.docs.forEach((element) {
                         FirebaseFirestore.instance
-                            .collection('Orders')
+                            .collection('Favourites')
                             .doc(element.id)
                             .delete();
-                      }
-                      products.removeWhere((element) =>
+                      });
+                      favourites.removeWhere((element) =>
                           element.ProductName == ProductName &&
                           element.ProductSellerID == SellerName &&
                           element.ProductPrice == Price &&
-                          element.ProductStatus == Status);
+                          element.UserID == UserID);
                       setState(() {});
                     });
                   },
                   child: Row(
                     children: [
-                      Text('Cancel Order'),
+                      Text('Remove'),
                       Icon(Icons.cancel_outlined),
                     ],
                   ),
@@ -185,8 +185,9 @@ class _OrdersState extends State<Orders> {
       bottomNavigationBar: NavBar(),
       body: Column(children: [
         FutureBuilder(
-          future: OrderFuture,
-          builder: (BuildContext context, AsyncSnapshot<List<Items>> snapshot) {
+          future: FavFuture,
+          builder:
+              (BuildContext context, AsyncSnapshot<List<FavModel>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -196,12 +197,12 @@ class _OrdersState extends State<Orders> {
                 child: Text('Error fetching data.'),
               );
             } else {
-              List<Items> products = snapshot.data!;
+              List<FavModel> favourites = snapshot.data!;
 
               return Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: products.length,
+                  itemCount: favourites.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -209,14 +210,14 @@ class _OrdersState extends State<Orders> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: orderTile(
-                            products[index].ProductName,
-                            products[index].ProductSellerID,
-                            products[index].ProductPrice,
-                            products[index].ProductStatus,
-                            products,
-                            context,
-                          ),
+                          child: favTile(
+                              favourites[index].ProductName,
+                              favourites[index].UserID,
+                              favourites[index].ProductPrice,
+                              favourites[index].ProductSellerID,
+                              favourites[index].ProductID,
+                              favourites,
+                              context),
                         ));
                   },
                 ),

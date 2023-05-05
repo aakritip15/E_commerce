@@ -1,6 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:app_1/Screens/landing_page.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '/consts/consts.dart';
 
 class Splash extends StatefulWidget {
@@ -19,7 +20,7 @@ class _SplashState extends State<Splash> {
   }
 
   _navigateToHome() async {
-    await Future.delayed(const Duration(milliseconds: 3000), () {});
+    await Future.delayed(const Duration(milliseconds: 2000), () {});
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const LandingPage()));
   }
@@ -30,9 +31,9 @@ class _SplashState extends State<Splash> {
       backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Image(image: AssetImage(appIcon)),
-          const SizedBox(
+        children: const [
+          Image(image: AssetImage(appIcon)),
+          SizedBox(
             height: 30.0,
             width: double.infinity,
           ),

@@ -8,6 +8,7 @@ import '../models/uiHelper.dart';
 import '../models/userModel.dart';
 import 'login.dart';
 
+// ignore: camel_case_types
 class otpVerification extends StatefulWidget {
   final String email;
   final String password;
@@ -27,8 +28,10 @@ class otpVerification extends StatefulWidget {
   State<otpVerification> createState() => _otpVerificationState();
 }
 
+// ignore: camel_case_types
 class _otpVerificationState extends State<otpVerification> {
   @override
+  // ignore: override_on_non_overriding_member
   final FirebaseAuth auth = FirebaseAuth.instance;
   void SignUp(String email, String password) async {
     UserCredential? credentials;
@@ -101,97 +104,101 @@ class _otpVerificationState extends State<otpVerification> {
           elevation: 0,
           actions: const [],
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              'images/images/otp.jpg',
-              height: 300,
-            ),
-            const Center(
-              child: Text(
-                'Phone Verification',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'images/images/otp.jpg',
+                height: 300,
               ),
-            ),
-            const Center(
-              child: Text(
-                'Enter the OTP send to your mobile number',
-                style: TextStyle(fontSize: 15, color: Colors.grey),
-              ),
-            ),
-            const SizedBox(height: 15),
-            Pinput(
-              defaultPinTheme: defaultPinTheme,
-              focusedPinTheme: focusedPinTheme,
-              submittedPinTheme: submittedPinTheme,
-              length: 6,
-              onChanged: (value) {
-                code = value;
-              },
-            ),
-            const SizedBox(height: 17),
-            TextButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith(
-                        (states) => Colors.amber),
-                    minimumSize: MaterialStateProperty.all<Size>(
-                      const Size(350, 38),
-                    ),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)))),
-                onPressed: () async {
-                  try {
-                    PhoneAuthCredential credential =
-                        PhoneAuthProvider.credential(
-                            verificationId: RegisterPage.verify, smsCode: code);
-                    await auth.signInWithCredential(credential);
-
-                    print('correct otp');
-                    UIHelper.showLoadingDialog(context, 'Creating Account...');
-                    SignUp(widget.email, widget.password);
-                  } catch (e) {
-                    print('wrong otp');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Wrong OTP'),
-                      ),
-                    );
-                  }
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(7.0),
-                  child: Text(
-                    'Verify',
-                    style: TextStyle(fontSize: 23, color: Colors.white),
-                  ),
-                )),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Didn\'t receive a code?',
-                  style: TextStyle(fontSize: 15, color: Colors.black),
-                ),
-                SizedBox(width: 5),
-                Text(
-                  'Resend',
+              const Center(
+                child: Text(
+                  'Phone Verification',
                   style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      fontSize: 15,
-                      color: Colors.black),
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ],
-            )
-          ],
+              ),
+              const Center(
+                child: Text(
+                  'Enter the OTP send to your mobile number',
+                  style: TextStyle(fontSize: 15, color: Colors.grey),
+                ),
+              ),
+              const SizedBox(height: 15),
+              Pinput(
+                defaultPinTheme: defaultPinTheme,
+                focusedPinTheme: focusedPinTheme,
+                submittedPinTheme: submittedPinTheme,
+                length: 6,
+                onChanged: (value) {
+                  code = value;
+                },
+              ),
+              const SizedBox(height: 17),
+              TextButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => Colors.amber),
+                      minimumSize: MaterialStateProperty.all<Size>(
+                        const Size(350, 38),
+                      ),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)))),
+                  onPressed: () async {
+                    try {
+                      PhoneAuthCredential credential =
+                          PhoneAuthProvider.credential(
+                              verificationId: RegisterPage.verify,
+                              smsCode: code);
+                      await auth.signInWithCredential(credential);
+
+                      print('correct otp');
+                      UIHelper.showLoadingDialog(
+                          context, 'Creating Account...');
+                      SignUp(widget.email, widget.password);
+                    } catch (e) {
+                      print('wrong otp');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Wrong OTP'),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(7.0),
+                    child: Text(
+                      'Verify',
+                      style: TextStyle(fontSize: 23, color: Colors.white),
+                    ),
+                  )),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Text(
+                    'Didn\'t receive a code?',
+                    style: TextStyle(fontSize: 15, color: Colors.black),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    'Resend',
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        fontSize: 15,
+                        color: Colors.black),
+                  ),
+                ],
+              )
+            ],
+          ),
         ));
   }
 }

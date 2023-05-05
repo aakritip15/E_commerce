@@ -23,7 +23,7 @@ class _DonationState extends State<Donation> {
   }
 
   Future<List<Campaign>> getCampaigns() async {
-    String uid = FirebaseAuth.instance.currentUser!.uid;
+    // String uid = FirebaseAuth.instance.currentUser!.uid;
     List<Campaign> campaign = [];
     QuerySnapshot snapshot =
         await FirebaseFirestore.instance.collection('Campaigns').get();

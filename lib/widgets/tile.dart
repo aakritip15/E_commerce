@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+//import 'dart:html';
+
 import 'package:app_1/Screens/chatRoom.dart';
 import 'package:app_1/Screens/homepage.dart';
 import 'package:app_1/Screens/itemview.dart';
@@ -26,6 +28,7 @@ Tile(context, {required Products product, required user}) {
       ? '${product.ProductDescription!.substring(0, 20)}...'
       : product.ProductDescription!;
   String? IMAGE = product.ProductImage;
+  // ignore: unused_local_variable
   String? sellerName =
       product.ProductSellerName; //! Use this Name in card to show seller name
   return Padding(
@@ -104,7 +107,7 @@ Tile(context, {required Products product, required user}) {
                   height: 10,
                 ),
                 //Call Buttons
-                Row(
+                product.ProductSellerID != FirebaseAuth.instance.currentUser!.uid ?  Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     CircleAvatar(
@@ -119,7 +122,6 @@ Tile(context, {required Products product, required user}) {
                                   isEqualTo: true)
                               .where('participants.${you.uid}', isEqualTo: true)
                               .get();
-                          String cID;
                           if (chatroomQuery.docs.isEmpty) {
                             ChatRoomModel newChatroom = ChatRoomModel(
                               chatRoomId: uuid.v1(),
@@ -179,6 +181,8 @@ Tile(context, {required Products product, required user}) {
                     ),
                   ],
                 )
+                 : ElevatedButton(onPressed: (){}, child: Text('Delete')),
+               
               ],
             )
           ],

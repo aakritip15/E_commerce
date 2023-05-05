@@ -2,7 +2,6 @@
 
 import 'package:app_1/Screens/MySellings.dart';
 import 'profile.dart' as profile;
-import 'MyOrders.dart';
 import 'package:app_1/Screens/edit_information.dart';
 import 'package:app_1/models/nav.dart';
 import 'package:app_1/models/uiHelper.dart';
@@ -32,6 +31,7 @@ class _AccountSettingState extends State<AccountSetting> {
   TextEditingController _CnewPassword = TextEditingController();
 
   void _deleteAccount() {
+    // ignore: unused_local_variable
     String? uid = FirebaseAuth.instance.currentUser!.uid;
     showDialog(
       context: context,
@@ -163,9 +163,6 @@ class _AccountSettingState extends State<AccountSetting> {
   Widget build(BuildContext context) {
     setState(() {});
     return Scaffold(
-        bottomNavigationBar: BottomAppBar(
-          child: NavBar(),
-        ),
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('Account Setting',
@@ -204,7 +201,6 @@ class _AccountSettingState extends State<AccountSetting> {
                     SizedBox(width: 25),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      // ignore: prefer_const_literals_to_create_immutables
                       children: [
                         //Name
                         Text(
@@ -336,11 +332,11 @@ class _AccountSettingState extends State<AccountSetting> {
                 ListTile(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Orders()));
+                        MaterialPageRoute(builder: (context) => Sellings()));
                   },
                   leading: Icon(Icons.store),
                   title: Text(
-                    'My Orders',
+                    'My Sellings',
                     style: TextStyle(
                       fontSize: 17,
                     ),
@@ -378,7 +374,7 @@ class _AccountSettingState extends State<AccountSetting> {
                     ),
                     child: TextButton.icon(
                       onPressed: () async {
-                        String? uid = FirebaseAuth.instance.currentUser!.uid;
+                        // String? uid = FirebaseAuth.instance.currentUser!.uid;
                         await FirebaseAuth.instance.signOut();
                         // final result = await AuthService().SignOut();
                         Navigator.push(

@@ -111,9 +111,7 @@ class _EditInfoState extends State<EditInfo> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                        //TODO: Add functionality to Edit Button
-                      },
+                      onTap: () {},
                       child: Container(
                         width: 70,
                         height: 27,

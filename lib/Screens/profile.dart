@@ -4,7 +4,6 @@ import 'package:app_1/Screens/account_setting.dart';
 import 'package:app_1/consts/consts.dart';
 import 'package:app_1/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/ProductDetails.dart';
@@ -31,7 +30,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<List<Products>> getProducts() async {
-    String? uid = FirebaseAuth.instance.currentUser!.uid;
+    // String? uid = FirebaseAuth.instance.currentUser!.uid;
     List<Products> products = [];
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('Products')
@@ -48,9 +47,6 @@ class _ProfileState extends State<Profile> {
     String letter = widget.user.fullname!;
     String l = letter[0];
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        child: NavBar(),
-      ),
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Profile',
