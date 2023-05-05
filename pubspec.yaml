@@ -41,6 +41,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_feather_icons: ^2.0.0+1
+  geocoding: ^2.1.0
+  geolocator: ^9.0.2
   google_fonts: ^4.0.3
   image_picker: ^0.8.7+3
   like_button: ^2.0.5
