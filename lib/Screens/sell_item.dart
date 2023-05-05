@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:app_1/consts/consts.dart';
 import 'package:app_1/models/ProductDetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cross_file_image/cross_file_image.dart';
@@ -12,10 +13,11 @@ import 'package:image_picker/image_picker.dart';
 import '../models/firebaseHelper.dart';
 import '../models/userModel.dart';
 
+Color activeConditionColor = Color.fromARGB(255, 139, 216, 141);
+Color inactiveConditionColor = Color.fromARGB(255, 176, 171, 171);
+
 class SellItem extends StatefulWidget {
   final User? firebaseUser;
-
-  // final String? uid;
 
   SellItem({
     super.key,
@@ -30,23 +32,26 @@ class _SellItemState extends State<SellItem> {
   TextEditingController description = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController itemName = TextEditingController();
-  String? condition = 'used';
+  String condition = 'used';
   bool clickNew = false;
   bool clickUsed = true;
+
+  Color newColor = activeConditionColor;
+  Color usedColor = inactiveConditionColor;
 
 //image and cloud storage section
 
   XFile? _image;
   final ImagePicker _picker = ImagePicker();
-  String imageUrl = '';
+  String imageUrl = noimageavailable;
 
   final List<String> _categoryList = <String>[
-    "Mobile",
+    "Electronics",
     "Stationary",
     "Grocery",
     "Vehicle"
   ];
-  String _category = 'Mobile';
+  String _category = 'Electronics';
 
   final List<String> _location = <String>["Kathmandu", "Lalitpur", "Bhaktapur"];
   String _choosedLocation = 'Kathmandu';
@@ -120,42 +125,6 @@ class _SellItemState extends State<SellItem> {
                           ],
                         ),
                         SizedBox(height: 9),
-                        _image == null
-                            ? Text('')
-                            : InkWell(
-                                onTap: () async {
-                                  if (_image == null) return;
-                                  //getting reference to storage root
-                                  Reference referenceRoot =
-                                      FirebaseStorage.instance.ref();
-                                  Reference referenceDirImages =
-                                      referenceRoot.child('images');
-
-                                  //reference for the images to be stored
-                                  String uniqueFileName = DateTime.now()
-                                      .millisecondsSinceEpoch
-                                      .toString();
-                                  Reference referenceImageToUpload =
-                                      referenceDirImages.child(uniqueFileName);
-
-                                  //Store the file
-                                  try {
-                                    await referenceImageToUpload
-                                        .putFile(File(_image!.path));
-
-                                    //get the url of the image
-                                    imageUrl = await referenceImageToUpload
-                                        .getDownloadURL();
-                                  } catch (error) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                            "Failed to Upload Image :$error"),
-                                      ),
-                                    );
-                                  }
-                                },
-                                child: Text('Click here to upload image')),
                       ],
                     ),
                   ),
@@ -248,16 +217,22 @@ class _SellItemState extends State<SellItem> {
                   children: [
                     TextButton(
                         style: ButtonStyle(
-                          backgroundColor: (clickNew == false)
-                              ? MaterialStateProperty.all(Colors.grey[300])
-                              : MaterialStateProperty.all(Colors.green[200]),
-                        ),
+                            backgroundColor:
+                                MaterialStateProperty.all(newColor)),
                         onPressed: () {
-                          setState(() {
-                            condition = 'New';
-                            clickNew = !clickNew;
-                            clickUsed = !clickUsed;
-                          });
+                          if (condition == 'New') {
+                            setState(() {
+                              condition = 'New';
+                              newColor = activeConditionColor;
+                              usedColor = inactiveConditionColor;
+                            });
+                          } else {
+                            setState(() {
+                              condition = 'New';
+                              newColor = activeConditionColor;
+                              usedColor = inactiveConditionColor;
+                            });
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -276,16 +251,22 @@ class _SellItemState extends State<SellItem> {
                     ),
                     TextButton(
                         style: ButtonStyle(
-                          backgroundColor: (clickUsed == false)
-                              ? MaterialStateProperty.all(Colors.grey[300])
-                              : MaterialStateProperty.all(Colors.green[200]),
+                          backgroundColor: MaterialStateProperty.all(usedColor),
                         ),
                         onPressed: () {
-                          setState(() {
-                            clickUsed = !clickUsed;
-                            clickNew = !clickNew;
-                            condition = 'Used';
-                          });
+                          if (condition == 'New') {
+                            setState(() {
+                              condition = 'Used';
+                              usedColor = activeConditionColor;
+                              newColor = inactiveConditionColor;
+                            });
+                          } else {
+                            setState(() {
+                              condition = 'Used';
+                              usedColor = activeConditionColor;
+                              newColor = inactiveConditionColor;
+                            });
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -364,6 +345,38 @@ class _SellItemState extends State<SellItem> {
                       borderRadius: BorderRadius.circular(10)),
                   child: TextButton(
                       onPressed: () async {
+// first sending image to firebase storage
+
+                        if (_image == null) return;
+                        //getting reference to storage root
+                        Reference referenceRoot =
+                            FirebaseStorage.instance.ref();
+                        Reference referenceDirImages =
+                            referenceRoot.child('images');
+
+                        //reference for the images to be stored
+                        String uniqueFileName =
+                            DateTime.now().millisecondsSinceEpoch.toString();
+                        Reference referenceImageToUpload =
+                            referenceDirImages.child(uniqueFileName);
+
+                        //Store the file
+                        try {
+                          await referenceImageToUpload
+                              .putFile(File(_image!.path));
+
+                          //get the url of the image
+                          imageUrl =
+                              await referenceImageToUpload.getDownloadURL();
+                        } catch (error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Failed to Upload Image :$error"),
+                            ),
+                          );
+                        }
+
+// Products Section
                         Random random = Random.secure();
                         String? pid = random.nextInt(5000).toString();
                         UserModel? SellerName =
@@ -391,7 +404,7 @@ class _SellItemState extends State<SellItem> {
                             .doc(pid)
                             .set(productModel.toMap())
                             .then((value) => 'Product added successfully');
-                        print('Item added successfully');
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text("Item Added Succesfully"),
