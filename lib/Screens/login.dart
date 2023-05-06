@@ -12,6 +12,8 @@ import '/Screens/homepage.dart';
 import '/consts/consts.dart';
 import '/widgets/myTextField.dart';
 
+bool _obscure = true;
+
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -190,11 +192,35 @@ class _LoginState extends State<Login> {
                         label: 'Email',
                         obscure: false),
 
-                    myTextField(
-                        text: 'Password',
-                        fieldController: passwordController,
-                        label: 'Password',
-                        obscure: true),
+                    TextField(
+                      decoration: InputDecoration(
+                        suffixIcon: Material(
+                          color: Colors.transparent,
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _obscure = !_obscure;
+                              });
+                            },
+                            icon: Icon((_obscure == true)
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                          ),
+                        ),
+                        hintText: 'Password',
+                        labelText: 'Password',
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 16.0,
+                          horizontal: 10.0,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      obscureText: _obscure,
+                      controller: passwordController,
+                      style: const TextStyle(fontSize: 12.0),
+                    )
                   ],
                 ),
               ),

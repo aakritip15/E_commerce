@@ -8,23 +8,70 @@ import '/consts/consts.dart';
 import '/consts/strings.dart';
 import '/widgets/registrationHeader.dart';
 import '/widgets/myTextField.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 //TODO : Improve the Design
 // TODO : Solve bottom Overflow bug. Occurance: while trying to give inputs in textFields
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
   static String verify = '';
   static String verificationCode = '';
-//TODO: create TextEditingControllers for each fields
 
   @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+bool obscure = true;
+TextEditingController addressController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
+
+class _RegisterPageState extends State<RegisterPage> {
+//TODO: create TextEditingControllers for each fields
+  @override
   Widget build(BuildContext context) {
+    String latitude = '';
+    String longitude = '';
+    String address = '';
     TextEditingController nameController = TextEditingController();
     TextEditingController emailController = TextEditingController();
     TextEditingController numberController = TextEditingController();
-    TextEditingController addressController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+
+    Future<Position> _determinePosition() async {
+      bool serviceEnabled;
+      LocationPermission permission;
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        return Future.error('Location services are disabled');
+      }
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error('Location permissions are denied forever');
+      }
+      Position position = await Geolocator.getCurrentPosition();
+      setState(() {
+        latitude = position.latitude.toString();
+        longitude = position.longitude.toString();
+      });
+      try {
+        List<Placemark> placemark = await placemarkFromCoordinates(
+            double.parse(latitude), double.parse(longitude));
+        Placemark placeMarkFirstResult = placemark.first;
+       
+        setState(() { 
+          addressController = TextEditingController(
+              text: placeMarkFirstResult.street.toString());
+        });
+      } catch (e) {
+        print(e.toString());
+      }
+
+      return position;
+    }
 
     void CheckValues(String? phoneNumber) async {
       if (nameController.text.isEmpty ||
@@ -134,16 +181,60 @@ class RegisterPage extends StatelessWidget {
                             label: 'Phone Number',
                             fieldController: numberController,
                             obscure: false),
-                        myTextField(
-                            text: 'Address',
-                            label: 'Address',
-                            fieldController: addressController,
-                            obscure: false),
-                        myTextField(
-                            text: 'Password',
-                            obscure: true,
-                            label: 'Password',
-                            fieldController: passwordController),
+                        
+                        TextField(
+                          decoration: InputDecoration(
+                            suffixIcon: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.grey),
+                              ),
+                              onPressed: () {
+                                _determinePosition();
+                              },
+                              child: Text('Get current address'),
+                            ),
+                            hintText: 'Address',
+                            labelText: 'Address',
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 16.0, horizontal: 10.0),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                          ),
+                          obscureText: false,
+                          controller: addressController,
+                          style: const TextStyle(fontSize: 12.0),
+                        ),
+                        
+                        TextField(
+                          decoration: InputDecoration(
+                            suffixIcon: Material(
+                              color: Colors.transparent,
+                              child: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    obscure = !obscure;
+                                  });
+                                },
+                                icon: Icon((obscure == true)
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                              ),
+                            ),
+                            hintText: 'Password',
+                            labelText: 'Password',
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 16.0,
+                              horizontal: 10.0,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          obscureText: obscure,
+                          controller: passwordController,
+                          style: const TextStyle(fontSize: 12.0),
+                        )
                       ],
                     ),
                   ),
