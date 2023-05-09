@@ -625,17 +625,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-<<<<<<< HEAD
-      sha256: daadc9baabec998b062c9091525aa95786508b1c48e9c30f1f891b8bf6ff2e64
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.5.2"
-=======
       sha256: ad540f65f92caa91bf21dfc8ffb8c589d6e4dc0c2267818b4cc2792857706206
       url: "https://pub.dev"
     source: hosted
     version: "0.4.16"
->>>>>>> 1d916b9d962d74b00b9237e08faed25b5ccc4b92
   typed_data:
     dependency: transitive
     description:
