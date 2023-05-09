@@ -43,7 +43,7 @@ class _SellingsState extends State<Sellings> {
   @override
   Widget build(BuildContext context) {
     Container orderTile(String? ProductName, String? SellerName, String? Price,
-        String? Status, List<Items> products, BuildContext context) {
+        String? Status,String?ProductID, List<Items> products, BuildContext context) {
       // String? ProductName = "Samsung Phone";
       // String? SellerName = "Shashinoor Ghimire";
       // String? Price = "1000";
@@ -86,7 +86,7 @@ class _SellingsState extends State<Sellings> {
                 ),
                 SizedBox(width: 10),
                 Text(
-                  'Status: $Status!',
+                  'Status: $Status',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w300,
@@ -164,6 +164,7 @@ class _SellingsState extends State<Sellings> {
                     });
                   },
                   child: Row(
+
                     children: [
                       Text('Cancel Order'),
                       Icon(Icons.cancel_outlined),
@@ -171,7 +172,46 @@ class _SellingsState extends State<Sellings> {
                   ),
                 ),
               ],
-            )
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            TextButton(
+               style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromARGB(255, 64, 193, 142)),
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                        EdgeInsets.all(15)),
+                  ),onPressed: (){
+                      FirebaseFirestore.instance.collection('Products').doc(ProductID).delete();
+                     ScaffoldMessenger.of(context).showSnackBar(
+                     SnackBar(
+                     content: Text("Product Deleted"),
+                     ),
+                     );
+                    FirebaseFirestore.instance
+                        .collection('Orders')
+                        .where('ProductName', isEqualTo: ProductName)
+                        .get()
+                        .then((value) {
+                      for (var element in value.docs) {
+                        FirebaseFirestore.instance
+                            .collection('Orders')
+                            .doc(element.id)
+                            .delete();
+                      }
+                      products.removeWhere((element) =>
+                          element.ProductName == ProductName &&
+                          element.ProductSellerID == SellerName &&
+                          element.ProductPrice == Price &&
+                          element.ProductStatus == Status);
+                      setState(() {});
+                    });                     
+                  }, 
+                  child:Text('Update Status to Sold',style: TextStyle(
+                        color: Colors.white
+                      ),),
+                  ),
           ],
         ),
       );
@@ -226,6 +266,7 @@ class _SellingsState extends State<Sellings> {
                             products[index].ProductSellerID,
                             products[index].ProductPrice,
                             products[index].ProductStatus,
+                            products[index].ProductID,
                             products,
                             context,
                           ),

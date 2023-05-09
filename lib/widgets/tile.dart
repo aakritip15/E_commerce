@@ -12,7 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:app_1/Screens/profile.dart';
 import '../main.dart';
 import '../models/chatRoomModel.dart';
 
@@ -181,7 +181,12 @@ Tile(context, {required Products product, required user}) {
                     ),
                   ],
                 )
-                 : ElevatedButton(onPressed: (){}, child: Text('Delete')),
+                 : ElevatedButton(onPressed: (){
+                  DeleteOrder(context, product);
+                    Navigator.pushReplacement(context, MaterialPageRoute(
+               builder: (context) => Profile(user: user)));
+
+                 }, child: Text('Delete')),
                
               ],
             )
@@ -190,4 +195,19 @@ Tile(context, {required Products product, required user}) {
       ),
     ),
   );
+
+  
 }
+
+ void DeleteOrder(BuildContext context, @required Product) async {
+    FirebaseFirestore.instance
+        .collection('Products')
+        .doc(Product.ProductID)
+        .delete();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("Product Deleted"),
+      ),
+    );
+   
+  }
